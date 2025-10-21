@@ -310,10 +310,10 @@ export const navBarConfig: NavBarConfig = {
 				},
 			],
 		},
-			{
+		{
 			name: "gal推荐",
 			url: "/gal/",
-			icon: "material-symbols:game",
+			icon: "material-symbols:joystick",
 			children: [
 			
 			],
