@@ -18,11 +18,11 @@ import { LinkPreset } from "./types/config";
 // 移除i18n导入以避免循环依赖
 
 // 定义站点语言
-const SITE_LANG = "en"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
+const SITE_LANG = "zh_CN"; // 语言代码，例如：'en', 'zh_CN', 'ja' 等。
 
 export const siteConfig: SiteConfig = {
-	title: "Mizuki",
-	subtitle: "One demo website",
+	title: "南叶の小窝",
+	subtitle: "欢迎来玩awa",
 
 	lang: SITE_LANG,
 
@@ -54,6 +54,12 @@ export const siteConfig: SiteConfig = {
 				"/assets/desktop-banner/d6.webp",
 				"/assets/desktop-banner/d7.webp",
 				"/assets/desktop-banner/d8.webp",
+				"/img/111.png",
+				"/img/112.png",
+				"/img/113.png",
+				"/img/114.png",
+				"/img/115.png",
+				
 			], // 桌面横幅图片
 			mobile: [
 				"/assets/mobile-banner/m1.webp",
@@ -64,6 +70,11 @@ export const siteConfig: SiteConfig = {
 				"/assets/mobile-banner/m6.webp",
 				"/assets/mobile-banner/m7.webp",
 				"/assets/mobile-banner/m8.webp",
+				"/img/111.png",
+				"/img/112.png",
+				"/img/113.png",
+				"/img/114.png",
+				"/img/115.png",
 			], // 移动横幅图片
 		}, // 使用本地横幅图片
 
@@ -72,7 +83,7 @@ export const siteConfig: SiteConfig = {
 		carousel: {
 			enable: true, // 为 true 时：为多张图片启用轮播。为 false 时：从数组中随机显示一张图片
 
-			interval: 1.5, // 轮播间隔时间（秒）
+			interval: 3 // 轮播间隔时间（秒）
 		},
 
 		// PicFlow API支持(智能图片API)
@@ -86,13 +97,99 @@ export const siteConfig: SiteConfig = {
 
 		homeText: {
 			enable: true, // 在主页显示自定义文本
-			title: "Beautiful Mizuki!", // 主页横幅主标题
+			title: "欢迎来到南叶の小窝", // 主页横幅主标题
 
 			subtitle: [
-				"A Showcase Demo Site",
-				"Carousel Highlight: Innovation",
-				"Carousel Focus: User Experience",
-				"Carousel Spot: Core Advantages",
+				"明明想要杀死某种生物，自己却没有做好被杀死的准备，你不觉得这种想法很奇怪么？——时崎狂三《约会大作战》",
+				"我们每天度过的称之为日常的生活，其实是一个个奇迹的连续也说不定。《日常》",
+			"与其有闲琢磨如何漂亮死去，还不如漂亮的活到最后一刻。《银魂》",
+			"我是要成为海贼王的男人啊ヽ(`Д´)ﾉ~路飞《海贼王》",
+			"拥有被杀的觉悟，才有开枪的权利。——鲁鲁修《反叛的鲁鲁修》",
+			"朱雀，你要成为英雄，从世界的敌人皇帝鲁路修·V·不列颠尼亚手中拯救世界的救世主，成为 Zero。这也是对你的惩罚，你必须作为正义的使者戴着面具活下去，不用在作为枢木朱雀，也必须为世界牺牲承认该有的幸福，永远-----《叛逆的鲁鲁修》",
+			"这是你若不能理解的，人类感情的极致，比希望更热烈，比绝望更深邃的——爱啊！——晓美焰《魔法少女小圆—叛逆的物语》",
+			"我们只是活着就已经竭尽全力了。《银魂》",
+			"我们终会相知，在那悠远的苍穹。by《缘之空》",
+			"零食就是正义！——紫原敦《黑子的篮球》",
+			"来吧！颤抖吧！惊叹吧！绝望吧！放声大哭吧！我的艺术就是——————爆炸！———《火影忍者》迪达拉",
+			"我觉得你很幸运，因为你可以选择爱我或不爱我，而我只能选择爱你或更爱你。——桂言叶《日在校园》",
+			"我终于明白了，你并不是因为命令或者身为 Servant 来保护我，而是出于自身意志，保护了我啊———伊莉亚《Fate stay night》",
+			"把已经失去的东西重新变得有意义的职业只有两个，作家和侦探。只有作家才能在梦想中将其复活，只有侦探才能将其从坟墓中挖掘出来还原成信息。---爱丽丝《神的记事本》",
+			"不抵抗就不会死，为什么你就是不明白！——卡缪·维丹《机动战士 Z 高达》",
+			"没有什么大不了这句话，只有当事者才有资格说——《悠久之翼》",
+			"我——撒了一个谎，宫园薰，喜欢渡亮太的，这样的一个谎。这个谎把你——有马公生君，命运般地带到了我的面前。马上，春天就要来了，与你相遇的春天，一个没有你的春天.《四月是你的谎言》",
+			"如果这是你的希望的话, 我就随你到天涯海角吧. 即使王座崩坏, 金光闪闪的王冠腐朽, 数之不尽的尸体堆积如山, 我会留在静静横卧的, 小小的王的身边, 直到将军的声音响起, 之时.《黑执事》",
+			"谢谢你们! 比谢谢更加的谢谢!--真白《樱花庄的宠物女孩》",
+			"悲伤也是会有的, 倒不如说尽是这样的事, 可正是如此我们才更需要前进, 令人唾弃的事由我们来做, 剩下的就去改变世界吧! 塔兹米! 用你炽热的灵魂呐喊吧!--布兰德《斩赤红之瞳》",
+			"能哭的地方，只有厕所，和爸爸的怀里。—《clannad》",
+			"谁都无法相信未来，谁都无法接受未来。——晓美焰《魔法少女小圆》",
+			"隐约雷鸣，阴霾天空，但盼风雨来，能留你在此。《言叶之庭》",
+			"要得到幸福的话，就需要与之相应的努力，也就是代价。不是经常说人生是正负和零么！有好事也有痛苦的事，有痛苦的事也有好事。不过这是错的。为了变得幸福，作为代价，必须背负与其同等的不幸。也就是说为了好事情，必须要忍受坏事情。所谓有痛苦的事就有好事什么的，并不是含有乐观意味的话。反过来说，在高的地位上的话，对工作就有相应的高要求对吧。要是不能满足这种高要求就是不诚实的人。再进一步反过来说，要把自己置于不幸中的话，自己就必须放弃一定程度的努力。——壹原侑子《xxxHolic》",
+			"这样被诅咒的人生，怎么能接受呢。ー仲村由理《angelbeats》",
+			"人类这种生物，有时候是连短短的十分钟也等不起的！———仲村由理《Angel Beats!》",
+			"惟愿, 你与你所处的这个世界, 今后也如此幸福。——黑桐干也《空之境界》",
+			"你要是没有胜算的话，就由我来创造胜算，尝试一切可能的方法。---Saber《Fate stay night》",
+			"面麻最喜欢仁太了…对仁太的喜欢…是想成为仁太新娘的那种喜欢~《未闻花名》",
+			"有树叶飞舞的地方，就会有火在燃烧，火的意志照耀着村子，就会有更多的树叶发芽，他们会承载着火的意志，把信念带向远方。——《火影忍者》",
+			"雪，只要落下便已是此生的尽头，唯有融化消失，然而，即使飞舞着上升，最后仍不忘落下的那颗种子。虽然有些虚幻，却比什么都坚强。我啊-----虽然绝对算不上什么优秀，但至少，希望能像雪一般，变得坚强起来。----《至少像雪那样》",
+			"所谓的觉悟、就是在黑暗的荒野中开辟前行的道路—乔鲁诺乔班纳《JOJO 的奇妙冒险》",
+			"即使这份感情是虚假的，这也是我唯一的真实。楪祈《罪恶王冠》",
+			"因为我是天才嘛！——樱木花道《灌篮高手》",
+			"教练，我想打篮球。三井寿《灌篮高手》",
+			"没有痛苦相伴的教训是毫无意义的，因为、人倘若不牺牲些什么，就什么也不可能得到。但是，当直面这些痛苦、克服它们的时候，人将获得不输给任何事物的坚韧的心。没错，钢铁一般的心。——爱德华《钢之炼金术师》",
+			"雪为什么是白色的？因为它们忘记了自己本身的颜色……C.C《反叛的鲁路修》",
+			"你的所言所行，全都闪烁着光芒，太过刺目，于是我闭上双眼，但内心还是无法停止对你的憧憬。——《四月是你的谎言》",
+			"何等失态，罪该万死———提耶利亚《高达 OO》",
+			"那个……其实啊，我想说的是，就算我死了，你也要努力活下去。活下去，看着这个世界直到最后，请帮我找出创造这个世界的意义，像我这样的胆小鬼来到这个世界的意义，还有我跟你相遇所代表的意义。——幸《刀剑神域》",
+			"一个人才会混乱的吧，即使是在黑暗中，只要有个人和自己一起走的话，就会安心很多，也一定会找到答案的。——《TrueTears》",
+			"我错了，善良没有任何意义 渣滓必须受到歧视 我... 要成为王——樱满集《罪恶王冠》",
+			"如果每个人都能为自己所爱的事情付诸努力，那崭新的地方定是梦想的终点---《LOVE LIVE》",
+			"莫扎特曾经说过大胆地踏上旅途吧，我不知道路途的前方究竟有什么，但是，我们还是迈出了步伐，我们仍在旅途之中。——有马公生《四月是你的谎言》",
+			"我可是货真价实的萝莉控，我对女性的好球带是 7 岁到 12 岁 也就是说。。。我只把小学女生当成异性 虽然有时年龄会往下修正，可是绝对不会往上调整 真是的，小学生真是太棒了！---安藤寿来《日常系的异能战斗》",
+			"萝莉控不是病，是人生态度啊！安藤寿来《日常系的异能战斗》",
+			"我不能喝酒，请给我一杯橙汁。户愚吕弟《幽游白书》",
+			"所谓的王者，就是要活的比任何人都要耀眼，成为万民敬仰的存在。伊斯坎达尔《Fate Zero》",
+			"如果能在六十亿分之一的概率下次与你相遇，即使你那时候你还是身体无法动弹，我也会和你结婚。」——日向秀树《AngelBeats！》",
+			"我想知道，为何世界如此扭曲，这份扭曲又从何产生。为何人类要支配被支配，又是为何人类要如此悲哀的活着.《高达》",
+			"瞬间的犹豫可是会丧命的，所以我决不会犹豫。——夏尔《黑执事》",
+			"1000 减 7 等于多少？---金木研《东京喰种》",
+			"总有一天我会让这里座无虚席!——高坂穗乃果《LoveLive!》",
+			"大家的背后，由我来守护！--西谷夕《排球少年》",
+			"我讨厌温柔的女孩子。温柔的女孩子其实对所有人都温柔，我却会误以为只对我温柔，然后就沾沾自喜得意忘形，最后闹得不欢而散，双方都受到伤害。——所以我才讨厌温柔的女孩子。《我的青春恋爱物语果然有问题》",
+			"我们总是在意错过了多少，却不注意自己拥有多少。——《未闻花名》",
+			"没有未来的未来不是我想要的未来！----神原秋人《境界的彼方》",
+			"人没有牺牲就没有获得, 如果要获得什么就必须付出同等的代价, 那就是炼金术的等价交换的原则。《钢之炼金术师》",
+			"男人变态有什么错！---前原圭一《寒蝉鸣啼之时》",
+			"苦难算什么，我本来就喜欢走在修罗之路上--索隆《海贼王》",
+			"只要是活着的，就是神也杀给你看––两仪式《空之境界》",
+			"你不是一个人，我们是共犯。如果你是魔女的话，我只要成为魔王就可以了吧。《叛逆的鲁鲁修》",
+			"大家回答我　为什么要低头，重复一遍　为什么要低头，我们是弱者！现在如此　过去也如此！是的　不是什么都没有改变吗！强者模仿弱者夺来的武器　是无法发挥出其真正的力量的，要说为什么的话　我们的武器本质在于，那弱小到悲屈的软弱啊！我在此强调，我们是弱者！我们宣誓作为弱者活下去，像弱者一样战斗然后已弱者的方式消灭强者！就像过去一样　今后也会贯彻到底！承认吧　我们是最弱的种族！正因为我们天生什么都没有，所以才能驾驭一切的，最弱的种族！----空《no game no life》",
+			"是我太愚蠢了，虽然只有一瞬间，我竟然想和你厮守一生。---桔梗《犬夜叉》",
+			"不能逃避，不能逃避，不能逃避。—碇真嗣《EVA》",
+			"人类最强的武器就是刀和叉-《美食的俘虏》",
+			"初见幽灵现真身，始知其为枯芒草。《冰菓》",
+			"你不是牺牲了自己的一切，养育我到今天了吗？为了我这样没出息的儿子，耗费了自己的一生。已经足够了！---冈崎朋也《CLANNAD》",
+			"关于自己的生活，我和你都不是读者，而是作者。至少结局，还是能自己说了算的。――银桑《银魂》",
+			"即使交不到 100 个朋友也没有关系，只要交到一个比 100 个朋友更重要的朋友。——《我的朋友很少》",
+			"无论发生了什么，也不要后悔与我相遇。《CLANNAD AFTER STORY》",
+			"或许前路永夜，即便如此我也要前进，因为星光即使微弱也会为我照亮前途。《四月是你的谎言》",
+			"能原谅女人谎话的————才是男人！香吉士《海贼王》",
+			"有个器官比我的心脏还重要，虽然我看不见它，但是它确实在我的体内，因为有它我才能站的直，就算步履蹒跚也能笔直往前走。如果我不去的话，它可是会拦腰折断的，我的灵魂它会拦腰折断的。比起心脏停止跳动，我更重视它。坂田银时《银魂》",
+			"群聚的都是弱者。弱小的草食动物才喜欢群聚。《家庭教师》",
+			"遥远的不是距离，而是次元啊！---安艺伦也《路人女主的养成方法》",
+			"亚丝娜，我的命是你的——桐谷和人《刀剑神域》",
+			"即使是走过无数次的路，也能走到从未踏足过的地方，正因为是走过无数次的路，景色才会变幻万千，光是这样还不足够吗？因为只是这样，所以才不足够吗？——函南优一《空中杀手》",
+			"错的不是我，而是这个世界。《東京喰种》",
+			"时间可以冲淡一切，但，我並不想用时间来磨平伤口。《黑执事》",
+			"爱德：「等价交换，我的人生给你一半，所以你的人生也给我一半。」温迪：「哈.. 你是笨蛋啊？」爱德：「你说什么？」温迪：「别说一半，全部都给你呀！」——《钢之炼金术师 FA》",
+			"不要哀求，学会争取若是如此，终有所获。——阿德洛克•萨斯顿《交响诗篇》",
+			"秒速 5 厘米，那是樱花飘落的速度，那么怎样的速度，才能走完我与你之间的距离？——《秒速五厘米》",
+			"一切都是 Steins Gate 的选择！《命运石之门》",
+			"可能会有迷茫的時候，也可能会有因为不如意而觉得烦躁的时候。无论是谁都会遇到低谷，但只有跨越低谷的人才能得到大家的认可。《花开物语》",
+			"剑本凶器，剑术是杀人术，这是无法用语言掩饰的。为了断这之间的宿命，正是这把逆刃剑的使命——不杀之誓《浪客剑心》",
+			"明明感觉距离很近 但伸手却又抓不到 即使这样 即使望尘莫及 亦有留在心中的东西 曾身处同一时间层 曾仰望过同一样东西 只要记着这些 就算相互远离 也依然可以相信我们还是同在 现在要不停蹦跑 只要目标远大 总有一天 会赶上那目标《fate/stay night》",
+			"把绫波，还给我! 我变成怎么样无所谓，世界变成怎样也无所谓，但是绫波，至少她一个人，我一定要救出来！——碇真嗣《eva:破》",
+
+
 			],
 			typewriter: {
 				enable: true, // 启用副标题打字机效果
@@ -151,6 +248,11 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 			"/assets/desktop-banner/d6.webp",
 			"/assets/desktop-banner/d7.webp",
 			"/assets/desktop-banner/d8.webp",
+				"/img/111.png",
+				"/img/112.png",
+				"/img/113.png",
+				"/img/114.png",
+				"/img/115.png",
 		], // 桌面横幅图片
 		mobile: [
 			"/assets/mobile-banner/m1.webp",
@@ -161,6 +263,11 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 			"/assets/mobile-banner/m6.webp",
 			"/assets/mobile-banner/m7.webp",
 			"/assets/mobile-banner/m8.webp",
+				"/img/111.png",
+				"/img/112.png",
+				"/img/113.png",
+				"/img/114.png",
+				"/img/115.png",
 		], // 移动横幅图片
 	}, // 使用本地横幅图片
 	position: "center", // 壁纸位置，等同于 object-position
@@ -179,70 +286,88 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Archive,
 		// 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
 		{
-			name: "Links",
+			name: "链接",
 			url: "/links/",
 			icon: "material-symbols:link",
 			children: [
 				{
 					name: "GitHub",
-					url: "https://github.com/matsuzaka-yuki/Mizuki",
-					external: true,
+					url: "https://github.com/",
+					external: false,
 					icon: "fa6-brands:github",
 				},
 				{
 					name: "Bilibili",
-					url: "https://space.bilibili.com/701864046",
+					url: "hhttps://www.bilibili.com/",
 					external: true,
 					icon: "fa6-brands:bilibili",
 				},
 				{
 					name: "Gitee",
 					url: "https://gitee.com/matsuzakayuki/Mizuki",
-					external: true,
+					external: false,
 					icon: "mdi:git",
 				},
 			],
 		},
 		{
-			name: "My",
+			name: "我的",
 			url: "/content/",
 			icon: "material-symbols:person",
 			children: [
 				LinkPreset.Anime,
 				LinkPreset.Diary,
 				{
-					name: "Gallery",
+					name: "相册",
 					url: "/albums/",
 					icon: "material-symbols:photo-library",
 				},
 			],
 		},
 		{
-			name: "About",
+			name: "关于",
 			url: "/content/",
 			icon: "material-symbols:info",
 			children: [LinkPreset.About, LinkPreset.Friends],
 		},
 		{
-			name: "Others",
+			name: "其他",
 			url: "#",
 			icon: "material-symbols:more-horiz",
 			children: [
 				{
-					name: "Projects",
+					name: "工程",
 					url: "/projects/",
 					icon: "material-symbols:work",
 				},
 				{
-					name: "Skills",
+					name: "技能",
 					url: "/skills/",
 					icon: "material-symbols:psychology",
 				},
 				{
-					name: "Timeline",
+					name: "时间线",
 					url: "/timeline/",
 					icon: "material-symbols:timeline",
 				},
+			],
+		},
+		{
+			name: "学习",
+			url: "/learn/",
+			icon: "material-symbols:book",
+			children: [
+				{
+					name: "RM",
+					url: "/rm/",
+					icon: "material-symbols:menu-book",
+				},
+				{
+					name: "算法",
+					url: "/algorithm/",
+					icon: "material-symbols:calculate",
+				},
+
 			],
 		},
 	],
@@ -256,23 +381,16 @@ export const profileConfig: ProfileConfig = {
 		{
 			name: "Bilibli",
 			icon: "fa6-brands:bilibili",
-			url: "https://space.bilibili.com/701864046",
-		},
-		{
-			name: "Gitee",
-			icon: "mdi:git",
-			url: "https://gitee.com/matsuzakayuki",
+			url: "https://space.bilibili.com/1874516838?spm_id_from=333.1007.0.0",
 		},
 		{
 			name: "GitHub",
 			icon: "fa6-brands:github",
-			url: "https://github.com/matsuzaka-yuki",
+			url: "https://github.com/nanye1/nanye1.github.io",
 		},
-		{
-			name: "Discord",
-			icon: "fa6-brands:discord",
-			url: "https://discord.gg/MqW6TcQtVM",
-		},
+	
+	
+		
 	],
 };
 
@@ -289,10 +407,10 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 };
 
 export const commentConfig: CommentConfig = {
-	enable: false, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
+	enable: true, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
 	twikoo: {
 		envId: "https://twikoo.vercel.app",
-		lang: "en", // 设置 Twikoo 评论系统语言为英文
+		lang: "zh-CN", // 设置 Twikoo 评论系统语言为英文
 	},
 };
 
