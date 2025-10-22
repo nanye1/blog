@@ -3,7 +3,7 @@ title: markdown
 published: 2025-10-21
 pinned: false
 description: 例子
-tags: [教学]
+tags: [学习]
 category: 测试
 
 draft: false
