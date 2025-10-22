@@ -402,7 +402,7 @@ export const announcementConfig: AnnouncementConfig = {
 	title: "公告", // 公告标题
 	content: "评论不能用！！！\n其他里的东西暂时还没改，不是我的！！\n问题反馈和建议请加qq420883290", 
 	// 公告内容
-	closable: true, // 允许用户关闭公告
+	closable: false, // 允许用户关闭公告
 	link: {
 		enable: true, // 启用链接
 		text: "Learn More", // 链接文本
