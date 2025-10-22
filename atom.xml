@@ -5,8 +5,90 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-22T13:50:57.044Z</updated>
+  <updated>2025-10-22T14:56:10.479Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>双指针</title>
+    <link href="https://www.nanye404.top/posts/twop/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/twop/</id>
+    <published>2025-10-22T00:00:00.000Z</published>
+    <updated>2025-10-22T00:00:00.000Z</updated>
+    <summary>双指针常见技巧</summary>
+    <content type="html"><![CDATA[<ul>
+<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8">双指针在数组的运用</a>
+<ul>
+<li><a href="#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88">快慢指针</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2">二分搜索</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3">滑动窗口</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9E%E6%96%87/%E5%8F%8D%E8%BD%AC">回文/反转</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E4%B9%8B%E5%92%8C">数之和</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8">双指针在链表的运用</a>
+<ul>
+<li><a href="#%E5%90%88%E5%B9%B6">合并</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%86%E8%A7%A3">分解</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a>
+<ul>
+<li><a href="#%E4%BE%8B%E9%A2%98">例题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<hr />
+<h2>双指针在数组的运用</h2>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>更新日志</title>
+    <link href="https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</id>
+    <published>2025-10-22T00:00:00.000Z</published>
+    <updated>2025-10-22T00:00:00.000Z</updated>
+    <summary>这里是更新日志</summary>
+    <content type="html"><![CDATA[<h2>2025-10-22</h2>
+<ul>
+<li>更新了个人简介</li>
+<li>更新了rm笔记</li>
+<li>更新了双指针的框架</li>
+<li>评论没挂服务器所以不能用</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term=" 日志 "></category>
+  </entry>
   <entry>
     <title>装甲板自动识别与位姿估计学习</title>
     <link href="https://www.nanye404.top/posts/armor/" rel="alternate" type="text/html"/>
@@ -71,9 +153,6 @@
 </code></pre>
 <hr />
 <h2>模块逐个拆解（含核心代码片段）</h2>
-<blockquote>
-<p>下面的代码片段只展示<strong>关键逻辑</strong>，完整实现请对照源码。</p>
-</blockquote>
 <h3>4.1 数字分类器 <code>NumberClassifier</code></h3>
 <p><strong>职责</strong>：从装甲板两根灯条之间裁出数字图（固定尺寸），二值化后喂给 ONNX 分类网络，得到类别与置信度。</p>
 <p><strong>核心：透视展开 + 二值化 + DNN 前向</strong></p>
