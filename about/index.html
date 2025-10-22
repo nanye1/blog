@@ -529,22 +529,22 @@ const umamiConfig = {"enabled":true,"apiKey":"api_5tGoMJfVbjCJwDtnEL0ubinLDEsWK9
 	
 	// 初始化侧边栏管理器
 	new SidebarManager();
-</script> <main id="swup-container" class="transition-swup-fade overflow-hidden w-full col-span-2 md:col-start-2 md:col-end-3 lg:col-start-2 lg:col-end-3 transition-main" data-astro-cid-haiuh7kc> <div id="content-wrapper" class="onload-animation transition-leaving" data-astro-cid-haiuh7kc> <!-- the overflow-hidden here prevent long text break the layout--> <!-- make id different from windows.swup global property -->  <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32"> <div class="card-base z-10 px-9 py-6 relative w-full "> <div data-pagefind-body class="prose dark:prose-invert prose-base !max-w-none custom-md mt-2"> <!--<div class="prose dark:prose-invert max-w-none custom-md">--> <!--<div class="max-w-none custom-md">-->  <section><h1 id="关于主题">关于主题<a class="anchor" href="#关于主题"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h1><a id="GC7qpewk-card" class="card-github fetch-waiting no-styling" href="https://github.com/matsuzaka-yuki/Mizuki" target="_blank" repo="matsuzaka-yuki/Mizuki"><div class="gc-titlebar"><div class="gc-titlebar-left"><div class="gc-owner"><div id="GC7qpewk-avatar" class="gc-avatar"></div><div class="gc-user">matsuzaka-yuki</div></div><div class="gc-divider">/</div><div class="gc-repo">Mizuki</div></div><div class="github-logo"></div></div><div id="GC7qpewk-description" class="gc-description">Waiting for api.github.com...</div><div class="gc-infobar"><div id="GC7qpewk-stars" class="gc-stars">00K</div><div id="GC7qpewk-forks" class="gc-forks">0K</div><div id="GC7qpewk-license" class="gc-license">0K</div><span id="GC7qpewk-language" class="gc-language">Waiting...</span></div><script id="GC7qpewk-script" type="text/javascript" defer>
+</script> <main id="swup-container" class="transition-swup-fade overflow-hidden w-full col-span-2 md:col-start-2 md:col-end-3 lg:col-start-2 lg:col-end-3 transition-main" data-astro-cid-haiuh7kc> <div id="content-wrapper" class="onload-animation transition-leaving" data-astro-cid-haiuh7kc> <!-- the overflow-hidden here prevent long text break the layout--> <!-- make id different from windows.swup global property -->  <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32"> <div class="card-base z-10 px-9 py-6 relative w-full "> <div data-pagefind-body class="prose dark:prose-invert prose-base !max-w-none custom-md mt-2"> <!--<div class="prose dark:prose-invert max-w-none custom-md">--> <!--<div class="max-w-none custom-md">-->  <section><h1 id="关于主题">关于主题<a class="anchor" href="#关于主题"><span class="anchor-icon" data-pagefind-ignore="">#</span></a></h1><a id="GCru7b5f-card" class="card-github fetch-waiting no-styling" href="https://github.com/matsuzaka-yuki/Mizuki" target="_blank" repo="matsuzaka-yuki/Mizuki"><div class="gc-titlebar"><div class="gc-titlebar-left"><div class="gc-owner"><div id="GCru7b5f-avatar" class="gc-avatar"></div><div class="gc-user">matsuzaka-yuki</div></div><div class="gc-divider">/</div><div class="gc-repo">Mizuki</div></div><div class="github-logo"></div></div><div id="GCru7b5f-description" class="gc-description">Waiting for api.github.com...</div><div class="gc-infobar"><div id="GCru7b5f-stars" class="gc-stars">00K</div><div id="GCru7b5f-forks" class="gc-forks">0K</div><div id="GCru7b5f-license" class="gc-license">0K</div><span id="GCru7b5f-language" class="gc-language">Waiting...</span></div><script id="GCru7b5f-script" type="text/javascript" defer>
       fetch('https://api.github.com/repos/matsuzaka-yuki/Mizuki', { referrerPolicy: "no-referrer" }).then(response => response.json()).then(data => {
-        document.getElementById('GC7qpewk-description').innerText = data.description?.replace(/:[a-zA-Z0-9_]+:/g, '') || "Description not set";
-        document.getElementById('GC7qpewk-language').innerText = data.language;
-        document.getElementById('GC7qpewk-forks').innerText = Intl.NumberFormat('en-us', { notation: "compact", maximumFractionDigits: 1 }).format(data.forks).replaceAll(" ", '');
-        document.getElementById('GC7qpewk-stars').innerText = Intl.NumberFormat('en-us', { notation: "compact", maximumFractionDigits: 1 }).format(data.stargazers_count).replaceAll(" ", '');
-        const avatarEl = document.getElementById('GC7qpewk-avatar');
+        document.getElementById('GCru7b5f-description').innerText = data.description?.replace(/:[a-zA-Z0-9_]+:/g, '') || "Description not set";
+        document.getElementById('GCru7b5f-language').innerText = data.language;
+        document.getElementById('GCru7b5f-forks').innerText = Intl.NumberFormat('en-us', { notation: "compact", maximumFractionDigits: 1 }).format(data.forks).replaceAll(" ", '');
+        document.getElementById('GCru7b5f-stars').innerText = Intl.NumberFormat('en-us', { notation: "compact", maximumFractionDigits: 1 }).format(data.stargazers_count).replaceAll(" ", '');
+        const avatarEl = document.getElementById('GCru7b5f-avatar');
         avatarEl.style.backgroundImage = 'url(' + data.owner.avatar_url + ')';
         avatarEl.style.backgroundColor = 'transparent';
-        document.getElementById('GC7qpewk-license').innerText = data.license?.spdx_id || "no-license";
-        document.getElementById('GC7qpewk-card').classList.remove("fetch-waiting");
-        console.log("[GITHUB-CARD] Loaded card for matsuzaka-yuki/Mizuki | GC7qpewk.")
+        document.getElementById('GCru7b5f-license').innerText = data.license?.spdx_id || "no-license";
+        document.getElementById('GCru7b5f-card').classList.remove("fetch-waiting");
+        console.log("[GITHUB-CARD] Loaded card for matsuzaka-yuki/Mizuki | GCru7b5f.")
       }).catch(err => {
-        const c = document.getElementById('GC7qpewk-card');
+        const c = document.getElementById('GCru7b5f-card');
         c?.classList.add("fetch-error");
-        console.warn("[GITHUB-CARD] (Error) Loading card for matsuzaka-yuki/Mizuki | GC7qpewk.")
+        console.warn("[GITHUB-CARD] (Error) Loading card for matsuzaka-yuki/Mizuki | GCru7b5f.")
       })
     </script></a></section>  </div> <script type="module">document.addEventListener("click",function(i){const c=i.target;if(c&&c.classList.contains("copy-btn")){const l=c.closest("pre")?.querySelector("code");let s="";if(l){const t=l.querySelectorAll("span.line");if(t.length>0){const o=[];for(let e=0;e<t.length;e++){const r=t[e].textContent||"";o.push(r)}s=o.join(`
 `)}else{const o=l.querySelectorAll(".code:not(summary *)");if(o.length>0){const e=[];for(let n=0;n<o.length;n++){const a=o[n].textContent||"";e.push(a)}s=e.join(`

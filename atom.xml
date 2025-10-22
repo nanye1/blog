@@ -5,7 +5,7 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-22T13:43:23.862Z</updated>
+  <updated>2025-10-22T13:50:57.044Z</updated>
   <language>zh_CN</language>
   <entry>
     <title>装甲板自动识别与位姿估计学习</title>
@@ -330,13 +330,6 @@ armors_pub_-&gt;publish(armors_msg_);
 </ol>
 <hr />
 <h2>术语与坐标系小抄</h2>
-<ul>
-<li><strong>相机系 (Camera frame)</strong>：OpenCV PnP 默认坐标系；</li>
-<li><strong>云台/IMU 系</strong>：此工程里通过 <code>R_gimbal_camera</code>、<code>R_imu_camera</code> 做相互转换；</li>
-<li><strong>RPY</strong>：Roll/Pitch/Yaw，分别对应绕 x/y/z 轴的旋转角。</li>
-<li><strong>重投影误差</strong>：3D 点经 R/t + K 投影后与真实像素观测之差。</li>
-</ul>
-<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
