@@ -377,11 +377,4 @@ armors_pub_->publish(armors_msg_);
 
 ## 术语与坐标系小抄
 
-- **相机系 (Camera frame)**：OpenCV PnP 默认坐标系；
-- **云台/IMU 系**：此工程里通过 `R_gimbal_camera`、`R_imu_camera` 做相互转换；
-- **RPY**：Roll/Pitch/Yaw，分别对应绕 x/y/z 轴的旋转角。
-- **重投影误差**：3D 点经 R/t + K 投影后与真实像素观测之差。
-
----
-
 
