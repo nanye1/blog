@@ -1,10 +1,10 @@
 ---
-title: 保护内容，密码是我的生日（年月日，需要补0）
+title: 扣1看老猫女仆装
 published: 2025-10-21
-description: 密码是我的生日（年月日，需要补0）
+description: 扣1看老猫女仆装
 encrypted: true
 pinned: true
-password: "20070420"
+password: "1"
 tags: ["测试", "需要密码"]
 category: "保护内容"
 ---
