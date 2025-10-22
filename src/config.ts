@@ -310,14 +310,7 @@ export const navBarConfig: NavBarConfig = {
 				},
 			],
 		},
-		{
-			name: "gal推荐",
-			url: "/gal/",
-			icon: "material-symbols:joystick",
-			children: [
-			
-			],
-		},
+		
 		{
 			name: "我的",
 			url: "/content/",
@@ -360,24 +353,7 @@ export const navBarConfig: NavBarConfig = {
 				},
 			],
 		},
-		{
-			name: "学习",
-			url: "/learn/",
-			icon: "material-symbols:book",
-			children: [
-				{
-					name: "RM",
-					url: "/rm/",
-					icon: "material-symbols:menu-book",
-				},
-				{
-					name: "算法",
-					url: "/algorithm/",
-					icon: "material-symbols:calculate",
-				},
-
-			],
-		},
+		
 	],
 };
 
