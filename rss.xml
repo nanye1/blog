@@ -1,59 +1,168 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>双指针</title><link>https://www.nanye404.top/posts/twop/</link><guid isPermaLink="true">https://www.nanye404.top/posts/twop/</guid><description>双指针常见技巧</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在数组的运用&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88&quot;&gt;快慢指针&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2&quot;&gt;二分搜索&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3&quot;&gt;滑动窗口&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%9B%9E%E6%96%87/%E5%8F%8D%E8%BD%AC&quot;&gt;回文/反转&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%95%B0%E4%B9%8B%E5%92%8C&quot;&gt;数之和&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在链表的运用&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%90%88%E5%B9%B6&quot;&gt;合并&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%88%86%E8%A7%A3&quot;&gt;分解&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%85%B6%E4%BB%96&quot;&gt;其他&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E4%BE%8B%E9%A2%98&quot;&gt;例题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%80%BB%E7%BB%93&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;h2&gt;双指针在数组的运用&lt;/h2&gt;
-</content:encoded></item><item><title>更新日志</title><link>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</guid><description>这里是更新日志</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;2025-10-22&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>更新日志</title><link>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</guid><description>这里是更新日志</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;2025-10-22&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;更新了个人简介&lt;/li&gt;
 &lt;li&gt;更新了rm笔记&lt;/li&gt;
 &lt;li&gt;更新了双指针的框架&lt;/li&gt;
 &lt;li&gt;评论没挂服务器所以不能用&lt;/li&gt;
 &lt;/ul&gt;
+</content:encoded></item><item><title>双指针</title><link>https://www.nanye404.top/posts/twop/</link><guid isPermaLink="true">https://www.nanye404.top/posts/twop/</guid><description>双指针常见技巧</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在数组的运用&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88&quot;&gt;快慢指针&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2&quot;&gt;二分搜索&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3&quot;&gt;滑动窗口&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%9B%9E%E6%96%87/%E5%8F%8D%E8%BD%AC&quot;&gt;回文/反转&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E6%95%B0%E4%B9%8B%E5%92%8C&quot;&gt;数之和&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在链表的运用&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%90%88%E5%B9%B6&quot;&gt;合并&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%88%86%E8%A7%A3&quot;&gt;分解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%85%B6%E4%BB%96&quot;&gt;其他&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E6%80%BB%E7%BB%93&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;双指针在数组的运用&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;h2&gt;快慢指针&lt;/h2&gt;
+&lt;h3&gt;数组的原地修改&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;力扣第 26 题「删除有序数组中的重复项」，让你在有序数组去重：
+https://leetcode.cn/problems/remove-duplicates-from-sorted-array/&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+&lt;li&gt;给你一个&lt;strong&gt;非严格递增排列&lt;/strong&gt;的数组&lt;code&gt;nums&lt;/code&gt; ，请你&lt;strong&gt;原地&lt;/strong&gt;删除重复出现的元素，使每个元素&lt;strong&gt;只出现一次&lt;/strong&gt;，返回删除后数组的新长度。元素的&lt;strong&gt;相对顺序&lt;/strong&gt;应该保持&lt;strong&gt;一致&lt;/strong&gt;。然后返回 &lt;code&gt;nums&lt;/code&gt; 中唯一元素的个数。&lt;/li&gt;
+&lt;li&gt;考虑 &lt;code&gt;nums &lt;/code&gt;的唯一元素的数量为 &lt;code&gt;k&lt;/code&gt;。去重后，返回唯一元素的数量 k。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;nums&lt;/code&gt; 的前 k 个元素应包含 排序后 的唯一数字。下标 &lt;code&gt;k - 1 &lt;/code&gt;之后的剩余元素可以忽略。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;判题标准:&lt;/p&gt;
+&lt;p&gt;系统会用下面的代码来测试你的题解:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int[] nums = [...]; // 输入数组
+int[] expectedNums = [...]; // 长度正确的期望答案
+int k = removeDuplicates(nums); // 调用
+assert k == expectedNums.length;
+for (int i = 0; i &amp;lt; k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果所有断言都通过，那么您的题解将被&lt;strong&gt;通过&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;示例 1：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：nums = [1,1,2]
+输出：2, nums = [1,2,_]
+解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 2：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：nums = [0,0,1,1,1,2,2,3,3,4]
+输出：5, nums = [0,1,2,3,4,_,_,_,_,_]
+解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4 。不需要考虑数组中超出新长度后面的
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;原地&lt;/strong&gt;意味着只能对当前数组进行修改，不能新建一个数组&lt;/li&gt;
+&lt;li&gt;这里所需要用到的就是&lt;strong&gt;快慢指针&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;简单来说就是一个快指针去识别，另一个慢指针去操作&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注意&lt;/strong&gt;  这里指针是广义上的指针，数组的索引也可以是&lt;strong&gt;指针&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;如果 &lt;code&gt;fast&lt;/code&gt; 遇到值为 &lt;code&gt;val &lt;/code&gt;的元素，则直接跳过，否则就赋值给 &lt;code&gt;slow&lt;/code&gt; 指针，并让 &lt;code&gt;slow &lt;/code&gt;前进一步。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;具体代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    int removeDuplicates(vector&amp;lt;int&amp;gt;&amp;amp; nums) {
+        if (nums.empty()) return 0;
+
+        int slow = 0;
+        for (int fast = 1; fast &amp;lt; nums.size(); fast++) {
+            if (nums[slow] != nums[fast]) {
+                slow++;
+                nums[slow] = nums[fast];
+            }
+        }
+
+        return slow + 1;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;注意这里需要&lt;strong&gt;先&lt;code&gt;slow++&lt;/code&gt;再赋值&lt;/strong&gt;，要不然第一个会被吞掉&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+&lt;li&gt;下面一道题也是快慢指针的思想，如果掌握了前一道题，这题会很简单&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;力扣283移动0&lt;/strong&gt;https://leetcode.cn/problems/move-zeroes/&lt;/li&gt;
+&lt;li&gt;给定一个数组 &lt;strong&gt;nums&lt;/strong&gt;，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。&lt;/li&gt;
+&lt;li&gt;请注意 ，必须在不复制数组的情况下原地对数组进行操作。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;示例 1:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+示例 2:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;输入: nums = [0]
+输出: [0]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里我就直接上代码了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    void moveZeroes(vector&amp;lt;int&amp;gt;&amp;amp; nums) {
+        int slow = 0;  // 指向下一个非零应放置的位置
+        for (int fast = 0; fast &amp;lt; nums.size(); fast++) {
+            if (nums[fast] != 0) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+
+        // slow 之后的全部置为 0
+        for (int i = slow; i &amp;lt; nums.size(); i++) {
+            nums[i] = 0;
+        }
+    }
+};
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;二分搜索&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在我们都玩过的猜数字游戏中，用的就是二分搜素的技巧&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;我们先看最笨的顺序查找，我们从1-100遍历全部数字，虽然说运气好可能一下会猜中，但是期望的次数还是很多，复杂度为O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果是凭感觉找，一样还是要看运气&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果第一次猜50，然后继续一半一半缩小区间，最坏也能在7次内解决&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如何数字来到1-1000000，二分搜索最坏20次就能找到答案&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;二分搜索的时间复杂度是O(log  N)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下面是最基本代码&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;int binarySearch(vector&amp;lt;int&amp;gt;&amp;amp; nums, int target) {
+    // 一左一右两个指针相向而行
+    int left = 0, right = nums.size() - 1;
+    while(left &amp;lt;= right) {
+        int mid = (right + left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] &amp;lt; target)
+            left = mid + 1; 
+        else if (nums[mid] &amp;gt; target)
+            right = mid - 1;
+    }
+    return -1;
+}
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>装甲板自动识别与位姿估计学习</title><link>https://www.nanye404.top/posts/armor/</link><guid isPermaLink="true">https://www.nanye404.top/posts/armor/</guid><description>一些小笔记</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目录&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;#%E6%80%BB%E8%A7%88%E7%B3%BB%E7%BB%9F%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E6%98%AF%E4%BB%80%E4%B9%88&quot;&gt;总览：系统做的事情是什么&lt;/a&gt;&lt;/li&gt;
@@ -372,714 +481,4 @@ armors_pub_-&amp;gt;publish(armors_msg_);
 &lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;
 &lt;h2&gt;Bilibili&lt;/h2&gt;
 &lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;//player.bilibili.com/player.html?bvid=BV1fK4y1s7Qf&amp;amp;p=1&amp;amp;autoplay=0&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot; &amp;amp;autoplay=0&amp;gt; &amp;lt;/iframe&amp;gt;&lt;/p&gt;
-</content:encoded></item><item><title>markdown</title><link>https://www.nanye404.top/posts/markdown-tutorial/</link><guid isPermaLink="true">https://www.nanye404.top/posts/markdown-tutorial/</guid><description>例子</description><pubDate>Tue, 21 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Markdown Tutorial&lt;/h1&gt;
-&lt;p&gt;A markdown example shows how to write a markdown file. This document integrates core syntax and extensions (GMF).&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#block-elements&quot;&gt;Block Elements&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#paragraphs-and-line-breaks&quot;&gt;Paragraphs and Line Breaks&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#headers&quot;&gt;Headers&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#blockquotes&quot;&gt;Blockquotes&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#lists&quot;&gt;Lists&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#code-blocks&quot;&gt;Code Blocks&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#horizontal-rules&quot;&gt;Horizontal Rules&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#table&quot;&gt;Table&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#span-elements&quot;&gt;Span Elements&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#links&quot;&gt;Links&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#emphasis&quot;&gt;Emphasis&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#code&quot;&gt;Code&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#images&quot;&gt;Images&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#strikethrough&quot;&gt;Strikethrough&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#miscellaneous&quot;&gt;Miscellaneous&lt;/a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#automatic-links&quot;&gt;Automatic Links&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#backslash-escapes&quot;&gt;Backslash Escapes&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#inline-html&quot;&gt;Inline HTML&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;Block Elements&lt;/h2&gt;
-&lt;h3&gt;Paragraphs and Line Breaks&lt;/h3&gt;
-&lt;h4&gt;Paragraphs&lt;/h4&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;One or more blank lines. (A blank line is a line containing nothing but &lt;strong&gt;spaces&lt;/strong&gt; or &lt;strong&gt;tabs&lt;/strong&gt; is considered blank.)&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This will be
-inline.
-
-This is second paragraph.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This will be
-inline.&lt;/p&gt;
-&lt;p&gt;This is second paragraph.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h4&gt;Line Breaks&lt;/h4&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;br /&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;End a line with &lt;strong&gt;two or more spaces&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This will be not
-inline.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This will be not&lt;br /&gt;
-inline.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Headers&lt;/h3&gt;
-&lt;p&gt;Markdown supports two styles of headers, Setext and atx.&lt;/p&gt;
-&lt;h4&gt;Setext&lt;/h4&gt;
-&lt;p&gt;HTML Tags: &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&quot;Underlined&quot; using &lt;strong&gt;equal signs (=)&lt;/strong&gt; as &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt; and &lt;strong&gt;dashes (-)&lt;/strong&gt; as &lt;code&gt;&amp;lt;h2&amp;gt;&lt;/code&gt; in any number.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This is an H1
-=============
-This is an H2
--------------
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h1&gt;This is an H1&lt;/h1&gt;
-&lt;h2&gt;This is an H2&lt;/h2&gt;
-&lt;hr /&gt;
-&lt;h4&gt;atx&lt;/h4&gt;
-&lt;p&gt;HTML Tags: &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h2&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h3&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h4&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h5&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Uses 1-6 &lt;strong&gt;hash characters (#)&lt;/strong&gt; at the start of the line, corresponding to &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt; - &lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# This is an H1
-## This is an H2
-###### This is an H6
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h1&gt;This is an H1&lt;/h1&gt;
-&lt;h2&gt;This is an H2&lt;/h2&gt;
-&lt;h6&gt;This is an H6&lt;/h6&gt;
-&lt;hr /&gt;
-&lt;p&gt;Optionally, you may &quot;close&quot; atx-style headers. The closing hashes &lt;strong&gt;don&apos;t need to match&lt;/strong&gt; the number of hashes used to open the header.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# This is an H1 #
-## This is an H2 ##
-### This is an H3 ######
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h1&gt;This is an H1&lt;/h1&gt;
-&lt;h2&gt;This is an H2&lt;/h2&gt;
-&lt;h3&gt;This is an H3&lt;/h3&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Blockquotes&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;blockquote&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Markdown uses email-style &lt;strong&gt;&amp;gt;&lt;/strong&gt; characters for blockquoting. It looks best if you hard wrap the text and put a &amp;gt; before every line.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-&amp;gt; consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-&amp;gt; Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-&amp;gt;
-&amp;gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-&amp;gt; id sem consectetuer libero luctus adipiscing.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.&lt;/p&gt;
-&lt;p&gt;Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-id sem consectetuer libero luctus adipiscing.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;p&gt;Markdown allows you to be lazy and only put the &amp;gt; before the first line of a hard-wrapped paragraph.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-
-&amp;gt; Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-id sem consectetuer libero luctus adipiscing.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,
-consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse
-id sem consectetuer libero luctus adipiscing.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;p&gt;Blockquotes can be nested (i.e. a blockquote-in-a-blockquote) by adding additional levels of &amp;gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; This is the first level of quoting.
-&amp;gt;
-&amp;gt; &amp;gt; This is nested blockquote.
-&amp;gt;
-&amp;gt; Back to the first level.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is the first level of quoting.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is nested blockquote.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Back to the first level.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;p&gt;Blockquotes can contain other Markdown elements, including headers, lists, and code blocks.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;gt; ## This is a header.
-&amp;gt;
-&amp;gt; 1.   This is the first list item.
-&amp;gt; 2.   This is the second list item.
-&amp;gt;
-&amp;gt; Here&apos;s some example code:
-&amp;gt;
-&amp;gt;     return shell_exec(&quot;echo $input | $markdown_script&quot;);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;blockquote&gt;
-&lt;h2&gt;This is a header.&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;This is the first list item.&lt;/li&gt;
-&lt;li&gt;This is the second list item.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Here&apos;s some example code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;return shell_exec(&quot;echo $input | $markdown_script&quot;);
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/blockquote&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Lists&lt;/h3&gt;
-&lt;p&gt;Markdown supports ordered (numbered) and unordered (bulleted) lists.&lt;/p&gt;
-&lt;h4&gt;Unordered&lt;/h4&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;ul&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Unordered lists use &lt;strong&gt;asterisks (*)&lt;/strong&gt;, &lt;strong&gt;pluses (+)&lt;/strong&gt;, and &lt;strong&gt;hyphens (-)&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;*   Red
-*   Green
-*   Blue
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-&lt;li&gt;Red&lt;/li&gt;
-&lt;li&gt;Green&lt;/li&gt;
-&lt;li&gt;Blue&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;p&gt;is equivalent to:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;+   Red
-+   Green
-+   Blue
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;and:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;-   Red
--   Green
--   Blue
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4&gt;Ordered&lt;/h4&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;ol&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Ordered lists use numbers followed by periods:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1.  Bird
-2.  McHale
-3.  Parish
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ol&gt;
-&lt;li&gt;Bird&lt;/li&gt;
-&lt;li&gt;McHale&lt;/li&gt;
-&lt;li&gt;Parish&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr /&gt;
-&lt;p&gt;It&apos;s possible to trigger an ordered list by accident, by writing something like this:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1986. What a great season.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ol&gt;
-&lt;li&gt;What a great season.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr /&gt;
-&lt;p&gt;You can &lt;strong&gt;backslash-escape (\)&lt;/strong&gt; the period:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1986\. What a great season.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;1986. What a great season.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h4&gt;Indented&lt;/h4&gt;
-&lt;h5&gt;Blockquote&lt;/h5&gt;
-&lt;p&gt;To put a blockquote within a list item, the blockquote&apos;s &amp;gt; delimiters need to be indented:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;*   A list item with a blockquote:
-
-    &amp;gt; This is a blockquote
-    &amp;gt; inside a list item.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;A list item with a blockquote:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;This is a blockquote
-inside a list item.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;h5&gt;Code Block&lt;/h5&gt;
-&lt;p&gt;To put a code block within a list item, the code block needs to be indented twice — &lt;strong&gt;8 spaces&lt;/strong&gt; or &lt;strong&gt;two tabs&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;*   A list item with a code block:
-
-        &amp;lt;code goes here&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;A list item with a code block:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;code goes here&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;h5&gt;Nested List&lt;/h5&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;* A
-  * A1
-  * A2
-* B
-* C
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;ul&gt;
-&lt;li&gt;A
-&lt;ul&gt;
-&lt;li&gt;A1&lt;/li&gt;
-&lt;li&gt;A2&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;B&lt;/li&gt;
-&lt;li&gt;C&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Code Blocks&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;pre&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Indent every line of the block by at least &lt;strong&gt;4 spaces&lt;/strong&gt; or &lt;strong&gt;1 tab&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This is a normal paragraph:
-
-    This is a code block.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This is a normal paragraph:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This is a code block.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;hr /&gt;
-&lt;p&gt;A code block continues until it reaches a line that is not indented (or the end of the article).&lt;/p&gt;
-&lt;p&gt;Within a code block, &lt;strong&gt;&lt;em&gt;ampersands (&amp;amp;)&lt;/em&gt;&lt;/strong&gt; and angle &lt;strong&gt;brackets (&amp;lt; and &amp;gt;)&lt;/strong&gt; are automatically converted into HTML entities.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;    &amp;lt;div class=&quot;footer&quot;&amp;gt;
-        &amp;amp;copy; 2004 Foo Corporation
-    &amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;div class=&quot;footer&quot;&amp;gt;
-    &amp;amp;copy; 2004 Foo Corporation
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;hr /&gt;
-&lt;p&gt;Following sections Fenced Code Blocks and Syntax Highlighting are extensions, you can use the other way to write the code block.&lt;/p&gt;
-&lt;h4&gt;Fenced Code Blocks&lt;/h4&gt;
-&lt;p&gt;Just wrap your code in &lt;code&gt;```&lt;/code&gt; (as shown below) and you won&apos;t need to indent it by four spaces.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Here&apos;s an example:
-
-```
-function test() {
-  console.log(&quot;notice the blank line before this function?&quot;);
-}
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Here&apos;s an example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;function test() {
-  console.log(&quot;notice the blank line before this function?&quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;hr /&gt;
-&lt;h4&gt;Syntax Highlighting&lt;/h4&gt;
-&lt;p&gt;In your fenced block, add an optional language identifier and we&apos;ll run it through syntax highlighting (&lt;a href=&quot;https://github.com/github/linguist/blob/master/lib/linguist/languages.yml&quot;&gt;Support Languages&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;```ruby
-require &apos;redcarpet&apos;
-markdown = Redcarpet.new(&quot;Hello World!&quot;)
-puts markdown.to_html
-```
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;pre&gt;&lt;code&gt;require &apos;redcarpet&apos;
-markdown = Redcarpet.new(&quot;Hello World!&quot;)
-puts markdown.to_html
-&lt;/code&gt;&lt;/pre&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Horizontal Rules&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;hr /&amp;gt;&lt;/code&gt;
-Places &lt;strong&gt;three or more hyphens (-), asterisks (*), or underscores (_)&lt;/strong&gt; on a line by themselves. You may use spaces between the hyphens or asterisks.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;* * *
-***
-*****
-- - -
----------------------------------------
-___
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Table&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;table&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;It&apos;s an extension.&lt;/p&gt;
-&lt;p&gt;Separates column by &lt;strong&gt;pipe (|)&lt;/strong&gt; and header by &lt;strong&gt;dashes (-)&lt;/strong&gt;, and uses &lt;strong&gt;colon (:)&lt;/strong&gt; for alignment.&lt;/p&gt;
-&lt;p&gt;The outer &lt;strong&gt;pipes (|)&lt;/strong&gt; and alignment are optional. There are &lt;strong&gt;3 delimiters&lt;/strong&gt; each cell at least for separating header.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;| Left | Center | Right |
-|:-----|:------:|------:|
-|aaa   |bbb     |ccc    |
-|ddd   |eee     |fff    |
-
- A | B
----|---
-123|456
-
-
-A |B
---|--
-12|45
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Left&lt;/th&gt;
-&lt;th&gt;Center&lt;/th&gt;
-&lt;th&gt;Right&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;aaa&lt;/td&gt;
-&lt;td&gt;bbb&lt;/td&gt;
-&lt;td&gt;ccc&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ddd&lt;/td&gt;
-&lt;td&gt;eee&lt;/td&gt;
-&lt;td&gt;fff&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;A&lt;/th&gt;
-&lt;th&gt;B&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;123&lt;/td&gt;
-&lt;td&gt;456&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;A&lt;/th&gt;
-&lt;th&gt;B&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;12&lt;/td&gt;
-&lt;td&gt;45&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;hr /&gt;
-&lt;h2&gt;Span Elements&lt;/h2&gt;
-&lt;h3&gt;Links&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;a&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Markdown supports two style of links: inline and reference.&lt;/p&gt;
-&lt;h4&gt;Inline&lt;/h4&gt;
-&lt;p&gt;Inline link format like this: &lt;code&gt;[Link Text](URL &quot;Title&quot;)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Title is optional.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This is [an example](http://example.com/ &quot;Title&quot;) inline link.
-
-[This link](http://example.net/) has no title attribute.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This is &lt;a href=&quot;http://example.com/&quot;&gt;an example&lt;/a&gt; inline link.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://example.net/&quot;&gt;This link&lt;/a&gt; has no title attribute.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;If you&apos;re referring to a local resource on the same server, you can use relative paths:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;See my [About](/about/) page for details.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;See my &lt;a href=&quot;/about/&quot;&gt;About&lt;/a&gt; page for details.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h4&gt;Reference&lt;/h4&gt;
-&lt;p&gt;You could predefine link references. Format like this: &lt;code&gt;[id]: URL &quot;Title&quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Title is also optional. And the you refer the link, format like this: &lt;code&gt;[Link Text][id]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[id]: http://example.com/  &quot;Optional Title Here&quot;
-This is [an example][id] reference-style link.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This is &lt;a href=&quot;http://example.com/&quot;&gt;an example&lt;/a&gt; reference-style link.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;That is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Square brackets containing the link identifier (&lt;strong&gt;not case sensitive&lt;/strong&gt;, optionally indented from the left margin using up to three spaces);&lt;/li&gt;
-&lt;li&gt;followed by a colon;&lt;/li&gt;
-&lt;li&gt;followed by one or more spaces (or tabs);&lt;/li&gt;
-&lt;li&gt;followed by the URL for the link;&lt;/li&gt;
-&lt;li&gt;The link URL may, optionally, be surrounded by angle brackets.&lt;/li&gt;
-&lt;li&gt;optionally followed by a title attribute for the link, enclosed in double or single quotes, or enclosed in parentheses.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The following three link definitions are equivalent:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[foo]: http://example.com/  &quot;Optional Title Here&quot;
-[foo]: http://example.com/  &apos;Optional Title Here&apos;
-[foo]: http://example.com/  (Optional Title Here)
-[foo]: &amp;lt;http://example.com/&amp;gt;  &quot;Optional Title Here&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Uses an empty set of square brackets, the link text itself is used as the name.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[Google]: http://google.com/
-[Google][]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;a href=&quot;http://google.com/&quot;&gt;Google&lt;/a&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Emphasis&lt;/h3&gt;
-&lt;p&gt;HTML Tags: &lt;code&gt;&amp;lt;em&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Markdown treats &lt;strong&gt;asterisks (*)&lt;/strong&gt; and &lt;strong&gt;underscores (_)&lt;/strong&gt; as indicators of emphasis. &lt;strong&gt;One delimiter&lt;/strong&gt; will be &lt;code&gt;&amp;lt;em&amp;gt;&lt;/code&gt;; *&lt;em&gt;double delimiters&lt;/em&gt; will be &lt;code&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;*single asterisks*
-
-_single underscores_
-
-**double asterisks**
-
-__double underscores__
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;em&gt;single asterisks&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;single underscores&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;double asterisks&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;double underscores&lt;/strong&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;But if you surround an * or _ with spaces, it&apos;ll be treated as a literal asterisk or underscore.&lt;/p&gt;
-&lt;p&gt;You can backslash escape it:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;\*this text is surrounded by literal asterisks\*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;*this text is surrounded by literal asterisks*&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Code&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;code&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Wraps it with &lt;strong&gt;backtick quotes (`)&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Use the `printf()` function.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Use the &lt;code&gt;printf()&lt;/code&gt; function.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;To include a literal backtick character within a code span, you can use &lt;strong&gt;multiple backticks&lt;/strong&gt; as the opening and closing delimiters:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;``There is a literal backtick (`) here.``
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;code&gt;There is a literal backtick (`) here.&lt;/code&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;The backtick delimiters surrounding a code span may include spaces — one after the opening, one before the closing. This allows you to place literal backtick characters at the beginning or end of a code span:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;A single backtick in a code span: `` ` ``
-
-A backtick-delimited string in a code span: `` `foo` ``
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;A single backtick in a code span: &lt;code&gt;`&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;A backtick-delimited string in a code span: &lt;code&gt;`foo`&lt;/code&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Images&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;img /&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Markdown uses an image syntax that is intended to resemble the syntax for links, allowing for two styles: inline and reference.&lt;/p&gt;
-&lt;h4&gt;Inline&lt;/h4&gt;
-&lt;p&gt;Inline image syntax looks like this: &lt;code&gt;![Alt text](URL &quot;Title&quot;)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Title is optional.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;![Alt text](/path/to/img.jpg)
-
-![Alt text](/path/to/img.jpg &quot;Optional title&quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/08/20/5fszgXeOxmL3Wdv.webp&quot; alt=&quot;Alt text&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/08/20/5fszgXeOxmL3Wdv.webp&quot; alt=&quot;Alt text&quot; title=&quot;Optional title&quot; /&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;That is:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;An exclamation mark: !;&lt;/li&gt;
-&lt;li&gt;followed by a set of square brackets, containing the alt attribute text for the image;&lt;/li&gt;
-&lt;li&gt;followed by a set of parentheses, containing the URL or path to the image, and an optional title attribute enclosed in double or single quotes.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4&gt;Reference&lt;/h4&gt;
-&lt;p&gt;Reference-style image syntax looks like this: &lt;code&gt;![Alt text][id]&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;[img id]: https://s2.loli.net/2024/08/20/5fszgXeOxmL3Wdv.webp  &quot;Optional title attribute&quot;
-![Alt text][img id]
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/08/20/5fszgXeOxmL3Wdv.webp&quot; alt=&quot;Alt text&quot; title=&quot;Optional title attribute&quot; /&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Strikethrough&lt;/h3&gt;
-&lt;p&gt;HTML Tag: &lt;code&gt;&amp;lt;del&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;It&apos;s an extension.&lt;/p&gt;
-&lt;p&gt;GFM adds syntax to strikethrough text.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;~~Mistaken text.~~
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;s&gt;Mistaken text.&lt;/s&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h2&gt;Miscellaneous&lt;/h2&gt;
-&lt;h3&gt;Automatic Links&lt;/h3&gt;
-&lt;p&gt;Markdown supports a shortcut style for creating &quot;automatic&quot; links for URLs and email addresses: simply surround the URL or email address with angle brackets.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;http://example.com/&amp;gt;
-
-&amp;lt;address@example.com&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;a href=&quot;http://example.com/&quot;&gt;http://example.com/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;mailto:address@example.com&quot;&gt;address@example.com&lt;/a&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;GFM will autolink standard URLs.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;https://github.com/emn178/markdown
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;https://github.com/emn178/markdown&lt;/p&gt;
-&lt;hr /&gt;
-&lt;h3&gt;Backslash Escapes&lt;/h3&gt;
-&lt;p&gt;Markdown allows you to use backslash escapes to generate literal characters which would otherwise have special meaning in Markdown&apos;s formatting syntax.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;\*literal asterisks\*
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;*literal asterisks*&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Markdown provides backslash escapes for the following characters:&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;\   backslash
-`   backtick
-*   asterisk
-_   underscore
-{}  curly braces
-[]  square brackets
-()  parentheses
-#   hash mark
-+   plus sign
--   minus sign (hyphen)
-.   dot
-!   exclamation mark
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Inline HTML&lt;/h2&gt;
-&lt;p&gt;For any markup that is not covered by Markdown&apos;s syntax, you simply use HTML itself. There&apos;s no need to preface it or delimit it to indicate that you&apos;re switching from Markdown to HTML; you just use the tags.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;This is a regular paragraph.
-
-&amp;lt;table&amp;gt;
-    &amp;lt;tr&amp;gt;
-        &amp;lt;td&amp;gt;Foo&amp;lt;/td&amp;gt;
-    &amp;lt;/tr&amp;gt;
-&amp;lt;/table&amp;gt;
-
-This is another regular paragraph.
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;This is a regular paragraph.&lt;/p&gt;
-&lt;p&gt;&amp;lt;table&amp;gt;
-&amp;lt;tr&amp;gt;
-&amp;lt;td&amp;gt;Foo&amp;lt;/td&amp;gt;
-&amp;lt;/tr&amp;gt;
-&amp;lt;/table&amp;gt;&lt;/p&gt;
-&lt;p&gt;This is another regular paragraph.&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;Note that Markdown formatting syntax is &lt;strong&gt;not processed within block-level HTML tags&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Unlike block-level HTML tags, Markdown syntax is &lt;strong&gt;processed within span-level tags&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;Code:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;span&amp;gt;**Work**&amp;lt;/span&amp;gt;
-
-&amp;lt;div&amp;gt;
-    **No Work**
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Preview:&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&amp;lt;span&amp;gt;&lt;strong&gt;Work&lt;/strong&gt;&amp;lt;/span&amp;gt;&lt;/p&gt;
-&lt;p&gt;&amp;lt;div&amp;gt;
-&lt;strong&gt;No Work&lt;/strong&gt;
-&amp;lt;/div&amp;gt;&lt;/p&gt;
-&lt;hr /&gt;
 </content:encoded></item></channel></rss>
