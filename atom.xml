@@ -5,7 +5,7 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-23T09:49:56.661Z</updated>
+  <updated>2025-10-23T15:00:33.240Z</updated>
   <language>zh_CN</language>
   <entry>
     <title>更新日志</title>
@@ -20,6 +20,10 @@
 <li>更新了rm笔记</li>
 <li>更新了双指针的框架</li>
 <li>评论没挂服务器所以不能用</li>
+</ul>
+<h2>2025-10-23</h2>
+<ul>
+<li>更新了快慢指针</li>
 </ul>
 ]]></content>
     <author>
