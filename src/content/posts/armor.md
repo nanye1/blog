@@ -2,8 +2,8 @@
 title: 装甲板自动识别与位姿估计学习
 published: 2025-10-22
 description: 一些小笔记
-tags: ["RM", "学习"]
-category: " RM "
+tags: [RM, 学习]
+category: RM 
 ---
 
 ## 目录

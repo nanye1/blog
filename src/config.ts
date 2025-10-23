@@ -478,7 +478,7 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			// 响应式配置
 			responsive: {
 				// 折叠阈值：当分类数量超过5个时自动折叠
-				collapseThreshold: 5,
+				collapseThreshold: 10,
 			},
 		},
 		{
