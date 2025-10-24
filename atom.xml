@@ -5,8 +5,544 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-23T15:00:33.240Z</updated>
+  <updated>2025-10-24T01:57:02.254Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>RM装甲板识别 - 01 图像读取与显示</title>
+    <link href="https://www.nanye404.top/posts/rm_opencv_01/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/rm_opencv_01/</id>
+    <published>2025-10-23T00:00:00.000Z</published>
+    <updated>2025-10-23T00:00:00.000Z</updated>
+    <summary></summary>
+    <content type="html"><![CDATA[<blockquote>
+<p><strong>阶段目标</strong>: 能读取图片、显示处理结果、保存文件<br />
+<strong>适合人群</strong>: 刚接触OpenCV的新手<br />
+<strong>预计用时</strong>: 30分钟</p>
+</blockquote>
+<hr />
+<h2>📚 本阶段核心API清单</h2>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>作用</th>
+<th>重要性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cv::imread()</code></td>
+<td>读取图片到内存</td>
+<td>⭐⭐⭐ 核心</td>
+</tr>
+<tr>
+<td><code>cv::imshow()</code></td>
+<td>显示图片窗口</td>
+<td>⭐⭐⭐ 核心</td>
+</tr>
+<tr>
+<td><code>cv::waitKey()</code></td>
+<td>等待按键</td>
+<td>⭐⭐⭐ 核心</td>
+</tr>
+<tr>
+<td><code>cv::imwrite()</code></td>
+<td>保存图片</td>
+<td>⭐⭐ 常用</td>
+</tr>
+<tr>
+<td><code>cv::Mat</code></td>
+<td>图像数据类型</td>
+<td>⭐⭐⭐ 核心</td>
+</tr>
+<tr>
+<td><code>cv::VideoCapture</code></td>
+<td>打开相机/视频</td>
+<td>⭐⭐ 进阶</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. cv::imread() - 读取图片</h2>
+<h3>📖 函数原型</h3>
+<pre><code>cv::Mat cv::imread(const String&amp; filename, int flags = IMREAD_COLOR);
+</code></pre>
+<h3>📋 参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filename</code></td>
+<td>string</td>
+<td>图片路径（相对或绝对路径）</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>int</td>
+<td>读取模式（见下表）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>flags常用值:</strong></p>
+<ul>
+<li><code>cv::IMREAD_COLOR</code> (默认) - 读取彩色图，忽略透明度</li>
+<li><code>cv::IMREAD_GRAYSCALE</code> - 转为灰度图</li>
+<li><code>cv::IMREAD_UNCHANGED</code> - 包含Alpha通道</li>
+</ul>
+<h3>💻 基础用法</h3>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    // 读取彩色图（装甲板识别用这个）
+    cv::Mat img = cv::imread("armor.jpg", cv::IMREAD_COLOR);
+    
+    // ⚠️ 必须检查是否读取成功！
+    if (img.empty()) {
+        std::cout &lt;&lt; "❌ 图片读取失败！" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    // 打印图片信息
+    std::cout &lt;&lt; "✅ 图片读取成功" &lt;&lt; std::endl;
+    std::cout &lt;&lt; "   尺寸: " &lt;&lt; img.cols &lt;&lt; " x " &lt;&lt; img.rows &lt;&lt; std::endl;
+    std::cout &lt;&lt; "   通道数: " &lt;&lt; img.channels() &lt;&lt; std::endl;
+    
+    return 0;
+}
+</code></pre>
+<h3>🎯 输出示例</h3>
+<pre><code>✅ 图片读取成功
+   尺寸: 1280 x 720
+   通道数: 3
+</code></pre>
+<h3>⚠️ 常见错误</h3>
+<h4>错误1: 路径写错</h4>
+<pre><code>// ❌ Windows路径没有转义反斜杠
+cv::Mat img = cv::imread("C:\Users\image.jpg");
+
+// ✅ 正确写法（三种任选）
+cv::Mat img = cv::imread("C:\\Users\\image.jpg");     // 转义反斜杠
+cv::Mat img = cv::imread("C:/Users/image.jpg");       // 使用正斜杠
+cv::Mat img = cv::imread(R"(C:\Users\image.jpg)");    // 原始字符串
+</code></pre>
+<h4>错误2: 忘记检查empty()</h4>
+<pre><code>// ❌ 危险！如果文件不存在，后续操作会崩溃
+cv::Mat img = cv::imread("not_exist.jpg");
+cv::imshow("Window", img);  // 💥 崩溃
+
+// ✅ 正确写法
+cv::Mat img = cv::imread("not_exist.jpg");
+if (img.empty()) {
+    std::cerr &lt;&lt; "文件不存在或格式不支持" &lt;&lt; std::endl;
+    return -1;
+}
+</code></pre>
+<h3>💡 重要知识点</h3>
+<blockquote>
+<p><strong>OpenCV读取的图片是BGR格式，不是RGB！</strong><br />
+这在后续颜色识别时非常重要。如果你要转RGB需要用 <code>cv::cvtColor()</code></p>
+</blockquote>
+<hr />
+<h2>2. cv::imshow() - 显示图片</h2>
+<h3>📖 函数原型</h3>
+<pre><code>void cv::imshow(const String&amp; winname, InputArray mat);
+</code></pre>
+<h3>📋 参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>winname</code></td>
+<td>string</td>
+<td>窗口名称（自己起名）</td>
+</tr>
+<tr>
+<td><code>mat</code></td>
+<td>Mat</td>
+<td>要显示的图像</td>
+</tr>
+</tbody>
+</table>
+<h3>💻 基础用法</h3>
+<pre><code>cv::Mat img = cv::imread("armor.jpg");
+
+// 显示图片
+cv::imshow("原图", img);
+
+// ⚠️ 必须配合waitKey()，否则窗口闪现即消失！
+cv::waitKey(0);  // 0表示无限等待，直到按任意键
+
+// 关闭所有窗口
+cv::destroyAllWindows();
+</code></pre>
+<h3>💻 显示多个窗口</h3>
+<pre><code>cv::Mat img1 = cv::imread("red_armor.jpg");
+cv::Mat img2 = cv::imread("blue_armor.jpg");
+
+cv::imshow("红方装甲板", img1);
+cv::imshow("蓝方装甲板", img2);
+
+cv::waitKey(0);
+cv::destroyAllWindows();
+</code></pre>
+<h3>⚠️ 常见错误</h3>
+<pre><code>// ❌ 错误：窗口闪一下就消失
+cv::imshow("Window", img);
+// 缺少 waitKey()
+
+// ✅ 正确写法
+cv::imshow("Window", img);
+cv::waitKey(0);
+</code></pre>
+<hr />
+<h2>3. cv::waitKey() - 等待按键</h2>
+<h3>📖 函数原型</h3>
+<pre><code>int cv::waitKey(int delay = 0);
+</code></pre>
+<h3>📋 参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delay</code></td>
+<td>等待时间（毫秒），0表示无限等待</td>
+</tr>
+<tr>
+<td><strong>返回值</strong></td>
+<td>按下的键的ASCII码，超时返回-1</td>
+</tr>
+</tbody>
+</table>
+<h3>💻 实用技巧</h3>
+<h4>技巧1: 等待任意键</h4>
+<pre><code>cv::imshow("Image", img);
+cv::waitKey(0);  // 按任意键继续
+</code></pre>
+<h4>技巧2: 检测特定按键</h4>
+<pre><code>cv::imshow("Image", img);
+int key = cv::waitKey(0);
+
+if (key == 27) {  // ESC键
+    std::cout &lt;&lt; "用户取消" &lt;&lt; std::endl;
+} else if (key == 's' || key == 'S') {  // S键
+    cv::imwrite("saved.jpg", img);
+    std::cout &lt;&lt; "图片已保存" &lt;&lt; std::endl;
+}
+</code></pre>
+<h4>技巧3: 实时视频显示（30fps）</h4>
+<pre><code>while (true) {
+    cv::Mat frame = getFrame();  // 获取一帧
+    cv::imshow("Video", frame);
+    
+    // 等待33ms（约30fps），按ESC退出
+    if (cv::waitKey(33) == 27) break;
+}
+</code></pre>
+<hr />
+<h2>4. cv::Mat - 图像数据类型</h2>
+<h3>📖 核心概念</h3>
+<p><code>cv::Mat</code> 是OpenCV的核心数据结构，可以理解为一个<strong>多维数组</strong>：</p>
+<ul>
+<li>2D图像 = 二维矩阵</li>
+<li>彩色图像 = 三维矩阵（宽×高×通道）</li>
+</ul>
+<h3>💻 创建Mat对象</h3>
+<h4>方法1: 通过imread创建</h4>
+<pre><code>cv::Mat img = cv::imread("image.jpg");
+</code></pre>
+<h4>方法2: 创建空白图像</h4>
+<pre><code>// 创建640×480的黑色图像
+cv::Mat black(480, 640, CV_8UC3, cv::Scalar(0, 0, 0));
+
+// 创建白色图像
+cv::Mat white(480, 640, CV_8UC3, cv::Scalar(255, 255, 255));
+
+// 创建红色图像
+cv::Mat red(480, 640, CV_8UC3, cv::Scalar(0, 0, 255));  // BGR格式！
+</code></pre>
+<h3>📋 常用属性</h3>
+<pre><code>cv::Mat img = cv::imread("image.jpg");
+
+// 基本信息
+int width = img.cols;      // 宽度（列数）
+int height = img.rows;     // 高度（行数）
+int channels = img.channels();  // 通道数（1=灰度，3=彩色）
+bool isEmpty = img.empty();     // 是否为空
+
+// 数据类型
+int type = img.type();     // CV_8UC3 等
+int depth = img.depth();   // CV_8U 等
+
+// 内存信息
+size_t total = img.total();    // 总像素数 = rows × cols
+size_t bytes = img.total() * img.elemSize();  // 占用字节数
+</code></pre>
+<h3>💻 访问像素值</h3>
+<h4>方法1: at访问（安全但慢）</h4>
+<pre><code>cv::Mat img = cv::imread("image.jpg");
+
+// 访问(100, 200)位置的像素
+cv::Vec3b pixel = img.at&lt;cv::Vec3b&gt;(100, 200);
+uchar blue = pixel[0];
+uchar green = pixel[1];
+uchar red = pixel[2];
+
+// 修改像素
+img.at&lt;cv::Vec3b&gt;(100, 200) = cv::Vec3b(255, 0, 0);  // 设为蓝色
+</code></pre>
+<h4>方法2: 指针访问（快但需小心）</h4>
+<pre><code>for (int y = 0; y &lt; img.rows; y++) {
+    uchar* row = img.ptr&lt;uchar&gt;(y);  // 获取第y行的指针
+    for (int x = 0; x &lt; img.cols; x++) {
+        uchar b = row[x * 3 + 0];
+        uchar g = row[x * 3 + 1];
+        uchar r = row[x * 3 + 2];
+    }
+}
+</code></pre>
+<h3>📋 Mat类型代码说明</h3>
+<pre><code>// CV_&lt;bit-depth&gt;{U|S|F}C&lt;channels&gt;
+CV_8UC1   // 8位无符号，1通道（灰度图）
+CV_8UC3   // 8位无符号，3通道（BGR彩色图）
+CV_32FC1  // 32位浮点，1通道
+CV_16SC3  // 16位有符号，3通道
+</code></pre>
+<hr />
+<h2>5. cv::imwrite() - 保存图片</h2>
+<h3>📖 函数原型</h3>
+<pre><code>bool cv::imwrite(const String&amp; filename, InputArray img);
+</code></pre>
+<h3>💻 基础用法</h3>
+<pre><code>cv::Mat img = cv::imread("input.jpg");
+
+// 处理图像...
+
+// 保存为JPG（有损压缩）
+cv::imwrite("output.jpg", img);
+
+// 保存为PNG（无损压缩，推荐保存二值图）
+cv::imwrite("binary.png", binaryImg);
+</code></pre>
+<h3>💻 设置压缩质量</h3>
+<pre><code>// JPG质量控制（0-100，默认95）
+std::vector&lt;int&gt; jpg_params;
+jpg_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+jpg_params.push_back(90);  // 质量90%
+cv::imwrite("output.jpg", img, jpg_params);
+
+// PNG压缩级别（0-9，默认3）
+std::vector&lt;int&gt; png_params;
+png_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+png_params.push_back(9);  // 最大压缩
+cv::imwrite("output.png", img, png_params);
+</code></pre>
+<hr />
+<h2>6. cv::VideoCapture - 打开相机/视频</h2>
+<h3>📖 函数原型</h3>
+<pre><code>cv::VideoCapture cap(int device);         // 打开相机
+cv::VideoCapture cap(const String&amp; filename);  // 打开视频文件
+</code></pre>
+<h3>💻 打开相机</h3>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+
+int main() {
+    // 打开默认相机（设备ID=0）
+    cv::VideoCapture cap(0);
+    
+    // 检查是否成功打开
+    if (!cap.isOpened()) {
+        std::cerr &lt;&lt; "❌ 相机打开失败" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    // 设置相机参数（可选）
+    cap.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
+    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
+    cap.set(cv::CAP_PROP_FPS, 60);
+    
+    cv::Mat frame;
+    while (true) {
+        // 读取一帧
+        cap.read(frame);
+        // 或者: cap &gt;&gt; frame;
+        
+        if (frame.empty()) {
+            std::cerr &lt;&lt; "❌ 无法读取帧" &lt;&lt; std::endl;
+            break;
+        }
+        
+        // 显示
+        cv::imshow("Camera", frame);
+        
+        // 按ESC退出
+        if (cv::waitKey(30) == 27) break;
+    }
+    
+    cap.release();
+    cv::destroyAllWindows();
+    return 0;
+}
+</code></pre>
+<h3>💻 读取视频文件</h3>
+<pre><code>cv::VideoCapture cap("video.mp4");
+
+if (!cap.isOpened()) {
+    std::cerr &lt;&lt; "视频文件打开失败" &lt;&lt; std::endl;
+    return -1;
+}
+
+// 获取视频信息
+int fps = cap.get(cv::CAP_PROP_FPS);
+int width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
+int height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+int frame_count = cap.get(cv::CAP_PROP_FRAME_COUNT);
+
+std::cout &lt;&lt; "视频信息: " &lt;&lt; width &lt;&lt; "x" &lt;&lt; height 
+          &lt;&lt; " @ " &lt;&lt; fps &lt;&lt; "fps, 共" &lt;&lt; frame_count &lt;&lt; "帧" &lt;&lt; std::endl;
+
+cv::Mat frame;
+while (cap.read(frame)) {
+    cv::imshow("Video", frame);
+    if (cv::waitKey(1000/fps) == 27) break;  // 按原速播放
+}
+</code></pre>
+<hr />
+<h2>🎯 本阶段实战练习</h2>
+<h3>练习1: 图片查看器</h3>
+<p>编写一个简单的图片查看器，支持：</p>
+<ul>
+<li>读取并显示图片</li>
+<li>按 <code>s</code> 保存图片副本</li>
+<li>按 <code>ESC</code> 退出</li>
+</ul>
+<p>&lt;details&gt;
+&lt;summary&gt;💡 参考答案&lt;/summary&gt;</p>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+
+int main(int argc, char** argv) {
+    if (argc &lt; 2) {
+        std::cout &lt;&lt; "用法: " &lt;&lt; argv[0] &lt;&lt; " &lt;image_path&gt;" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    cv::Mat img = cv::imread(argv[1]);
+    if (img.empty()) {
+        std::cerr &lt;&lt; "无法读取图片: " &lt;&lt; argv[1] &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    std::cout &lt;&lt; "按 's' 保存, 按 ESC 退出" &lt;&lt; std::endl;
+    
+    while (true) {
+        cv::imshow("图片查看器", img);
+        int key = cv::waitKey(0);
+        
+        if (key == 27) {  // ESC
+            break;
+        } else if (key == 's' || key == 'S') {
+            cv::imwrite("saved.jpg", img);
+            std::cout &lt;&lt; "已保存到 saved.jpg" &lt;&lt; std::endl;
+        }
+    }
+    
+    cv::destroyAllWindows();
+    return 0;
+}
+</code></pre>
+<p>&lt;/details&gt;</p>
+<h3>练习2: 相机实时预览</h3>
+<p>实现一个相机预览程序，显示当前FPS</p>
+<p>&lt;details&gt;
+&lt;summary&gt;💡 参考答案&lt;/summary&gt;</p>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+int main() {
+    cv::VideoCapture cap(0);
+    if (!cap.isOpened()) {
+        std::cerr &lt;&lt; "相机打开失败" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    cv::Mat frame;
+    auto last_time = std::chrono::high_resolution_clock::now();
+    double fps = 0;
+    
+    while (true) {
+        cap &gt;&gt; frame;
+        if (frame.empty()) break;
+        
+        // 计算FPS
+        auto current_time = std::chrono::high_resolution_clock::now();
+        double elapsed = std::chrono::duration&lt;double&gt;(current_time - last_time).count();
+        fps = 1.0 / elapsed;
+        last_time = current_time;
+        
+        // 在图像上绘制FPS
+        std::string fps_text = "FPS: " + std::to_string(int(fps));
+        cv::putText(frame, fps_text, cv::Point(10, 30),
+                    cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 2);
+        
+        cv::imshow("Camera Preview", frame);
+        if (cv::waitKey(1) == 27) break;
+    }
+    
+    cap.release();
+    cv::destroyAllWindows();
+    return 0;
+}
+</code></pre>
+<p>&lt;/details&gt;</p>
+<hr />
+<h2>✅ 检查清单</h2>
+<p>完成本阶段后，你应该能够：</p>
+<ul>
+<li>[ ] 用 <code>cv::imread()</code> 读取图片并检查是否成功</li>
+<li>[ ] 用 <code>cv::imshow()</code> 和 <code>cv::waitKey()</code> 显示图片</li>
+<li>[ ] 理解Mat对象的基本属性（rows, cols, channels）</li>
+<li>[ ] 用 <code>cv::imwrite()</code> 保存处理结果</li>
+<li>[ ] 用 <code>cv::VideoCapture</code> 打开相机并实时显示</li>
+</ul>
+<hr />
+<h2>📚 下一步</h2>
+<p>完成本阶段后，继续学习：</p>
+<ul>
+<li><strong>[02-颜色提取]</strong> - 如何提取红/蓝色灯条</li>
+<li><strong>[04-轮廓检测]</strong> - 如何找到灯条的位置</li>
+</ul>
+<hr />
+<h2>🔗 参考资料</h2>
+<ul>
+<li><a href="https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html#ga288b8b3da0892bd651fce07b3bbd3a56">OpenCV官方文档 - imread</a></li>
+<li><a href="https://docs.opencv.org/4.x/d3/d63/classcv_1_1Mat.html">OpenCV官方文档 - Mat</a></li>
+<li><a href="https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html">OpenCV官方文档 - VideoCapture</a></li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="RM"></category>
+  </entry>
   <entry>
     <title>更新日志</title>
     <link href="https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/" rel="alternate" type="text/html"/>
@@ -245,15 +781,13 @@ public:
 <hr />
 <h2>关键知识点速通</h2>
 <ul>
-<li><strong>轮廓检测与几何筛选（OpenCV）</strong>：<code>findContours</code>、旋转矩形、长短边比、倾角、区域颜色统计。</li>
-<li><strong>透视展开</strong>：<code>getPerspectiveTransform</code> + <code>warpPerspective</code> 把斜着的装甲板拉直。</li>
-<li><strong>二值化与分类（OpenCV DNN）</strong>：OTSU 自动阈值、<code>blobFromImage</code>、ONNX 前向。</li>
-<li><strong>PnP 位姿估计</strong>：2D-3D 对应点 + 相机内参 → <code>solvePnPGeneric</code> 求 R/t。</li>
-<li><strong>两解选择与稳定化</strong>：重投影误差、roll 限制、根据灯条倾斜推断 yaw 正负。</li>
-<li><strong>BA（Bundle Adjustment）</strong>：这里<strong>只优化 yaw</strong>，用 g2o 把像素投影误差最小化。</li>
-<li><strong>ROS2 组件化</strong>：参数声明、话题订阅/发布、动态参数回调、TF 查询、RViz 可视化。</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;图像读取与显示&lt;/a&gt;</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;我的第一篇文章&lt;/a&gt;</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;我的第一篇文章&lt;/a&gt;</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;我的第一篇文章&lt;/a&gt;</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;我的第一篇文章&lt;/a&gt;</li>
+<li>&lt;a href="/posts/rm_opencv_01/"&gt;我的第一篇文章&lt;/a&gt;</li>
 </ul>
-<hr />
 <h2>端到端流程图（一帧图像如何被处理）</h2>
 <pre><code>Image(rgb8)
    └─► 预处理(灰度/阈值)
