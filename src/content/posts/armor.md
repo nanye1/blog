@@ -38,18 +38,14 @@ category: RM
 6. 封装为 ROS2 节点：**订阅图像/相机内参/TF**，发布调试图像与 **Marker**。
 
 ---
-
 ## 关键知识点速通
+- <a href="/posts/rm_opencv_01/">图像读取与显示</a>
+- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
+- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
+- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
+- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
+- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
 
-- **轮廓检测与几何筛选（OpenCV）**：`findContours`、旋转矩形、长短边比、倾角、区域颜色统计。
-- **透视展开**：`getPerspectiveTransform` + `warpPerspective` 把斜着的装甲板拉直。
-- **二值化与分类（OpenCV DNN）**：OTSU 自动阈值、`blobFromImage`、ONNX 前向。
-- **PnP 位姿估计**：2D-3D 对应点 + 相机内参 → `solvePnPGeneric` 求 R/t。
-- **两解选择与稳定化**：重投影误差、roll 限制、根据灯条倾斜推断 yaw 正负。
-- **BA（Bundle Adjustment）**：这里**只优化 yaw**，用 g2o 把像素投影误差最小化。
-- **ROS2 组件化**：参数声明、话题订阅/发布、动态参数回调、TF 查询、RViz 可视化。
-
----
 
 ## 端到端流程图（一帧图像如何被处理）
 
