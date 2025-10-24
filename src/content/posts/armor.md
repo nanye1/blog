@@ -40,9 +40,9 @@ category: RM
 ---
 ## 关键知识点速通
 - <a href="/posts/rm_opencv_01/">图像读取与显示</a>
-- <a href="/posts/rm_opencv_02/">颜色提取</a>
-- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
-- <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
+- <a href="/posts/rm_opencv_02/">装甲板颜色提取</a>
+- <a href="/posts/rm_opencv_03/">形态学处理</a>
+- <a href="/posts/rm_opencv_04/">轮廓检测</a>
 - <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
 - <a href="/posts/rm_opencv_01/">我的第一篇文章</a>
 

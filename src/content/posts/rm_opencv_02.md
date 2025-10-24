@@ -1,6 +1,7 @@
 ---
 title: RM装甲板识别 - 02 装甲板颜色提取
 published: 2025-10-24
+description: 无
 tags: [RM,学习]
 category: RM
 ---

@@ -1,6 +1,7 @@
 ---
 title: RM装甲板识别 - 01 图像读取与显示
 published: 2025-10-23
+description: 无
 tags: [RM,学习]
 category: RM
 ---
@@ -39,10 +40,7 @@ cv::Mat cv::imread(const String& filename, int flags = IMREAD_COLOR);
 
 ###  基础用法
 ```cpp
-#include <opencv2/opencv.hpp>
-#include <iostream>
 
-int main() {
     // 读取彩色图（装甲板识别用这个）
     cv::Mat img = cv::imread("armor.jpg", cv::IMREAD_COLOR);
     
@@ -56,9 +54,7 @@ int main() {
     std::cout << " 图片读取成功" << std::endl;
     std::cout << "   尺寸: " << img.cols << " x " << img.rows << std::endl;
     std::cout << "   通道数: " << img.channels() << std::endl;
-    
-    return 0;
-}
+
 ```
 
 ###  输出示例
@@ -93,7 +89,7 @@ if (img.empty()) {
 }
 ```
 
-### 💡 重要知识点
+
 > **OpenCV读取的图片是BGR格式，不是RGB！**  
 > 这在后续颜色识别时非常重要。如果你要转RGB需要用 `cv::cvtColor()`
 
