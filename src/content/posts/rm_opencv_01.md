@@ -22,16 +22,11 @@ category: RM
 
 ## 1. cv::imread() - 读取图片
 
-###  函数原型
-```cpp
-cv::Mat cv::imread(const String& filename, int flags = IMREAD_COLOR);
-```
 
 ###  参数说明
-| 参数 | 类型 | 说明 |
-|------|------|------|
-| `filename` | string | 图片路径（相对或绝对路径） |
-| `flags` | int | 读取模式（见下表） |
+
+- `filename`    图片路径（相对或绝对路径） 
+-`flags` 读取模式（见下表） 
 
 **flags常用值:**
 - `cv::IMREAD_COLOR` (默认) - 读取彩色图，忽略透明度
@@ -44,7 +39,7 @@ cv::Mat cv::imread(const String& filename, int flags = IMREAD_COLOR);
     // 读取彩色图（装甲板识别用这个）
     cv::Mat img = cv::imread("armor.jpg", cv::IMREAD_COLOR);
     
-    //  必须检查是否读取成功！
+    //  必须检查是否读取成功，不检查后续操作会崩溃
     if (img.empty()) {
         std::cout << " 图片读取失败！" << std::endl;
         return -1;
@@ -63,32 +58,13 @@ cv::Mat cv::imread(const String& filename, int flags = IMREAD_COLOR);
    尺寸: 1280 x 720
    通道数: 3
 ```
+### 注意路径的写法
 
-###  常见错误
-
-#### 错误1: 路径写错
 ```cpp
-
-// 正确写法
 cv::Mat img = cv::imread("/home/user/img.jpg");     // 绝对路径
 cv::Mat img = cv::imread("img.jpg");       //相对路径
 
 ```
-
-#### 错误2: 忘记检查empty()
-```cpp
-// 如果文件不存在，后续操作会崩溃
-cv::Mat img = cv::imread("not_exist.jpg");
-cv::imshow("Window", img);  // 崩溃
-
-//  正确写法
-cv::Mat img = cv::imread("not_exist.jpg");
-if (img.empty()) {
-    std::cerr << "文件不存在或格式不支持" << std::endl;
-    return -1;
-}
-```
-
 
 > **OpenCV读取的图片是BGR格式，不是RGB！**  
 > 这在后续颜色识别时非常重要。如果你要转RGB需要用 `cv::cvtColor()`
@@ -97,16 +73,10 @@ if (img.empty()) {
 
 ## 2. cv::imshow() - 显示图片
 
-###  函数原型
-```cpp
-void cv::imshow(const String& winname, InputArray mat);
-```
-
 ###  参数说明
-| 参数 | 类型 | 说明 |
-|------|------|------|
-| `winname` | string | 窗口名称（自己起名） |
-| `mat` | Mat | 要显示的图像 |
+
+- `winname`（自己起名） 
+- `mat` 要显示的图像 
 
 ### 基础用法
 ```cpp
@@ -115,7 +85,7 @@ cv::Mat img = cv::imread("armor.jpg");
 // 显示图片
 cv::imshow("原图", img);
 
-//  必须配合waitKey()，否则窗口闪现即消失！
+//  必须配合waitKey()，否则窗口闪现即消失
 cv::waitKey(0);  // 0表示无限等待，直到按任意键
 
 // 关闭所有窗口
@@ -134,41 +104,19 @@ cv::waitKey(0);
 cv::destroyAllWindows();
 ```
 
-### 常见错误
-```cpp
-//错误：窗口闪一下就消失
-cv::imshow("Window", img);
-// 缺少 waitKey()
-
-// 正确写法
-cv::imshow("Window", img);
-cv::waitKey(0);
-```
-
 ---
 
 ## 3. cv::waitKey() - 等待按键
 
-###  函数原型
-```cpp
-int cv::waitKey(int delay = 0);
-```
 
-###  参数说明
-| 参数 | 说明 |
-|------|------|
-| `delay` | 等待时间（毫秒），0表示无限等待 |
-| **返回值** | 按下的键的ASCII码，超时返回-1 |
 
-###  实用技巧
-
-#### 技巧1: 等待任意键
+### 等待任意键
 ```cpp
 cv::imshow("Image", img);
 cv::waitKey(0);  // 按任意键继续
 ```
 
-#### 技巧2: 检测特定按键
+### 检测特定按键
 ```cpp
 cv::imshow("Image", img);
 int key = cv::waitKey(0);
@@ -181,7 +129,7 @@ if (key == 27) {  // ESC键
 }
 ```
 
-#### 技巧3: 实时视频显示（30fps）
+###  实时视频显示（30fps）
 ```cpp
 while (true) {
     cv::Mat frame = getFrame();  // 获取一帧
@@ -213,11 +161,6 @@ cv::Mat img = cv::imread("image.jpg");
 // 创建640×480的黑色图像
 cv::Mat black(480, 640, CV_8UC3, cv::Scalar(0, 0, 0));
 
-// 创建白色图像
-cv::Mat white(480, 640, CV_8UC3, cv::Scalar(255, 255, 255));
-
-// 创建红色图像
-cv::Mat red(480, 640, CV_8UC3, cv::Scalar(0, 0, 255));  // BGR格式！
 ```
 
 ###  常用属性
@@ -239,34 +182,6 @@ size_t total = img.total();    // 总像素数 = rows × cols
 size_t bytes = img.total() * img.elemSize();  // 占用字节数
 ```
 
-###  访问像素值
-
-#### 方法1: at访问（安全但慢）
-```cpp
-cv::Mat img = cv::imread("image.jpg");
-
-// 访问(100, 200)位置的像素
-cv::Vec3b pixel = img.at<cv::Vec3b>(100, 200);
-uchar blue = pixel[0];
-uchar green = pixel[1];
-uchar red = pixel[2];
-
-// 修改像素
-img.at<cv::Vec3b>(100, 200) = cv::Vec3b(255, 0, 0);  // 设为蓝色
-```
-
-#### 方法2: 指针访问（快但需小心）
-```cpp
-for (int y = 0; y < img.rows; y++) {
-    uchar* row = img.ptr<uchar>(y);  // 获取第y行的指针
-    for (int x = 0; x < img.cols; x++) {
-        uchar b = row[x * 3 + 0];
-        uchar g = row[x * 3 + 1];
-        uchar r = row[x * 3 + 2];
-    }
-}
-```
-
 ###  Mat类型代码说明
 ```cpp
 // CV_<bit-depth>{U|S|F}C<channels>
@@ -279,11 +194,6 @@ CV_16SC3  // 16位有符号，3通道
 ---
 
 ## 5. cv::imwrite() - 保存图片
-
-### 函数原型
-```cpp
-bool cv::imwrite(const String& filename, InputArray img);
-```
 
 ### 基础用法
 ```cpp
@@ -317,11 +227,6 @@ cv::imwrite("output.png", img, png_params);
 
 ## 6. cv::VideoCapture - 打开相机/视频
 
-###  函数原型
-```cpp
-cv::VideoCapture cap(int device);         // 打开相机
-cv::VideoCapture cap(const String& filename);  // 打开视频文件
-```
 
 ###  打开相机
 ```cpp
@@ -333,15 +238,10 @@ int main() {
     
     // 检查是否成功打开
     if (!cap.isOpened()) {
-        std::cerr << "❌ 相机打开失败" << std::endl;
+        std::cerr << " 相机打开失败" << std::endl;
         return -1;
     }
-    
-    // 设置相机参数（可选）
-    cap.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
-    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
-    cap.set(cv::CAP_PROP_FPS, 60);
-    
+  
     cv::Mat frame;
     while (true) {
         // 读取一帧
@@ -349,7 +249,7 @@ int main() {
         // 或者: cap >> frame;
         
         if (frame.empty()) {
-            std::cerr << "❌ 无法读取帧" << std::endl;
+            std::cerr << " 无法读取帧" << std::endl;
             break;
         }
         
@@ -445,17 +345,5 @@ int main() {
 }
 ```
 </details>
-
----
-
-##  检查清单
-
-完成本阶段后，你应该能够：
-
-- [ ] 用 `cv::imread()` 读取图片并检查是否成功
-- [ ] 用 `cv::imshow()` 和 `cv::waitKey()` 显示图片
-- [ ] 理解Mat对象的基本属性（rows, cols, channels）
-- [ ] 用 `cv::imwrite()` 保存处理结果
-- [ ] 用 `cv::VideoCapture` 打开相机并实时显示
 
 ---

@@ -9,9 +9,9 @@ draft: false
 - [双指针在数组的运用](#双指针在数组的运用)
     - [快慢指针](#快慢指针)
     - [二分搜索](#二分搜索)
-    - [滑动窗口](#滑动窗口)
-    - [回文/反转](#回文/反转)
     - [数之和](#数之和)
+    - [回文/反转](#回文/反转)
+    - [滑动窗口](#滑动窗口)
 - [双指针在链表的运用](#双指针在链表的运用)
     - [合并](#合并)
     - [分解](#分解)
@@ -147,3 +147,98 @@ int binarySearch(vector<int>& nums, int target) {
     return -1;
 }
 ```
+## 两数之和
+- 作为力扣的第一道题，很多人上来直接就是两个for循环暴力枚举，但实际上有更聪明的枚举方式，这个题就是一个典型的双指针问题
+- https://leetcode.cn/problems/two-sum/
+---
+- 给定一个整数数组``` num```s 和一个整数目标值``` target```，请你在该数组中找出 **和为目标值**``` target```  的那 **两个** 整数，并返回它们的数组下标。
+
+你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。
+
+示例 1：
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+```
+示例 2：
+```
+输入：nums = [3,2,4], target = 6
+输出：[1,2]
+
+```
+- 这题的思路和二分搜索很相似，而且这种问题显然让数组有序会更好做
+- 当数组有序之后，```首项+尾项/2```很接近所有数的平均数，因此也最可能接近```target```。
+- 我们让```left```指向最小```right```指向最大,如果小了就让left++，大了就让right--
+--- 下面是代码
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<pair<int, int>> vec;//这里为了保留原数组的索引
+        for (int i = 0; i < nums.size(); ++i)
+            vec.push_back({nums[i], i});
+
+        sort(vec.begin(), vec.end());
+
+        int left = 0, right = vec.size() - 1;
+        while (left < right) {
+            int sum = vec[left].first + vec[right].first;
+            if (sum == target) {
+                return {vec[left].second, vec[right].second};
+            } else if (sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        
+    }
+};
+```
+- 其实这题的最优解是哈希表，但是现在讲的是双指针，后面再说
+
+---
+## 回文/反转
+### 反转字符串
+- https://leetcode.cn/problems/reverse-string/description/
+- 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。
+- 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+示例 1：
+```
+输入：s = ["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+```
+示例 2：
+```
+输入：s = ["H","a","n","n","a","h"]
+输出：["h","a","n","n","a","H"]
+```
+- 这题很简单，我就直接给代码了
+```cpp
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        int n = s.size();
+        for (int left = 0, right = n - 1; left < right; ++left, --right) {
+            swap(s[left], s[right]);
+        }
+    }
+};
+```
+### 最长回文子串
+- 给你一个字符串 ```s```，找到``` s ```中最长的 **回文** 子串。
+
+示例 1：
+```
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+```
+示例 2：
+```
+输入：s = "cbbd"
+输出："bb"
+``` 
+- 像这种回文/对称，应该想到用双指针
+- 但是需要注意一下回文序列的奇偶 
