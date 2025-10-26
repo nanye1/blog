@@ -5,8 +5,1076 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-24T15:52:44.637Z</updated>
+  <updated>2025-10-26T08:52:35.075Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>RM装甲板识别 - 05灯条配对</title>
+    <link href="https://www.nanye404.top/posts/armor_detection_part1/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/armor_detection_part1/</id>
+    <published>2025-10-26T00:00:00.000Z</published>
+    <updated>2025-10-26T00:00:00.000Z</updated>
+    <summary>无</summary>
+    <content type="html"><![CDATA[<h2>核心API清单</h2>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cv::norm()</code></td>
+<td>计算两点距离</td>
+</tr>
+<tr>
+<td><code>std::abs()</code></td>
+<td>绝对值</td>
+</tr>
+<tr>
+<td><code>cv::line()</code></td>
+<td>绘制直线</td>
+</tr>
+<tr>
+<td><code>cv::rectangle()</code></td>
+<td>绘制矩形</td>
+</tr>
+<tr>
+<td><code>cv::putText()</code></td>
+<td>绘制文字</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>装甲板的四大判据</h2>
+<table>
+<thead>
+<tr>
+<th>判据</th>
+<th>物理意义</th>
+<th>合理范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>距离</td>
+<td>两灯条中心间距</td>
+<td>1.5~4倍灯条长度</td>
+</tr>
+<tr>
+<td>角度差</td>
+<td>两灯条是否平行</td>
+<td>&lt; 10°</td>
+</tr>
+<tr>
+<td>长度比</td>
+<td>两灯条长度比</td>
+<td>1.0~2.0</td>
+</tr>
+<tr>
+<td>高度差</td>
+<td>两灯条y坐标差</td>
+<td>&lt; 0.5倍灯条长度</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1️ 距离判断：cv::norm()</h2>
+<h3>计算两点欧氏距离</h3>
+<pre><code>cv::Point2f p1(100, 200);
+cv::Point2f p2(400, 500);
+
+double distance = cv::norm(p1 - p2);
+
+</code></pre>
+<h3>应用：计算灯条间距</h3>
+<pre><code>// 两个灯条的中心点
+cv::Point2f center1 = bar1.rect.center;
+cv::Point2f center2 = bar2.rect.center;
+
+// 计算距离
+float distance = cv::norm(center1 - center2);
+
+// 判断距离是否合理（参数随便给的）
+float avgLength = (bar1.rect.size.height + bar2.rect.size.height) / 2;
+if (distance &lt; avgLength * 1.5 || distance &gt; avgLength * 4.0) {
+    // 距离不合理，不是装甲板
+    return false;
+}
+</code></pre>
+<hr />
+<h2>2️ 角度差判断</h2>
+<h3>基础用法</h3>
+<pre><code>float angle1 = bar1.rect.angle;
+float angle2 = bar2.rect.angle;
+
+// 计算角度差的绝对值
+float angleDiff = std::abs(angle1 - angle2);
+
+// 判断是否平行
+if (angleDiff &gt; 10.0) {
+    // 角度差太大，不平行
+    return false;
+}
+</code></pre>
+<h3>角度差的陷阱</h3>
+<pre><code>// 问题：OpenCV的angle范围是-90°到0°
+// 如果一个灯条angle=-5°，另一个是-85°
+// 直接相减：|-5 - (-85)| = 80°  实际上它们可能是平行的！
+
+// 解决方案：归一化角度
+float normalizeAngle(float angle) {
+    // 将angle转换到0-90范围
+    angle = std::abs(angle);
+    if (angle &gt; 90) angle = 180 - angle;
+    return angle;
+}
+
+float angle1 = normalizeAngle(bar1.rect.angle);
+float angle2 = normalizeAngle(bar2.rect.angle);
+float angleDiff = std::abs(angle1 - angle2);
+</code></pre>
+<hr />
+<h2>3️ 长度比判断</h2>
+<h3>基础用法</h3>
+<pre><code>float length1 = bar1.rect.size.height;  // 假设已确保height是长边
+float length2 = bar2.rect.size.height;
+
+// 计算长度比（大/小）
+float lengthRatio = std::max(length1, length2) / std::min(length1, length2);
+
+// 判断
+if (lengthRatio &gt; 2.0) {
+    // 长度相差超过2倍，不是装甲板
+    return false;
+}
+</code></pre>
+<hr />
+<h2>4️ 高度差判断</h2>
+<h3>基础用法</h3>
+<pre><code>float centerY1 = bar1.rect.center.y;
+float centerY2 = bar2.rect.center.y;
+
+// 计算y坐标差的绝对值
+float heightDiff = std::abs(centerY1 - centerY2);
+
+// 用平均长度作为参考
+float avgLength = (bar1.rect.size.height + bar2.rect.size.height) / 2;
+
+// 判断高度差是否合理
+if (heightDiff &gt; avgLength * 0.5) {
+    // 高度差太大，不在同一水平线
+    return false;
+}
+</code></pre>
+<hr />
+<h2>数据结构设计</h2>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+// 灯条结构体
+struct LightBar {
+    cv::RotatedRect rect;
+    cv::Point2f center;
+    float length;
+    float angle;
+    
+    LightBar(const cv::RotatedRect&amp; r) : rect(r) {
+        center = r.center;
+        length = std::max(r.size.width, r.size.height);
+        angle = r.angle;
+        
+        // 确保长边是height
+        if (r.size.width &gt; r.size.height) {
+            angle += 90;
+        }
+    }
+};
+
+// 装甲板结构体
+struct ArmorPlate {
+    LightBar leftBar;
+    LightBar rightBar;
+    cv::Point2f center;
+    float width;
+    float height;
+    
+    ArmorPlate(const LightBar&amp; left, const LightBar&amp; right) 
+        : leftBar(left), rightBar(right) {
+        // 计算装甲板中心
+        center.x = (left.center.x + right.center.x) / 2;
+        center.y = (left.center.y + right.center.y) / 2;
+        
+        // 计算宽高
+        width = cv::norm(left.center - right.center);
+        height = (left.length + right.length) / 2;
+    }
+};
+</code></pre>
+<hr />
+<h2>核心判断函数</h2>
+<h3>归一化角度函数</h3>
+<pre><code>// 归一化角度到0-90度范围
+float normalizeAngle(float angle) {
+    angle = std::abs(angle);
+    if (angle &gt; 90) {
+        angle = 180 - angle;
+    }
+    return angle;
+}
+</code></pre>
+<h3>判断两个灯条能否组成装甲板</h3>
+<pre><code>bool isValidArmorPair(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    // ============ 判据1：距离检查 ============
+    float distance = cv::norm(bar1.center - bar2.center);
+    float avgLength = (bar1.length + bar2.length) / 2;
+    
+    // 距离应该在1.5~4倍平均长度之间
+    if (distance &lt; avgLength * 1.5) {
+        std::cout &lt;&lt; " 距离太近: " &lt;&lt; distance 
+                  &lt;&lt; " &lt; " &lt;&lt; avgLength * 1.5 &lt;&lt; std::endl;
+        return false;
+    }
+    if (distance &gt; avgLength * 4.0) {
+        std::cout &lt;&lt; " 距离太远: " &lt;&lt; distance 
+                  &lt;&lt; " &gt; " &lt;&lt; avgLength * 4.0 &lt;&lt; std::endl;
+        return false;
+    }
+    
+    // ============ 判据2：角度检查 ============
+    float angle1 = normalizeAngle(bar1.angle);
+    float angle2 = normalizeAngle(bar2.angle);
+    float angleDiff = std::abs(angle1 - angle2);
+    
+    // 角度差应小于10度
+    if (angleDiff &gt; 10.0) {
+        std::cout &lt;&lt; " 角度差太大: " &lt;&lt; angleDiff &lt;&lt; "°" &lt;&lt; std::endl;
+        return false;
+    }
+    
+    // ============ 判据3：长度比检查 ============
+    float maxLength = std::max(bar1.length, bar2.length);
+    float minLength = std::min(bar1.length, bar2.length);
+    float lengthRatio = maxLength / minLength;
+    
+    // 长度比应小于2.0
+    if (lengthRatio &gt; 2.0) {
+        std::cout &lt;&lt; " 长度比过大: " &lt;&lt; lengthRatio &lt;&lt; std::endl;
+        return false;
+    }
+    
+    // ============ 判据4：高度差检查 ============
+    float heightDiff = std::abs(bar1.center.y - bar2.center.y);
+    
+    // 高度差应小于平均长度的50%
+    if (heightDiff &gt; avgLength * 0.5) {
+        std::cout &lt;&lt; " 高度差太大: " &lt;&lt; heightDiff 
+                  &lt;&lt; " &gt; " &lt;&lt; avgLength * 0.5 &lt;&lt; std::endl;
+        return false;
+    }
+    
+    // ============ 通过所有判据 ============
+    std::cout &lt;&lt; "[通过] 距离:" &lt;&lt; distance 
+              &lt;&lt; " 角度差:" &lt;&lt; angleDiff 
+              &lt;&lt; " 长度比:" &lt;&lt; lengthRatio 
+              &lt;&lt; " 高度差:" &lt;&lt; heightDiff &lt;&lt; std::endl;
+    return true;
+}
+</code></pre>
+<hr />
+<h2>配对主函数</h2>
+<pre><code>// 从灯条列表中配对出所有装甲板
+std::vector&lt;ArmorPlate&gt; findArmorPlates(const std::vector&lt;LightBar&gt;&amp; lightBars) {
+    std::vector&lt;ArmorPlate&gt; armorPlates;
+    
+    std::cout &lt;&lt; "\n========== 开始配对 ==========" &lt;&lt; std::endl;
+    std::cout &lt;&lt; "灯条数量: " &lt;&lt; lightBars.size() &lt;&lt; std::endl;
+    
+    // 双重循环遍历所有灯条对
+    for (size_t i = 0; i &lt; lightBars.size(); i++) {
+        for (size_t j = i + 1; j &lt; lightBars.size(); j++) {
+            const LightBar&amp; bar1 = lightBars[i];
+            const LightBar&amp; bar2 = lightBars[j];
+            
+            std::cout &lt;&lt; "\n测试灯条对 (" &lt;&lt; i &lt;&lt; ", " &lt;&lt; j &lt;&lt; "):" &lt;&lt; std::endl;
+            
+            // 判断能否组成装甲板
+            if (isValidArmorPair(bar1, bar2)) {
+                // 确保左边的灯条在左侧
+                if (bar1.center.x &lt; bar2.center.x) {
+                    armorPlates.emplace_back(bar1, bar2);
+                } else {
+                    armorPlates.emplace_back(bar2, bar1);
+                }
+                std::cout &lt;&lt; " 找到装甲板！" &lt;&lt; std::endl;
+            }
+        }
+    }
+    
+    std::cout &lt;&lt; "\n========== 配对完成 ==========" &lt;&lt; std::endl;
+    std::cout &lt;&lt; "找到装甲板数量: " &lt;&lt; armorPlates.size() &lt;&lt; std::endl;
+    
+    return armorPlates;
+}
+</code></pre>
+<hr />
+<h2>可视化绘制函数</h2>
+<h3>绘制单个装甲板</h3>
+<pre><code>void drawArmorPlate(cv::Mat&amp; image, const ArmorPlate&amp; armor, int index) {
+    // 1. 绘制左侧灯条（绿色）
+    cv::Point2f vertices1[4];
+    armor.leftBar.rect.points(vertices1);
+    for (int i = 0; i &lt; 4; i++) {
+        cv::line(image, vertices1[i], vertices1[(i+1)%4], 
+                 cv::Scalar(0, 255, 0), 2);
+    }
+    
+    // 2. 绘制右侧灯条（绿色）
+    cv::Point2f vertices2[4];
+    armor.rightBar.rect.points(vertices2);
+    for (int i = 0; i &lt; 4; i++) {
+        cv::line(image, vertices2[i], vertices2[(i+1)%4], 
+                 cv::Scalar(0, 255, 0), 2);
+    }
+    
+    // 3. 绘制连接线（黄色）
+    cv::line(image, armor.leftBar.center, armor.rightBar.center, 
+             cv::Scalar(0, 255, 255), 2);
+    
+    // 4. 绘制装甲板外框（蓝色）
+    cv::Point2f topLeft = vertices1[0];
+    cv::Point2f topRight = vertices2[1];
+    cv::Point2f bottomRight = vertices2[2];
+    cv::Point2f bottomLeft = vertices1[3];
+    
+    cv::line(image, topLeft, topRight, cv::Scalar(255, 0, 0), 2);
+    cv::line(image, topRight, bottomRight, cv::Scalar(255, 0, 0), 2);
+    cv::line(image, bottomRight, bottomLeft, cv::Scalar(255, 0, 0), 2);
+    cv::line(image, bottomLeft, topLeft, cv::Scalar(255, 0, 0), 2);
+    
+    // 5. 绘制中心点（红色）
+    cv::circle(image, armor.center, 5, cv::Scalar(0, 0, 255), -1);
+    
+    // 6. 显示装甲板信息
+    std::string info = "Armor#" + std::to_string(index);
+    cv::putText(image, info, 
+                cv::Point(armor.center.x - 30, armor.center.y - 15),
+                cv::FONT_HERSHEY_SIMPLEX, 0.6, 
+                cv::Scalar(255, 255, 255), 2);
+    
+    // 7. 显示宽度信息
+    std::string sizeInfo = "W:" + std::to_string((int)armor.width);
+    cv::putText(image, sizeInfo, 
+                cv::Point(armor.center.x - 25, armor.center.y + 5),
+                cv::FONT_HERSHEY_SIMPLEX, 0.4, 
+                cv::Scalar(255, 255, 255), 1);
+}
+</code></pre>
+<h3>绘制所有装甲板</h3>
+<pre><code>void drawAllArmorPlates(cv::Mat&amp; image, const std::vector&lt;ArmorPlate&gt;&amp; armorPlates) {
+    for (size_t i = 0; i &lt; armorPlates.size(); i++) {
+        drawArmorPlate(image, armorPlates[i], i);
+    }
+    
+    // 在左上角显示统计信息
+    std::string stats = "Armors: " + std::to_string(armorPlates.size());
+    cv::putText(image, stats, cv::Point(10, 30),
+                cv::FONT_HERSHEY_SIMPLEX, 1.0, 
+                cv::Scalar(0, 255, 255), 2);
+}
+</code></pre>
+<hr />
+<h2>完整主函数</h2>
+<pre><code>int main() {
+    // 1. 读取图片
+    cv::Mat src = cv::imread("armor_test.jpg");
+    if (src.empty()) {
+        std::cerr &lt;&lt; " 无法读取图片！" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    std::cout &lt;&lt; " 图片读取成功: " &lt;&lt; src.cols &lt;&lt; "x" &lt;&lt; src.rows &lt;&lt; std::endl;
+    
+    // 2. 预处理（这里假设你已经有灯条检测函数）
+    std::vector&lt;LightBar&gt; lightBars = detectLightBars(src);
+    
+    std::cout &lt;&lt; " 检测到 " &lt;&lt; lightBars.size() &lt;&lt; " 个灯条" &lt;&lt; std::endl;
+    
+    // 3. 装甲板配对
+    std::vector&lt;ArmorPlate&gt; armorPlates = findArmorPlates(lightBars);
+    
+    // 4. 绘制结果
+    cv::Mat result = src.clone();
+    drawAllArmorPlates(result, armorPlates);
+    
+    // 5. 显示和保存
+    cv::imshow("原图", src);
+    cv::imshow("装甲板检测结果", result);
+    cv::imwrite("armor_result.jpg", result);
+    
+    std::cout &lt;&lt; "\n========== 最终结果 ==========" &lt;&lt; std::endl;
+    std::cout &lt;&lt; " 成功检测到 " &lt;&lt; armorPlates.size() &lt;&lt; " 个装甲板" &lt;&lt; std::endl;
+    std::cout &lt;&lt; "结果已保存到 armor_result.jpg" &lt;&lt; std::endl;
+    
+    cv::waitKey(0);
+    return 0;
+}
+</code></pre>
+<hr />
+<h2>完整可运行示例</h2>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+// ========== 数据结构 ==========
+struct LightBar {
+    cv::RotatedRect rect;
+    cv::Point2f center;
+    float length;
+    float angle;
+    
+    LightBar() : length(0), angle(0) {}
+    
+    LightBar(const cv::RotatedRect&amp; r) : rect(r) {
+        center = r.center;
+        length = std::max(r.size.width, r.size.height);
+        angle = r.angle;
+        if (r.size.width &gt; r.size.height) {
+            angle += 90;
+        }
+    }
+};
+
+struct ArmorPlate {
+    LightBar leftBar;
+    LightBar rightBar;
+    cv::Point2f center;
+    float width;
+    float height;
+    
+    ArmorPlate(const LightBar&amp; left, const LightBar&amp; right) 
+        : leftBar(left), rightBar(right) {
+        center.x = (left.center.x + right.center.x) / 2;
+        center.y = (left.center.y + right.center.y) / 2;
+        width = cv::norm(left.center - right.center);
+        height = (left.length + right.length) / 2;
+    }
+};
+
+// ========== 核心函数 ==========
+float normalizeAngle(float angle) {
+    angle = std::abs(angle);
+    if (angle &gt; 90) angle = 180 - angle;
+    return angle;
+}
+
+bool isValidArmorPair(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    float distance = cv::norm(bar1.center - bar2.center);
+    float avgLength = (bar1.length + bar2.length) / 2;
+    
+    if (distance &lt; avgLength * 1.5 || distance &gt; avgLength * 4.0) return false;
+    
+    float angle1 = normalizeAngle(bar1.angle);
+    float angle2 = normalizeAngle(bar2.angle);
+    float angleDiff = std::abs(angle1 - angle2);
+    if (angleDiff &gt; 10.0) return false;
+    
+    float lengthRatio = std::max(bar1.length, bar2.length) / 
+                        std::min(bar1.length, bar2.length);
+    if (lengthRatio &gt; 2.0) return false;
+    
+    float heightDiff = std::abs(bar1.center.y - bar2.center.y);
+    if (heightDiff &gt; avgLength * 0.5) return false;
+    
+    return true;
+}
+
+std::vector&lt;ArmorPlate&gt; findArmorPlates(const std::vector&lt;LightBar&gt;&amp; lightBars) {
+    std::vector&lt;ArmorPlate&gt; armorPlates;
+    
+    for (size_t i = 0; i &lt; lightBars.size(); i++) {
+        for (size_t j = i + 1; j &lt; lightBars.size(); j++) {
+            if (isValidArmorPair(lightBars[i], lightBars[j])) {
+                if (lightBars[i].center.x &lt; lightBars[j].center.x) {
+                    armorPlates.emplace_back(lightBars[i], lightBars[j]);
+                } else {
+                    armorPlates.emplace_back(lightBars[j], lightBars[i]);
+                }
+            }
+        }
+    }
+    
+    return armorPlates;
+}
+
+void drawArmorPlate(cv::Mat&amp; image, const ArmorPlate&amp; armor, int index) {
+    cv::Point2f v1[4], v2[4];
+    armor.leftBar.rect.points(v1);
+    armor.rightBar.rect.points(v2);
+    
+    for (int i = 0; i &lt; 4; i++) {
+        cv::line(image, v1[i], v1[(i+1)%4], cv::Scalar(0, 255, 0), 2);
+        cv::line(image, v2[i], v2[(i+1)%4], cv::Scalar(0, 255, 0), 2);
+    }
+    
+    cv::line(image, armor.leftBar.center, armor.rightBar.center, 
+             cv::Scalar(0, 255, 255), 2);
+    cv::circle(image, armor.center, 5, cv::Scalar(0, 0, 255), -1);
+    
+    std::string info = "Armor#" + std::to_string(index);
+    cv::putText(image, info, cv::Point(armor.center.x - 30, armor.center.y - 15),
+                cv::FONT_HERSHEY_SIMPLEX, 0.6, cv::Scalar(255, 255, 255), 2);
+}
+
+// ========== 主函数 ==========
+int main() {
+    cv::Mat src = cv::imread("armor_test.jpg");
+    if (src.empty()) {
+        std::cerr &lt;&lt; "无法读取图片！" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    // 假设已有灯条检测函数
+    // std::vector&lt;LightBar&gt; lightBars = detectLightBars(src);
+    std::vector&lt;LightBar&gt; lightBars;  // 示例数据
+    
+    std::vector&lt;ArmorPlate&gt; armorPlates = findArmorPlates(lightBars);
+    
+    cv::Mat result = src.clone();
+    for (size_t i = 0; i &lt; armorPlates.size(); i++) {
+        drawArmorPlate(result, armorPlates[i], i);
+    }
+    
+    std::cout &lt;&lt; "检测到 " &lt;&lt; armorPlates.size() &lt;&lt; " 个装甲板" &lt;&lt; std::endl;
+    cv::imshow("结果", result);
+    cv::waitKey(0);
+    
+    return 0;
+}
+</code></pre>
+<h2>性能优化</h2>
+<h3>优化1：提前剔除明显不合理的灯条对</h3>
+<pre><code>// 快速预判（避免不必要的计算）
+bool quickReject(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    // 如果x坐标差太小，肯定不是装甲板（两灯条重叠）
+    float xDiff = std::abs(bar1.center.x - bar2.center.x);
+    if (xDiff &lt; 10) return true;
+    
+    // 如果x坐标差太大，距离肯定超标
+    float maxLength = std::max(bar1.length, bar2.length);
+    if (xDiff &gt; maxLength * 5) return true;
+    
+    return false;
+}
+
+std::vector&lt;ArmorPlate&gt; findArmorPlatesOptimized(const std::vector&lt;LightBar&gt;&amp; lightBars) {
+    std::vector&lt;ArmorPlate&gt; armorPlates;
+    
+    for (size_t i = 0; i &lt; lightBars.size(); i++) {
+        for (size_t j = i + 1; j &lt; lightBars.size(); j++) {
+            // 快速预判
+            if (quickReject(lightBars[i], lightBars[j])) {
+                continue;
+            }
+            
+            // 详细判断
+            if (isValidArmorPair(lightBars[i], lightBars[j])) {
+                if (lightBars[i].center.x &lt; lightBars[j].center.x) {
+                    armorPlates.emplace_back(lightBars[i], lightBars[j]);
+                } else {
+                    armorPlates.emplace_back(lightBars[j], lightBars[i]);
+                }
+            }
+        }
+    }
+    
+    return armorPlates;
+}
+</code></pre>
+<h3>优化2：按x坐标排序（减少比较次数）</h3>
+<pre><code>std::vector&lt;ArmorPlate&gt; findArmorPlatesSorted(std::vector&lt;LightBar&gt; lightBars) {
+    // 按x坐标排序
+    std::sort(lightBars.begin(), lightBars.end(), 
+              [](const LightBar&amp; a, const LightBar&amp; b) {
+                  return a.center.x &lt; b.center.x;
+              });
+    
+    std::vector&lt;ArmorPlate&gt; armorPlates;
+    
+    for (size_t i = 0; i &lt; lightBars.size(); i++) {
+        for (size_t j = i + 1; j &lt; lightBars.size(); j++) {
+            // 如果j灯条的x坐标已经太远，后面的更远，直接break
+            float xDiff = lightBars[j].center.x - lightBars[i].center.x;
+            if (xDiff &gt; lightBars[i].length * 5) {
+                break;
+            }
+            
+            if (isValidArmorPair(lightBars[i], lightBars[j])) {
+                armorPlates.emplace_back(lightBars[i], lightBars[j]);
+            }
+        }
+    }
+    
+    return armorPlates;
+}
+</code></pre>
+<hr />
+<h2>进阶功能</h2>
+<h3>处理倾斜装甲板</h3>
+<p>当装甲板整体倾斜时，需要调整高度差判据：</p>
+<pre><code>// 计算两灯条连线与水平线的夹角
+float calculateTiltAngle(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    float dx = bar2.center.x - bar1.center.x;
+    float dy = bar2.center.y - bar1.center.y;
+    return std::atan2(dy, dx) * 180.0 / CV_PI;
+}
+
+// 改进的高度差判据
+bool isValidArmorPair_Advanced(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    // ... 前面的判据 ...
+    
+    // 计算倾斜角度
+    float tiltAngle = std::abs(calculateTiltAngle(bar1, bar2));
+    
+    // 如果倾斜角度大，放宽高度差要求
+    float heightThreshold = avgLength * 0.5;
+    if (tiltAngle &gt; 15.0) {
+        heightThreshold = avgLength * 0.8;  // 放宽到0.8倍
+    }
+    
+    if (heightDiff &gt; heightThreshold) {
+        return false;
+    }
+    
+    return true;
+}
+</code></pre>
+<h3>区分大小装甲板</h3>
+<p>根据宽高比区分大小装甲板：</p>
+<pre><code>enum ArmorType {
+    SMALL_ARMOR,  // 小装甲板
+    LARGE_ARMOR   // 大装甲板
+};
+
+struct ArmorPlate {
+    LightBar leftBar;
+    LightBar rightBar;
+    cv::Point2f center;
+    float width;
+    float height;
+    ArmorType type;  // 新增：装甲板类型
+    
+    ArmorPlate(const LightBar&amp; left, const LightBar&amp; right) 
+        : leftBar(left), rightBar(right) {
+        center.x = (left.center.x + right.center.x) / 2;
+        center.y = (left.center.y + right.center.y) / 2;
+        width = cv::norm(left.center - right.center);
+        height = (left.length + right.length) / 2;
+        
+        // 根据宽高比判断类型
+        float aspectRatio = width / height;
+        if (aspectRatio &gt; 3.0) {
+            type = LARGE_ARMOR;  // 宽高比大，大装甲板
+        } else {
+            type = SMALL_ARMOR;  // 宽高比小，小装甲板
+        }
+    }
+    
+    std::string getTypeName() const {
+        return (type == SMALL_ARMOR) ? "Small" : "Large";
+    }
+};
+
+// 绘制时显示类型
+void drawArmorPlate(cv::Mat&amp; image, const ArmorPlate&amp; armor, int index) {
+    // ... 原来的绘制代码 ...
+    
+    // 显示类型
+    std::string typeInfo = armor.getTypeName();
+    cv::Scalar color = (armor.type == SMALL_ARMOR) ? 
+                       cv::Scalar(0, 255, 0) : cv::Scalar(255, 0, 255);
+    cv::putText(image, typeInfo, 
+                cv::Point(armor.center.x - 30, armor.center.y + 20),
+                cv::FONT_HERSHEY_SIMPLEX, 0.5, color, 2);
+}
+</code></pre>
+<h3>置信度评分系统</h3>
+<p>给每个装甲板打分，选出最佳目标：</p>
+<pre><code>struct ArmorPlate {
+    LightBar leftBar;
+    LightBar rightBar;
+    cv::Point2f center;
+    float width;
+    float height;
+    float confidence;  // 置信度 0-100
+    
+    ArmorPlate(const LightBar&amp; left, const LightBar&amp; right) 
+        : leftBar(left), rightBar(right) {
+        center.x = (left.center.x + right.center.x) / 2;
+        center.y = (left.center.y + right.center.y) / 2;
+        width = cv::norm(left.center - right.center);
+        height = (left.length + right.length) / 2;
+        
+        // 计算置信度
+        confidence = calculateConfidence(left, right);
+    }
+    
+private:
+    float calculateConfidence(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+        float score = 100.0;
+        
+        // 1. 角度差越小越好（满分20）
+        float angle1 = normalizeAngle(bar1.angle);
+        float angle2 = normalizeAngle(bar2.angle);
+        float angleDiff = std::abs(angle1 - angle2);
+        float angleScore = std::max(0.0f, 20.0f - angleDiff * 2.0f);
+        
+        // 2. 长度比越接近1越好（满分20）
+        float lengthRatio = std::max(bar1.length, bar2.length) / 
+                           std::min(bar1.length, bar2.length);
+        float lengthScore = std::max(0.0f, 20.0f - (lengthRatio - 1.0f) * 10.0f);
+        
+        // 3. 高度差越小越好（满分20）
+        float avgLength = (bar1.length + bar2.length) / 2;
+        float heightDiff = std::abs(bar1.center.y - bar2.center.y);
+        float heightScore = std::max(0.0f, 20.0f - heightDiff / avgLength * 40.0f);
+        
+        // 4. 距离合理性（满分20）
+        float distance = cv::norm(bar1.center - bar2.center);
+        float idealDist = avgLength * 2.5;  // 理想距离
+        float distDiff = std::abs(distance - idealDist);
+        float distScore = std::max(0.0f, 20.0f - distDiff / avgLength * 10.0f);
+        
+        // 5. 面积大小（满分20）- 面积越大越好
+        float area = width * height;
+        float areaScore = std::min(20.0f, area / 10000.0f * 20.0f);
+        
+        score = angleScore + lengthScore + heightScore + distScore + areaScore;
+        return std::min(100.0f, score);
+    }
+};
+
+// 选择最佳装甲板
+ArmorPlate selectBestArmor(const std::vector&lt;ArmorPlate&gt;&amp; armorPlates) {
+    if (armorPlates.empty()) {
+        throw std::runtime_error("没有装甲板可选择！");
+    }
+    
+    // 找出置信度最高的装甲板
+    auto bestArmor = std::max_element(armorPlates.begin(), armorPlates.end(),
+        [](const ArmorPlate&amp; a, const ArmorPlate&amp; b) {
+            return a.confidence &lt; b.confidence;
+        });
+    
+    std::cout &lt;&lt; "最佳装甲板置信度: " &lt;&lt; bestArmor-&gt;confidence &lt;&lt; std::endl;
+    return *bestArmor;
+}
+
+// 绘制时显示置信度
+void drawArmorPlateWithConfidence(cv::Mat&amp; image, const ArmorPlate&amp; armor, int index) {
+    // ... 原来的绘制代码 ...
+    
+    // 显示置信度
+    std::string confInfo = "Conf:" + std::to_string((int)armor.confidence);
+    cv::putText(image, confInfo, 
+                cv::Point(armor.center.x - 30, armor.center.y + 20),
+                cv::FONT_HERSHEY_SIMPLEX, 0.5, 
+                cv::Scalar(255, 255, 0), 1);
+}
+</code></pre>
+<hr />
+<h2>实战技巧</h2>
+<h3>动态参数调整</h3>
+<p>根据距离动态调整判据：</p>
+<pre><code>bool isValidArmorPair_Dynamic(const LightBar&amp; bar1, const LightBar&amp; bar2, 
+                               float cameraDistance) {
+    float avgLength = (bar1.length + bar2.length) / 2;
+    
+    // 根据相机距离调整参数
+    float distanceMin, distanceMax, angleDiffMax;
+    
+    if (cameraDistance &lt; 3.0) {  // 近距离（3米内）
+        distanceMin = avgLength * 2.0;
+        distanceMax = avgLength * 3.5;
+        angleDiffMax = 5.0;
+    } else {  // 远距离（3米外）
+        distanceMin = avgLength * 1.5;
+        distanceMax = avgLength * 4.5;
+        angleDiffMax = 12.0;
+    }
+    
+    float distance = cv::norm(bar1.center - bar2.center);
+    if (distance &lt; distanceMin || distance &gt; distanceMax) {
+        return false;
+    }
+    
+    // ... 其他判据 ...
+    
+    return true;
+}
+</code></pre>
+<h3>处理边界情况</h3>
+<pre><code>bool isValidArmorPair_Robust(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    // 检查输入有效性
+    if (bar1.length &lt;= 0 || bar2.length &lt;= 0) {
+        std::cerr &lt;&lt; "警告：灯条长度无效！" &lt;&lt; std::endl;
+        return false;
+    }
+    
+    if (bar1.center == bar2.center) {
+        std::cerr &lt;&lt; "警告：两灯条中心重合！" &lt;&lt; std::endl;
+        return false;
+    }
+    
+    // 避免除零错误
+    float minLength = std::min(bar1.length, bar2.length);
+    if (minLength &lt; 1e-6) {
+        return false;
+    }
+    
+    // 正常判断流程...
+    
+    return true;
+}
+</code></pre>
+<h3>帧稳定性检测</h3>
+<pre><code>class ArmorTracker {
+private:
+    std::vector&lt;ArmorPlate&gt; historyArmors;  // 历史帧的装甲板
+    const int HISTORY_SIZE = 5;  // 保持最近5帧
+    
+public:
+    // 添加新帧的装甲板
+    void addFrame(const std::vector&lt;ArmorPlate&gt;&amp; armors) {
+        if (historyArmors.size() &gt;= HISTORY_SIZE) {
+            historyArmors.erase(historyArmors.begin());
+        }
+        historyArmors.insert(historyArmors.end(), armors.begin(), armors.end());
+    }
+    
+    // 获取稳定的装甲板（连续出现多帧）
+    std::vector&lt;ArmorPlate&gt; getStableArmors() {
+        // 统计每个位置出现的次数
+        std::vector&lt;ArmorPlate&gt; stableArmors;
+        
+        // 实际应该实现位置聚类和计数
+        // 这里简化处理
+        
+        return stableArmors;
+    }
+};
+</code></pre>
+<h3>参数调优助手</h3>
+<p>创建滑动条实时调整参数：</p>
+<pre><code>// 全局参数
+int g_distanceMin = 15;  // 1.5 * 10
+int g_distanceMax = 40;  // 4.0 * 10
+int g_angleDiffMax = 10;
+int g_lengthRatioMax = 20;  // 2.0 * 10
+int g_heightDiffMax = 5;  // 0.5 * 10
+
+void createParamWindow() {
+    cv::namedWindow("参数调整");
+    
+    cv::createTrackbar("距离最小(x0.1)", "参数调整", &amp;g_distanceMin, 50);
+    cv::createTrackbar("距离最大(x0.1)", "参数调整", &amp;g_distanceMax, 100);
+    cv::createTrackbar("角度差最大", "参数调整", &amp;g_angleDiffMax, 30);
+    cv::createTrackbar("长度比最大(x0.1)", "参数调整", &amp;g_lengthRatioMax, 50);
+    cv::createTrackbar("高度差最大(x0.1)", "参数调整", &amp;g_heightDiffMax, 20);
+}
+
+bool isValidArmorPair_Tunable(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    float distance = cv::norm(bar1.center - bar2.center);
+    float avgLength = (bar1.length + bar2.length) / 2;
+    
+    // 使用全局参数
+    float distanceMin = g_distanceMin / 10.0f * avgLength;
+    float distanceMax = g_distanceMax / 10.0f * avgLength;
+    
+    if (distance &lt; distanceMin || distance &gt; distanceMax) {
+        return false;
+    }
+    
+    // ... 其他判据使用全局参数 ...
+    
+    return true;
+}
+</code></pre>
+<hr />
+<h2>完整代码示例（可直接运行）</h2>
+<pre><code>#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+// ========== 数据结构 ==========
+struct LightBar {
+    cv::RotatedRect rect;
+    cv::Point2f center;
+    float length;
+    float angle;
+    
+    LightBar() : length(0), angle(0) {}
+    
+    LightBar(const cv::RotatedRect&amp; r) : rect(r) {
+        center = r.center;
+        length = std::max(r.size.width, r.size.height);
+        angle = r.angle;
+        if (r.size.width &gt; r.size.height) {
+            angle += 90;
+        }
+    }
+};
+
+struct ArmorPlate {
+    LightBar leftBar;
+    LightBar rightBar;
+    cv::Point2f center;
+    float width;
+    float height;
+    
+    ArmorPlate(const LightBar&amp; left, const LightBar&amp; right) 
+        : leftBar(left), rightBar(right) {
+        center.x = (left.center.x + right.center.x) / 2;
+        center.y = (left.center.y + right.center.y) / 2;
+        width = cv::norm(left.center - right.center);
+        height = (left.length + right.length) / 2;
+    }
+};
+
+// ========== 工具函数 ==========
+float normalizeAngle(float angle) {
+    angle = std::abs(angle);
+    if (angle &gt; 90) {
+        angle = 180 - angle;
+    }
+    return angle;
+}
+
+// ========== 核心判断 ==========
+bool isValidArmorPair(const LightBar&amp; bar1, const LightBar&amp; bar2) {
+    // 判据1：距离
+    float distance = cv::norm(bar1.center - bar2.center);
+    float avgLength = (bar1.length + bar2.length) / 2;
+    if (distance &lt; avgLength * 1.5 || distance &gt; avgLength * 4.0) {
+        return false;
+    }
+    
+    // 判据2：角度
+    float angle1 = normalizeAngle(bar1.angle);
+    float angle2 = normalizeAngle(bar2.angle);
+    float angleDiff = std::abs(angle1 - angle2);
+    if (angleDiff &gt; 10.0) {
+        return false;
+    }
+    
+    // 判据3：长度比
+    float lengthRatio = std::max(bar1.length, bar2.length) / 
+                        std::min(bar1.length, bar2.length);
+    if (lengthRatio &gt; 2.0) {
+        return false;
+    }
+    
+    // 判据4：高度差
+    float heightDiff = std::abs(bar1.center.y - bar2.center.y);
+    if (heightDiff &gt; avgLength * 0.5) {
+        return false;
+    }
+    
+    return true;
+}
+
+// ========== 配对函数 ==========
+std::vector&lt;ArmorPlate&gt; findArmorPlates(const std::vector&lt;LightBar&gt;&amp; lightBars) {
+    std::vector&lt;ArmorPlate&gt; armorPlates;
+    
+    for (size_t i = 0; i &lt; lightBars.size(); i++) {
+        for (size_t j = i + 1; j &lt; lightBars.size(); j++) {
+            if (isValidArmorPair(lightBars[i], lightBars[j])) {
+                if (lightBars[i].center.x &lt; lightBars[j].center.x) {
+                    armorPlates.emplace_back(lightBars[i], lightBars[j]);
+                } else {
+                    armorPlates.emplace_back(lightBars[j], lightBars[i]);
+                }
+            }
+        }
+    }
+    
+    return armorPlates;
+}
+
+// ========== 可视化 ==========
+void drawArmorPlate(cv::Mat&amp; image, const ArmorPlate&amp; armor, int index) {
+    // 绘制左侧灯条
+    cv::Point2f v1[4];
+    armor.leftBar.rect.points(v1);
+    for (int i = 0; i &lt; 4; i++) {
+        cv::line(image, v1[i], v1[(i+1)%4], cv::Scalar(0, 255, 0), 2);
+    }
+    
+    // 绘制右侧灯条
+    cv::Point2f v2[4];
+    armor.rightBar.rect.points(v2);
+    for (int i = 0; i &lt; 4; i++) {
+        cv::line(image, v2[i], v2[(i+1)%4], cv::Scalar(0, 255, 0), 2);
+    }
+    
+    // 绘制连接线
+    cv::line(image, armor.leftBar.center, armor.rightBar.center, 
+             cv::Scalar(0, 255, 255), 2);
+    
+    // 绘制中心点
+    cv::circle(image, armor.center, 5, cv::Scalar(0, 0, 255), -1);
+    
+    // 显示信息
+    std::string info = "Armor#" + std::to_string(index);
+    cv::putText(image, info, 
+                cv::Point(armor.center.x - 30, armor.center.y - 15),
+                cv::FONT_HERSHEY_SIMPLEX, 0.6, 
+                cv::Scalar(255, 255, 255), 2);
+}
+
+// ========== 主函数 ==========
+int main() {
+    // 读取图片
+    cv::Mat src = cv::imread("armor_test.jpg");
+    if (src.empty()) {
+        std::cerr &lt;&lt; "无法读取图片！" &lt;&lt; std::endl;
+        return -1;
+    }
+    
+    // 这里需要调用之前的灯条检测函数
+    // std::vector&lt;LightBar&gt; lightBars = detectLightBars(src);
+    
+    // 示例：手动创建测试数据
+    std::vector&lt;LightBar&gt; lightBars;
+    // TODO: 添加测试灯条
+    
+    // 装甲板配对
+    std::vector&lt;ArmorPlate&gt; armorPlates = findArmorPlates(lightBars);
+    
+    // 绘制结果
+    cv::Mat result = src.clone();
+    for (size_t i = 0; i &lt; armorPlates.size(); i++) {
+        drawArmorPlate(result, armorPlates[i], i);
+    }
+    
+    // 显示
+    std::cout &lt;&lt; "检测到 " &lt;&lt; armorPlates.size() &lt;&lt; " 个装甲板" &lt;&lt; std::endl;
+    cv::imshow("结果", result);
+    cv::waitKey(0);
+    
+    return 0;
+}
+</code></pre>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="RM"></category>
+  </entry>
   <entry>
     <title>RM装甲板识别 - 03 形态学处理</title>
     <link href="https://www.nanye404.top/posts/rm_opencv_03/" rel="alternate" type="text/html"/>
@@ -87,10 +1155,6 @@
 </table>
 <hr />
 <h2>1. cv::getStructuringElement() - 创建形态学核</h2>
-<h3>函数原型</h3>
-<pre><code>Mat cv::getStructuringElement(int shape, Size ksize, 
-                               Point anchor = Point(-1,-1));
-</code></pre>
 <h3>核形状类型</h3>
 <table>
 <thead>
@@ -121,10 +1185,8 @@
 <h3>基础用法</h3>
 <pre><code>// 创建3×3矩形核
 cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-
 // 创建5×5椭圆核
 cv::Mat kernel2 = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5));
-
 // 创建7×7十字核
 cv::Mat kernel3 = cv::getStructuringElement(cv::MORPH_CROSS, cv::Size(7, 7));
 </code></pre>
@@ -166,37 +1228,14 @@ cv::Mat kernel3 = cv::getStructuringElement(cv::MORPH_CROSS, cv::Size(7, 7));
 <pre><code>void cv::dilate(InputArray src, OutputArray dst, InputArray kernel,
                 Point anchor = Point(-1,-1), int iterations = 1);
 </code></pre>
-<h3>📋 参数说明</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>src</code></td>
-<td>输入二值图</td>
-</tr>
-<tr>
-<td><code>dst</code></td>
-<td>输出结果</td>
-</tr>
-<tr>
-<td><code>kernel</code></td>
-<td>形态学核</td>
-</tr>
-<tr>
-<td><code>anchor</code></td>
-<td>锚点位置（-1,-1表示中心）</td>
-</tr>
-<tr>
-<td><code>iterations</code></td>
-<td>迭代次数（重复膨胀几次）</td>
-</tr>
-</tbody>
-</table>
+<h3>参数说明</h3>
+<ul>
+<li><code>src</code>  输入二值图</li>
+<li><code>dst</code>  输出结果</li>
+<li><code>kernel</code>  形态学核</li>
+<li><code>anchor</code>  锚点位置（-1,-1表示中心）</li>
+<li><code>iterations</code>  迭代次数（重复膨胀几次）</li>
+</ul>
 <h3>基础用法</h3>
 <pre><code>cv::Mat binary = extractColor(img);
 cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
@@ -205,9 +1244,6 @@ cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 cv::Mat eroded;
 cv::erode(binary, eroded, kernel);
 
-cv::imshow("原始二值图", binary);
-cv::imshow("腐蚀后", eroded);
-cv::waitKey(0);
 </code></pre>
 <h3>应用场景</h3>
 <ul>
@@ -221,11 +1257,6 @@ cv::waitKey(0);
 </ul>
 <hr />
 <h2>4. cv::morphologyEx() - 高级形态学操作</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::morphologyEx(InputArray src, OutputArray dst, int op,
-                      InputArray kernel, Point anchor = Point(-1,-1),
-                      int iterations = 1);
-</code></pre>
 <h3>操作类型</h3>
 <table>
 <thead>
@@ -271,21 +1302,13 @@ cv::waitKey(0);
 </table>
 <hr />
 <h2>5. 闭运算 (MORPH_CLOSE)</h2>
-<h3>工作原理</h3>
-<ul>
-<li>闭运算 = 先膨胀 → 再腐蚀</li>
-</ul>
 <h3>基础用法</h3>
 <pre><code>cv::Mat binary = extractColor(img);
 cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
-
 // 闭运算
 cv::Mat closed;
 cv::morphologyEx(binary, closed, cv::MORPH_CLOSE, kernel);
 
-cv::imshow("原始", binary);
-cv::imshow("闭运算后", closed);
-cv::waitKey(0);
 </code></pre>
 <h3>应用场景</h3>
 <ul>
@@ -303,10 +1326,6 @@ cv::Mat kernel_good = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
 </code></pre>
 <hr />
 <h2>6. 开运算 (MORPH_OPEN) - 去噪利器</h2>
-<h3>工作原理</h3>
-<ul>
-<li>开运算 = 先腐蚀 → 再膨胀</li>
-</ul>
 <h3>基础用法</h3>
 <pre><code>cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 
@@ -325,15 +1344,12 @@ cv::morphologyEx(binary, opened, cv::MORPH_OPEN, kernel);
 <h3>标准流程（两步法）</h3>
 <pre><code>cv::Mat processArmor(const cv::Mat&amp; img) {
     // 1. 颜色提取
-    cv::Mat binary = extractColor(img);  // 从第02章获得
-    
+    cv::Mat binary = extractColor(img); 
     // 2. 形态学处理
     cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
-    
     // 第一步：闭运算（填补灯条缝隙）
     cv::Mat closed;
     cv::morphologyEx(binary, closed, cv::MORPH_CLOSE, kernel);
-    
     // 第二步：开运算（去除噪点）
     cv::Mat result;
     cv::morphologyEx(closed, result, cv::MORPH_OPEN, kernel);
@@ -343,9 +1359,6 @@ cv::morphologyEx(binary, opened, cv::MORPH_OPEN, kernel);
 </code></pre>
 <hr />
 <h2>8. 形态学梯度 (MORPH_GRADIENT)</h2>
-<h3>工作原理</h3>
-<pre><code>梯度 = 膨胀 - 腐蚀
-</code></pre>
 <h3>基础用法</h3>
 <pre><code>cv::Mat gradient;
 cv::morphologyEx(binary, gradient, cv::MORPH_GRADIENT, kernel);
@@ -436,93 +1449,6 @@ int main() {
 }
 </code></pre>
 <hr />
-<h2>常见问题排查</h2>
-<h3>问题1: 处理后灯条消失了</h3>
-<pre><code>// 原因：核太大，把灯条也腐蚀掉了
-cv::Mat kernel_bad = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(15, 15));
-
-// 解决：减小核尺寸
-cv::Mat kernel_good = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
-</code></pre>
-<h3>问题2: 两个灯条粘在一起了</h3>
-<pre><code>// 原因：闭运算膨胀太强
-// 解决1：减小核尺寸
-cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-
-// 解决2：减少迭代次数
-cv::morphologyEx(binary, closed, cv::MORPH_CLOSE, kernel, cv::Point(-1,-1), 1);
-
-// 解决3：不用闭运算，只用轻微膨胀
-cv::dilate(binary, result, kernel, cv::Point(-1,-1), 1);
-</code></pre>
-<h3>问题3: 噪点还是很多</h3>
-<pre><code>// 原因：核太小
-cv::Mat kernel_small = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-
-// 解决：增大核或增加迭代次数
-cv::Mat kernel_big = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(7, 7));
-// 或者
-cv::morphologyEx(binary, result, cv::MORPH_OPEN, kernel, cv::Point(-1,-1), 2);
-</code></pre>
-<h3>问题4: 不知道用哪个操作</h3>
-<pre><code>// 决策树：
-if (灯条有断裂/缝隙) {
-    使用闭运算 MORPH_CLOSE
-}
-if (有很多小噪点) {
-    使用开运算 MORPH_OPEN
-}
-if (既有断裂又有噪点) {
-    先闭运算，再开运算  // ← RM标准流程
-}
-</code></pre>
-<hr />
-<h2>调试技巧</h2>
-<h3>技巧1: 可视化每一步</h3>
-<pre><code>cv::Mat binary = extractColor(img);
-
-cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
-
-// 保存每一步
-cv::imshow("1-原始", binary);
-
-cv::Mat closed;
-cv::morphologyEx(binary, closed, cv::MORPH_CLOSE, kernel);
-cv::imshow("2-闭运算", closed);
-
-cv::Mat opened;
-cv::morphologyEx(closed, opened, cv::MORPH_OPEN, kernel);
-cv::imshow("3-开运算", opened);
-
-cv::waitKey(0);
-</code></pre>
-<h3>技巧2: 创建滑块调参</h3>
-<pre><code>int kernelSize = 5;
-
-void on_trackbar(int, void*) {}
-
-int main() {
-    cv::namedWindow("调参");
-    cv::createTrackbar("核尺寸", "调参", &amp;kernelSize, 15, on_trackbar);
-    
-    while (true) {
-        if (kernelSize % 2 == 0) kernelSize++;  // 确保奇数
-        if (kernelSize &lt; 3) kernelSize = 3;
-        
-        cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, 
-                                                   cv::Size(kernelSize, kernelSize));
-        
-        cv::Mat result;
-        cv::morphologyEx(binary, result, cv::MORPH_CLOSE, kernel);
-        
-        cv::imshow("结果", result);
-        if (cv::waitKey(30) == 27) break;
-    }
-    
-    return 0;
-}
-</code></pre>
-<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -578,15 +1504,14 @@ int main() {
 <li><strong>特定颜色</strong>（红色或蓝色）</li>
 <li><strong>高亮度</strong>（灯条是发光的）</li>
 </ol>
-<p>RM视觉中有<strong>两条主流路线</strong>：</p>
-<h3>路线1: 通道相减法</h3>
+<h3>通道相减法</h3>
 <ul>
 <li><strong>原理</strong>: BGR图像中，红色区域R通道值高、B通道值低，相减后红色凸显</li>
 <li><strong>优点</strong>: 速度极快（1-2ms），实时性好</li>
 <li><strong>缺点</strong>: 易受环境光干扰，需要后续强筛选</li>
 <li><strong>适用</strong>: 比赛实战、光照稳定环境</li>
 </ul>
-<h3>路线2: HSV筛选法</h3>
+<h3>HSV筛选法</h3>
 <ul>
 <li><strong>原理</strong>: HSV分离了颜色和亮度，可精确筛选颜色范围</li>
 <li><strong>优点</strong>: 抗干扰能力强，准确度高</li>
@@ -595,79 +1520,39 @@ int main() {
 </ul>
 <hr />
 <h2>1. cv::split() - 分离BGR通道</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::split(const Mat&amp; src, Mat* mvbegin);
-void cv::split(InputArray src, OutputArrayOfArrays mvs);
-</code></pre>
-<h3>核心概念</h3>
-<p>OpenCV的彩色图是<strong>BGR三通道</strong>（不是RGB！）：</p>
-<ul>
-<li><strong>B通道 (channels[0])</strong>: 蓝色分量 (0-255)</li>
-<li><strong>G通道 (channels[1])</strong>: 绿色分量 (0-255)</li>
-<li><strong>R通道 (channels[2])</strong>: 红色分量 (0-255)</li>
-</ul>
 <h3>基础用法</h3>
 <pre><code>#include &lt;opencv2/opencv.hpp&gt;
 #include &lt;vector&gt;
 
 int main() {
     cv::Mat img = cv::imread("armor.jpg");
-    
     // 分离通道
     std::vector&lt;cv::Mat&gt; channels;
-    cv::split(img, channels);
-    
+    cv::split(img, channels);    
     // 现在：
     // channels[0] = B通道（蓝色分量）
     // channels[1] = G通道（绿色分量）
-    // channels[2] = R通道（红色分量）
-    
-    // 可视化各通道
-    cv::imshow("B通道", channels[0]);
-    cv::imshow("G通道", channels[1]);
-    cv::imshow("R通道", channels[2]);
+    // channels[2] = R通道（红色分量）  
     cv::waitKey(0);
     
     return 0;
 }
 </code></pre>
-<h3>通道含义理解</h3>
-<p>假设有一个像素的BGR值是 <code>(50, 100, 200)</code>：</p>
-<pre><code>cv::Vec3b pixel(50, 100, 200);  // (B, G, R)
-// B=50:  蓝色分量很低
-// G=100: 绿色分量中等
-// R=200: 红色分量很高
-// 所以这个像素是：红色偏多的橙红色
-</code></pre>
-<p><strong>观察规律</strong>：</p>
-<ul>
-<li>红色灯条：R通道很亮，B通道很暗</li>
-<li>蓝色灯条：B通道很亮，R通道很暗</li>
-</ul>
 <hr />
-<h2>2. 通道相减法（RM经典）</h2>
+<h2>2. 通道相减法</h2>
 <h3>提取红色</h3>
 <pre><code>cv::Mat img = cv::imread("red_armor.jpg");
-
 // 分离通道
 std::vector&lt;cv::Mat&gt; channels;
 cv::split(img, channels);
-
 // 红色 = R通道 - B通道
 cv::Mat red;
 cv::subtract(channels[2], channels[0], red);
-
 // 二值化
 cv::Mat binary;
 cv::threshold(red, binary, 100, 255, cv::THRESH_BINARY);
-
 // 查看效果
-cv::imshow("原图", img);
-cv::imshow("R通道", channels[2]);
-cv::imshow("B通道", channels[0]);
-cv::imshow("相减结果", red);
-cv::imshow("二值化", binary);
-cv::waitKey(0);
+
 </code></pre>
 <h3>提取蓝色</h3>
 <pre><code>// 蓝色 = B通道 - R通道
@@ -677,111 +1562,27 @@ cv::subtract(channels[0], channels[2], blue);
 cv::Mat binary_blue;
 cv::threshold(blue, binary_blue, 100, 255, cv::THRESH_BINARY);
 </code></pre>
-<h3>为什么通道相减有效？</h3>
-<p><strong>原理分析</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>区域类型</th>
-<th>R值</th>
-<th>B值</th>
-<th>R-B结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>红色灯条</td>
-<td>250</td>
-<td>50</td>
-<td><strong>200</strong> (很亮)</td>
-</tr>
-<tr>
-<td>蓝色灯条</td>
-<td>50</td>
-<td>250</td>
-<td>0 (饱和到0)</td>
-</tr>
-<tr>
-<td>白色区域</td>
-<td>200</td>
-<td>200</td>
-<td>0 (相互抵消)</td>
-</tr>
-<tr>
-<td>黑色区域</td>
-<td>20</td>
-<td>20</td>
-<td>0 (都很暗)</td>
-</tr>
-</tbody>
-</table>
-<p>通道相减后，<strong>只有红色灯条会保留高亮值</strong>！</p>
-<h3>通道相减的局限性</h3>
-<pre><code>// 问题1: 环境中的红色物体也会被提取
-// 比如：红色衣服、红色海报、红色灯光
-
-// 问题2: 光照不均会导致漏检
-// 暗处的红色灯条可能 R-B &lt; 阈值
-
-// 解决方案：需要后续用形态学+轮廓筛选来过滤
-</code></pre>
 <hr />
 <h2>3. cv::cvtColor() - 颜色空间转换</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::cvtColor(InputArray src, OutputArray dst, int code);
-</code></pre>
+<h3></h3>
 <h3>常用转换代码</h3>
-<table>
-<thead>
-<tr>
-<th>code</th>
-<th>说明</th>
-<th>用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>COLOR_BGR2GRAY</code></td>
-<td>BGR转灰度</td>
-<td>简化图像处理</td>
-</tr>
-<tr>
-<td><code>COLOR_BGR2HSV</code></td>
-<td>BGR转HSV</td>
-<td><strong>装甲板识别核心</strong></td>
-</tr>
-<tr>
-<td><code>COLOR_BGR2RGB</code></td>
-<td>BGR转RGB</td>
-<td>与其他库对接</td>
-</tr>
-<tr>
-<td><code>COLOR_HSV2BGR</code></td>
-<td>HSV转回BGR</td>
-<td>调试可视化</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>COLOR_BGR2GRAY</code>  BGR转灰度</li>
+<li><code>COLOR_BGR2HSV</code>  BGR转HSV</li>
+<li><code>COLOR_BGR2RGB</code> BGR转RGB</li>
+<li><code>COLOR_HSV2BGR</code>  HSV转回BGR</li>
+</ul>
 <h3>HSV颜色空间详解</h3>
 <p>HSV把颜色分解为3个维度：</p>
 <pre><code>H (色调 Hue): 0-180
 ├─ 0-10:    红色(第一段)
-├─ 11-25:   橙色
-├─ 26-34:   黄色
-├─ 35-77:   绿色
-├─ 78-99:   青色
 ├─ 100-124: 蓝色  装甲板蓝色
-├─ 125-155: 紫色
 └─ 170-180: 红色(第二段) 装甲板红色
 
 S (饱和度 Saturation): 0-255
-├─ 0-50:   灰白色（颜色不纯）
-├─ 50-100: 淡色
 └─ 100-255: 鲜艳色 灯条在这里
 
 V (明度 Value): 0-255
-├─ 0-50:   黑暗
-├─ 50-100: 暗淡
 └─ 100-255: 明亮 灯条在这里
 </code></pre>
 <h3>BGR转HSV</h3>
@@ -789,60 +1590,15 @@ V (明度 Value): 0-255
 cv::Mat hsv;
 cv::cvtColor(img, hsv, cv::COLOR_BGR2HSV);
 
-// 查看HSV各通道
-std::vector&lt;cv::Mat&gt; hsv_channels;
-cv::split(hsv, hsv_channels);
-
-cv::imshow("H通道(色调)", hsv_channels[0]);
-cv::imshow("S通道(饱和度)", hsv_channels[1]);
-cv::imshow("V通道(明度)", hsv_channels[2]);
-cv::waitKey(0);
-</code></pre>
-<h3>为什么HSV更适合颜色识别？</h3>
-<p><strong>BGR的问题</strong>：</p>
-<pre><code>// 亮红色 vs 暗红色，BGR值差异大
-亮红色: (0, 0, 255)
-暗红色: (0, 0, 100)
-// 用BGR很难用一个范围同时包含它们
-
-// 但在HSV中：
-亮红色: (0, 255, 255)  // H=0, S=255, V=255
-暗红色: (0, 255, 100)  // H=0, S=255, V=100
-// H和S相同！只是V不同，可以用 H in [0,10] 统一识别
 </code></pre>
 <hr />
 <h2>4. cv::inRange() - 颜色范围筛选</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::inRange(InputArray src, InputArray lowerb, 
-                 InputArray upperb, OutputArray dst);
-</code></pre>
-<h3>参数说明</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>src</code></td>
-<td>输入图像（通常是HSV）</td>
-</tr>
-<tr>
-<td><code>lowerb</code></td>
-<td>下界（Scalar(H_min, S_min, V_min)）</td>
-</tr>
-<tr>
-<td><code>upperb</code></td>
-<td>上界（Scalar(H_max, S_max, V_max)）</td>
-</tr>
-<tr>
-<td><code>dst</code></td>
-<td>输出二值图（在范围内=255，否则=0）</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>src</code>  输入图像（通常是HSV）</li>
+<li><code>lowerb</code>  下界（Scalar(H_min, S_min, V_min)）</li>
+<li><code>upperb</code>  上界（Scalar(H_max, S_max, V_max)）</li>
+<li><code>dst</code>  输出二值图（在范围内=255，否则=0）</li>
+</ul>
 <h3>提取红色（完整版）</h3>
 <pre><code>cv::Mat img = cv::imread("red_armor.jpg");
 cv::Mat hsv;
@@ -865,12 +1621,6 @@ cv::inRange(hsv, lower_red2, upper_red2, mask2);
 // 合并两段（位运算：或）
 cv::bitwise_or(mask1, mask2, red_mask);
 
-// 查看效果
-cv::imshow("原图", img);
-cv::imshow("mask1 (H=0-10)", mask1);
-cv::imshow("mask2 (H=170-180)", mask2);
-cv::imshow("最终红色mask", red_mask);
-cv::waitKey(0);
 </code></pre>
 <h3>提取蓝色</h3>
 <pre><code>// 蓝色只需要一段
@@ -930,93 +1680,14 @@ int main() {
     return 0;
 }
 </code></pre>
-<h3>推荐参数范围</h3>
-<table>
-<thead>
-<tr>
-<th>颜色</th>
-<th>H范围</th>
-<th>S范围</th>
-<th>V范围</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>红色</strong></td>
-<td>0-10, 170-180</td>
-<td>100-255</td>
-<td>100-255</td>
-<td>两段合并</td>
-</tr>
-<tr>
-<td><strong>蓝色</strong></td>
-<td>100-130</td>
-<td>100-255</td>
-<td>100-255</td>
-<td>单段即可</td>
-</tr>
-<tr>
-<td>白色</td>
-<td>任意</td>
-<td>0-30</td>
-<td>200-255</td>
-<td>低饱和度+高亮度</td>
-</tr>
-<tr>
-<td>黑色</td>
-<td>任意</td>
-<td>任意</td>
-<td>0-50</td>
-<td>只看亮度</td>
-</tr>
-</tbody>
-</table>
-<p><strong>这些参数不是固定的！</strong> 需要根据：</p>
-<ul>
-<li>相机型号</li>
-<li>光照条件</li>
-<li>灯条亮度
-实际调整！</li>
-</ul>
 <hr />
 <h2>5. cv::threshold() - 简单阈值二值化</h2>
-<h3>函数原型</h3>
-<pre><code>double cv::threshold(InputArray src, OutputArray dst, 
-                     double thresh, double maxval, int type);
-</code></pre>
-<h3>常用类型</h3>
-<table>
-<thead>
-<tr>
-<th>type</th>
-<th>说明</th>
-<th>公式</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>THRESH_BINARY</code></td>
-<td>标准二值化</td>
-<td><code>pixel &gt; thresh ? maxval : 0</code></td>
-</tr>
-<tr>
-<td><code>THRESH_BINARY_INV</code></td>
-<td>反向二值化</td>
-<td><code>pixel &gt; thresh ? 0 : maxval</code></td>
-</tr>
-<tr>
-<td><code>THRESH_TRUNC</code></td>
-<td>截断</td>
-<td><code>pixel &gt; thresh ? thresh : pixel</code></td>
-</tr>
-<tr>
-<td><code>THRESH_TOZERO</code></td>
-<td>低于阈值归零</td>
-<td><code>pixel &gt; thresh ? pixel : 0</code></td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>THRESH_BINARY</code> | 标准二值化</li>
+<li><code>THRESH_BINARY_INV</code> | 反向二值化</li>
+<li><code>THRESH_TRUNC</code> | 截断</li>
+<li><code>THRESH_TOZERO</code> | 低于阈值归零</li>
+</ul>
 <h3>配合通道相减使用</h3>
 <pre><code>// 提取红色
 cv::Mat red;
@@ -1028,7 +1699,7 @@ cv::threshold(red, binary, 100, 255, cv::THRESH_BINARY);
 // 像素 &gt; 100 → 255(白)
 // 像素 &lt;= 100 → 0(黑)
 </code></pre>
-<h3>💻 自适应阈值（应对光照不均）</h3>
+<h3>自适应阈值（应对光照不均）</h3>
 <pre><code>cv::Mat gray;
 cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 
@@ -1146,45 +1817,6 @@ int main() {
 }
 </code></pre>
 <hr />
-<h2>常见问题排查</h2>
-<h3>问题1: 提取不出颜色</h3>
-<pre><code>// 检查清单：
-// 1. 确认图像不是空的
-if (img.empty()) return;
-
-// 2. 打印HSV值看看范围对不对
-cv::Vec3b pixel = hsv.at&lt;cv::Vec3b&gt;(y, x);  // 点击灯条位置
-std::cout &lt;&lt; "H=" &lt;&lt; (int)pixel[0] 
-          &lt;&lt; " S=" &lt;&lt; (int)pixel[1] 
-          &lt;&lt; " V=" &lt;&lt; (int)pixel[2] &lt;&lt; std::endl;
-
-// 3. 用滑块调参
-</code></pre>
-<h3>问题2: 提取出太多杂色</h3>
-<pre><code>// 解决方案：
-// 1. 提高S和V的下限（只要鲜艳+明亮的）
-cv::Scalar lower(0, 150, 150);  // 提高S_min和V_min
-
-// 2. 后续用形态学降噪
-// 3. 轮廓筛选时过滤小面积
-</code></pre>
-<h3>问题3: 红色只检测到一半</h3>
-<pre><code>// 原因：忘记合并红色的两段
-// 解决：
-cv::bitwise_or(mask1, mask2, final_mask);
-</code></pre>
-<hr />
-<h2>检查清单</h2>
-<p>完成本阶段后，你应该能够：</p>
-<ul>
-<li>[ ] 理解BGR和HSV的区别</li>
-<li>[ ] 用 <code>cv::split()</code> 分离通道并计算 R-B</li>
-<li>[ ] 用 <code>cv::inRange()</code> 提取红色/蓝色</li>
-<li>[ ] 知道红色需要两段范围合并</li>
-<li>[ ] 能用滑块调试HSV参数</li>
-<li>[ ] 理解通道相减法和HSV法的优劣</li>
-</ul>
-<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -1198,7 +1830,7 @@ cv::bitwise_or(mask1, mask2, final_mask);
     <published>2025-10-24T00:00:00.000Z</published>
     <updated>2025-10-24T00:00:00.000Z</updated>
     <summary>无</summary>
-    <content type="html"><![CDATA[<h2>📚 本阶段核心API清单</h2>
+    <content type="html"><![CDATA[<h2>本阶段核心API清单</h2>
 <table>
 <thead>
 <tr>
@@ -1254,12 +1886,6 @@ cv::bitwise_or(mask1, mask2, final_mask);
 </ol>
 <hr />
 <h2>1. cv::findContours() - 查找轮廓</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::findContours(InputOutputArray image, 
-                      OutputArrayOfArrays contours,
-                      int mode, int method, 
-                      Point offset = Point());
-</code></pre>
 <h3>参数详解</h3>
 <h4>mode - 轮廓检索模式</h4>
 <table>
@@ -1343,9 +1969,7 @@ int main() {
 </code></pre>
 <h3>重要注意事项</h3>
 <h4>注意1: findContours会修改输入图像！</h4>
-<pre><code>//  错误：原始binary被修改了
-cv::findContours(binary, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
+<pre><code>
 //  正确：传入副本
 cv::Mat binary_copy = binary.clone();
 cv::findContours(binary_copy, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -1416,12 +2040,6 @@ for (const auto&amp; contour : contours) {
 std::cout &lt;&lt; "过滤后剩余 " &lt;&lt; validContours.size() &lt;&lt; " 个轮廓" &lt;&lt; std::endl;
 </code></pre>
 <h3>面积阈值如何选择？</h3>
-<p>这取决于：</p>
-<ol>
-<li><strong>图像分辨率</strong> - 1920×1080 vs 640×480</li>
-<li><strong>装甲板距离</strong> - 近距离灯条大，远距离灯条小</li>
-<li><strong>相机FOV</strong> - 视场角大小</li>
-</ol>
 <p><strong>推荐方法</strong>：</p>
 <pre><code>// 根据图像大小自适应
 int imageArea = binary.rows * binary.cols;
@@ -1437,11 +2055,6 @@ for (const auto&amp; contour : contours) {
 </code></pre>
 <hr />
 <h2>4. cv::minAreaRect() - 最小旋转矩形</h2>
-<h3>函数原型</h3>
-<pre><code>RotatedRect cv::minAreaRect(InputArray points);
-</code></pre>
-<h3>为什么用旋转矩形？</h3>
-<p>灯条通常是<strong>倾斜</strong>的，普通矩形无法准确描述：</p>
 <h3>基础用法</h3>
 <pre><code>for (const auto&amp; contour : contours) {
     // 拟合最小旋转矩形
@@ -1478,7 +2091,6 @@ float angle = rect.angle;          // 范围: -90° ~ 0°
 <pre><code>// angle的含义：
 // 从水平方向逆时针旋转到矩形长边的角度
 // 范围：-90° 到 0°
-
 // 例子：
 angle = -90°  → 矩形垂直（竖着）
 angle = -45°  → 矩形倾斜45度
@@ -1610,35 +2222,8 @@ std::vector&lt;LightBar&gt; detectLightBars(const cv::Mat&amp; binary) {
     return lightBars;
 }
 </code></pre>
-<h3>筛选效果展示</h3>
-<pre><code>// 假设找到20个轮廓：
-
-轮廓1: 面积=50      太小，过滤
-轮廓2: 面积=800    通过面积
-       长宽比=5.2    通过长宽比
-       填充度=0.8  通过填充度
-       结果: 灯条候选1 
-
-轮廓3: 面积=1200     通过面积
-       长宽比=1.1   太矮，过滤
-
-轮廓4: 面积=900      通过面积
-       长宽比=4.8    通过长宽比
-       填充度=0.3   太空，过滤
-
-...
-
-最终: 找到4个灯条（2对装甲板）
-</code></pre>
 <hr />
 <h2>7. cv::drawContours() - 绘制轮廓（调试）</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::drawContours(InputOutputArray image,
-                      InputArrayOfArrays contours,
-                      int contourIdx, 
-                      const Scalar&amp; color,
-                      int thickness = 1);
-</code></pre>
 <h3>基础用法</h3>
 <pre><code>cv::Mat display = img.clone();
 
@@ -1697,7 +2282,7 @@ for (const auto&amp; bar : lightBars) {
     drawRotatedRect(display, bar.rect, cv::Scalar(0, 255, 0), 2);
 }
 </code></pre>
-<h3>🎨 增强版（带中心点和文字）</h3>
+<h3>增强版（带中心点和文字）</h3>
 <pre><code>void drawLightBar(cv::Mat&amp; img, const LightBar&amp; bar, int id) {
     // 绘制旋转矩形
     cv::Point2f vertices[4];
@@ -1718,34 +2303,6 @@ for (const auto&amp; bar : lightBars) {
                 cv::FONT_HERSHEY_SIMPLEX, 0.5, 
                 cv::Scalar(255, 255, 255), 2);
 }
-</code></pre>
-<hr />
-<h2>9. cv::boundingRect() - 正矩形包围框</h2>
-<h3>函数原型</h3>
-<pre><code>Rect cv::boundingRect(InputArray points);
-</code></pre>
-<h3>基础用法</h3>
-<pre><code>for (const auto&amp; contour : contours) {
-    // 获取正矩形（水平/垂直边）
-    cv::Rect bbox = cv::boundingRect(contour);
-    
-    // 绘制
-    cv::rectangle(img, bbox, cv::Scalar(255, 0, 0), 2);
-    
-    // 裁剪ROI
-    cv::Mat roi = img(bbox);
-}
-</code></pre>
-<h3>正矩形 vs 旋转矩形</h3>
-<pre><code>cv::Rect bbox = cv::boundingRect(contour);         // 正矩形
-cv::RotatedRect rect = cv::minAreaRect(contour);   // 旋转矩形
-
-// 正矩形：边平行于坐标轴，面积可能较大
-// 旋转矩形：最小面积，但边可能倾斜
-
-// 用途：
-// - 正矩形：裁剪ROI、快速碰撞检测
-// - 旋转矩形：精确描述灯条形状和角度
 </code></pre>
 <hr />
 <h2>10. cv::fitEllipse() - 椭圆拟合（能量机关用）</h2>
@@ -2013,31 +2570,11 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
 </table>
 <hr />
 <h2>1. cv::imread() - 读取图片</h2>
-<h3>函数原型</h3>
-<pre><code>cv::Mat cv::imread(const String&amp; filename, int flags = IMREAD_COLOR);
-</code></pre>
 <h3>参数说明</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>filename</code></td>
-<td>string</td>
-<td>图片路径（相对或绝对路径）</td>
-</tr>
-<tr>
-<td><code>flags</code></td>
-<td>int</td>
-<td>读取模式（见下表）</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>filename</code>    图片路径（相对或绝对路径）
+-<code>flags</code> 读取模式（见下表）</li>
+</ul>
 <p><strong>flags常用值:</strong></p>
 <ul>
 <li><code>cv::IMREAD_COLOR</code> (默认) - 读取彩色图，忽略透明度</li>
@@ -2049,7 +2586,7 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
     // 读取彩色图（装甲板识别用这个）
     cv::Mat img = cv::imread("armor.jpg", cv::IMREAD_COLOR);
     
-    //  必须检查是否读取成功！
+    //  必须检查是否读取成功，不检查后续操作会崩溃
     if (img.empty()) {
         std::cout &lt;&lt; " 图片读取失败！" &lt;&lt; std::endl;
         return -1;
@@ -2066,25 +2603,10 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
    尺寸: 1280 x 720
    通道数: 3
 </code></pre>
-<h3>常见错误</h3>
-<h4>错误1: 路径写错</h4>
-<pre><code>
-// 正确写法
-cv::Mat img = cv::imread("/home/user/img.jpg");     // 绝对路径
+<h3>注意路径的写法</h3>
+<pre><code>cv::Mat img = cv::imread("/home/user/img.jpg");     // 绝对路径
 cv::Mat img = cv::imread("img.jpg");       //相对路径
 
-</code></pre>
-<h4>错误2: 忘记检查empty()</h4>
-<pre><code>// 如果文件不存在，后续操作会崩溃
-cv::Mat img = cv::imread("not_exist.jpg");
-cv::imshow("Window", img);  // 崩溃
-
-//  正确写法
-cv::Mat img = cv::imread("not_exist.jpg");
-if (img.empty()) {
-    std::cerr &lt;&lt; "文件不存在或格式不支持" &lt;&lt; std::endl;
-    return -1;
-}
 </code></pre>
 <blockquote>
 <p><strong>OpenCV读取的图片是BGR格式，不是RGB！</strong><br />
@@ -2092,38 +2614,18 @@ if (img.empty()) {
 </blockquote>
 <hr />
 <h2>2. cv::imshow() - 显示图片</h2>
-<h3>函数原型</h3>
-<pre><code>void cv::imshow(const String&amp; winname, InputArray mat);
-</code></pre>
 <h3>参数说明</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>winname</code></td>
-<td>string</td>
-<td>窗口名称（自己起名）</td>
-</tr>
-<tr>
-<td><code>mat</code></td>
-<td>Mat</td>
-<td>要显示的图像</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>winname</code>（自己起名）</li>
+<li><code>mat</code> 要显示的图像</li>
+</ul>
 <h3>基础用法</h3>
 <pre><code>cv::Mat img = cv::imread("armor.jpg");
 
 // 显示图片
 cv::imshow("原图", img);
 
-//  必须配合waitKey()，否则窗口闪现即消失！
+//  必须配合waitKey()，否则窗口闪现即消失
 cv::waitKey(0);  // 0表示无限等待，直到按任意键
 
 // 关闭所有窗口
@@ -2139,45 +2641,13 @@ cv::imshow("蓝方装甲板", img2);
 cv::waitKey(0);
 cv::destroyAllWindows();
 </code></pre>
-<h3>常见错误</h3>
-<pre><code>//错误：窗口闪一下就消失
-cv::imshow("Window", img);
-// 缺少 waitKey()
-
-// 正确写法
-cv::imshow("Window", img);
-cv::waitKey(0);
-</code></pre>
 <hr />
 <h2>3. cv::waitKey() - 等待按键</h2>
-<h3>函数原型</h3>
-<pre><code>int cv::waitKey(int delay = 0);
-</code></pre>
-<h3>参数说明</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>delay</code></td>
-<td>等待时间（毫秒），0表示无限等待</td>
-</tr>
-<tr>
-<td><strong>返回值</strong></td>
-<td>按下的键的ASCII码，超时返回-1</td>
-</tr>
-</tbody>
-</table>
-<h3>实用技巧</h3>
-<h4>技巧1: 等待任意键</h4>
+<h3>等待任意键</h3>
 <pre><code>cv::imshow("Image", img);
 cv::waitKey(0);  // 按任意键继续
 </code></pre>
-<h4>技巧2: 检测特定按键</h4>
+<h3>检测特定按键</h3>
 <pre><code>cv::imshow("Image", img);
 int key = cv::waitKey(0);
 
@@ -2188,7 +2658,7 @@ if (key == 27) {  // ESC键
     std::cout &lt;&lt; "图片已保存" &lt;&lt; std::endl;
 }
 </code></pre>
-<h4>技巧3: 实时视频显示（30fps）</h4>
+<h3>实时视频显示（30fps）</h3>
 <pre><code>while (true) {
     cv::Mat frame = getFrame();  // 获取一帧
     cv::imshow("Video", frame);
@@ -2213,11 +2683,6 @@ if (key == 27) {  // ESC键
 <pre><code>// 创建640×480的黑色图像
 cv::Mat black(480, 640, CV_8UC3, cv::Scalar(0, 0, 0));
 
-// 创建白色图像
-cv::Mat white(480, 640, CV_8UC3, cv::Scalar(255, 255, 255));
-
-// 创建红色图像
-cv::Mat red(480, 640, CV_8UC3, cv::Scalar(0, 0, 255));  // BGR格式！
 </code></pre>
 <h3>常用属性</h3>
 <pre><code>cv::Mat img = cv::imread("image.jpg");
@@ -2236,29 +2701,6 @@ int depth = img.depth();   // CV_8U 等
 size_t total = img.total();    // 总像素数 = rows × cols
 size_t bytes = img.total() * img.elemSize();  // 占用字节数
 </code></pre>
-<h3>访问像素值</h3>
-<h4>方法1: at访问（安全但慢）</h4>
-<pre><code>cv::Mat img = cv::imread("image.jpg");
-
-// 访问(100, 200)位置的像素
-cv::Vec3b pixel = img.at&lt;cv::Vec3b&gt;(100, 200);
-uchar blue = pixel[0];
-uchar green = pixel[1];
-uchar red = pixel[2];
-
-// 修改像素
-img.at&lt;cv::Vec3b&gt;(100, 200) = cv::Vec3b(255, 0, 0);  // 设为蓝色
-</code></pre>
-<h4>方法2: 指针访问（快但需小心）</h4>
-<pre><code>for (int y = 0; y &lt; img.rows; y++) {
-    uchar* row = img.ptr&lt;uchar&gt;(y);  // 获取第y行的指针
-    for (int x = 0; x &lt; img.cols; x++) {
-        uchar b = row[x * 3 + 0];
-        uchar g = row[x * 3 + 1];
-        uchar r = row[x * 3 + 2];
-    }
-}
-</code></pre>
 <h3>Mat类型代码说明</h3>
 <pre><code>// CV_&lt;bit-depth&gt;{U|S|F}C&lt;channels&gt;
 CV_8UC1   // 8位无符号，1通道（灰度图）
@@ -2268,9 +2710,6 @@ CV_16SC3  // 16位有符号，3通道
 </code></pre>
 <hr />
 <h2>5. cv::imwrite() - 保存图片</h2>
-<h3>函数原型</h3>
-<pre><code>bool cv::imwrite(const String&amp; filename, InputArray img);
-</code></pre>
 <h3>基础用法</h3>
 <pre><code>cv::Mat img = cv::imread("input.jpg");
 
@@ -2297,10 +2736,6 @@ cv::imwrite("output.png", img, png_params);
 </code></pre>
 <hr />
 <h2>6. cv::VideoCapture - 打开相机/视频</h2>
-<h3>函数原型</h3>
-<pre><code>cv::VideoCapture cap(int device);         // 打开相机
-cv::VideoCapture cap(const String&amp; filename);  // 打开视频文件
-</code></pre>
 <h3>打开相机</h3>
 <pre><code>#include &lt;opencv2/opencv.hpp&gt;
 
@@ -2310,15 +2745,10 @@ int main() {
     
     // 检查是否成功打开
     if (!cap.isOpened()) {
-        std::cerr &lt;&lt; "❌ 相机打开失败" &lt;&lt; std::endl;
+        std::cerr &lt;&lt; " 相机打开失败" &lt;&lt; std::endl;
         return -1;
     }
-    
-    // 设置相机参数（可选）
-    cap.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
-    cap.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
-    cap.set(cv::CAP_PROP_FPS, 60);
-    
+  
     cv::Mat frame;
     while (true) {
         // 读取一帧
@@ -2326,7 +2756,7 @@ int main() {
         // 或者: cap &gt;&gt; frame;
         
         if (frame.empty()) {
-            std::cerr &lt;&lt; "❌ 无法读取帧" &lt;&lt; std::endl;
+            std::cerr &lt;&lt; " 无法读取帧" &lt;&lt; std::endl;
             break;
         }
         
@@ -2413,16 +2843,6 @@ int main() {
 </code></pre>
 <p>&lt;/details&gt;</p>
 <hr />
-<h2>检查清单</h2>
-<p>完成本阶段后，你应该能够：</p>
-<ul>
-<li>[ ] 用 <code>cv::imread()</code> 读取图片并检查是否成功</li>
-<li>[ ] 用 <code>cv::imshow()</code> 和 <code>cv::waitKey()</code> 显示图片</li>
-<li>[ ] 理解Mat对象的基本属性（rows, cols, channels）</li>
-<li>[ ] 用 <code>cv::imwrite()</code> 保存处理结果</li>
-<li>[ ] 用 <code>cv::VideoCapture</code> 打开相机并实时显示</li>
-</ul>
-<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -2456,177 +2876,6 @@ int main() {
       <name>南叶酱</name>
     </author>
     <category term="日志"></category>
-  </entry>
-  <entry>
-    <title>双指针</title>
-    <link href="https://www.nanye404.top/posts/twop/" rel="alternate" type="text/html"/>
-    <id>https://www.nanye404.top/posts/twop/</id>
-    <published>2025-10-22T00:00:00.000Z</published>
-    <updated>2025-10-22T00:00:00.000Z</updated>
-    <summary>双指针常见技巧</summary>
-    <content type="html"><![CDATA[<ul>
-<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8">双指针在数组的运用</a>
-<ul>
-<li><a href="#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88">快慢指针</a></li>
-<li><a href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2">二分搜索</a></li>
-<li><a href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3">滑动窗口</a></li>
-<li><a href="#%E5%9B%9E%E6%96%87/%E5%8F%8D%E8%BD%AC">回文/反转</a></li>
-<li><a href="#%E6%95%B0%E4%B9%8B%E5%92%8C">数之和</a></li>
-</ul>
-</li>
-<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8">双指针在链表的运用</a>
-<ul>
-<li><a href="#%E5%90%88%E5%B9%B6">合并</a></li>
-<li><a href="#%E5%88%86%E8%A7%A3">分解</a></li>
-<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
-</ul>
-</li>
-<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
-</ul>
-<hr />
-<h2>双指针在数组的运用</h2>
-<hr />
-<h2>快慢指针</h2>
-<h3>数组的原地修改</h3>
-<ul>
-<li>力扣第 26 题「删除有序数组中的重复项」，让你在有序数组去重：
-https://leetcode.cn/problems/remove-duplicates-from-sorted-array/</li>
-</ul>
-<hr />
-<ul>
-<li>给你一个<strong>非严格递增排列</strong>的数组<code>nums</code> ，请你<strong>原地</strong>删除重复出现的元素，使每个元素<strong>只出现一次</strong>，返回删除后数组的新长度。元素的<strong>相对顺序</strong>应该保持<strong>一致</strong>。然后返回 <code>nums</code> 中唯一元素的个数。</li>
-<li>考虑 <code>nums </code>的唯一元素的数量为 <code>k</code>。去重后，返回唯一元素的数量 k。</li>
-<li><code>nums</code> 的前 k 个元素应包含 排序后 的唯一数字。下标 <code>k - 1 </code>之后的剩余元素可以忽略。</li>
-</ul>
-<p>判题标准:</p>
-<p>系统会用下面的代码来测试你的题解:</p>
-<pre><code>int[] nums = [...]; // 输入数组
-int[] expectedNums = [...]; // 长度正确的期望答案
-int k = removeDuplicates(nums); // 调用
-assert k == expectedNums.length;
-for (int i = 0; i &lt; k; i++) {
-    assert nums[i] == expectedNums[i];
-}
-</code></pre>
-<p>如果所有断言都通过，那么您的题解将被<strong>通过</strong>。</p>
-<p>示例 1：</p>
-<pre><code>输入：nums = [1,1,2]
-输出：2, nums = [1,2,_]
-解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<p>示例 2：</p>
-<pre><code>输入：nums = [0,0,1,1,1,2,2,3,3,4]
-输出：5, nums = [0,1,2,3,4,_,_,_,_,_]
-解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4 。不需要考虑数组中超出新长度后面的
-</code></pre>
-<ul>
-<li><strong>原地</strong>意味着只能对当前数组进行修改，不能新建一个数组</li>
-<li>这里所需要用到的就是<strong>快慢指针</strong></li>
-<li>简单来说就是一个快指针去识别，另一个慢指针去操作</li>
-<li><strong>注意</strong>  这里指针是广义上的指针，数组的索引也可以是<strong>指针</strong></li>
-<li>如果 <code>fast</code> 遇到值为 <code>val </code>的元素，则直接跳过，否则就赋值给 <code>slow</code> 指针，并让 <code>slow </code>前进一步。</li>
-</ul>
-<p>具体代码如下</p>
-<pre><code>class Solution {
-public:
-    int removeDuplicates(vector&lt;int&gt;&amp; nums) {
-        if (nums.empty()) return 0;
-
-        int slow = 0;
-        for (int fast = 1; fast &lt; nums.size(); fast++) {
-            if (nums[slow] != nums[fast]) {
-                slow++;
-                nums[slow] = nums[fast];
-            }
-        }
-
-        return slow + 1;
-    }
-};
-</code></pre>
-<ul>
-<li>注意这里需要<strong>先<code>slow++</code>再赋值</strong>，要不然第一个会被吞掉</li>
-</ul>
-<hr />
-<ul>
-<li>下面一道题也是快慢指针的思想，如果掌握了前一道题，这题会很简单</li>
-<li><strong>力扣283移动0</strong>https://leetcode.cn/problems/move-zeroes/</li>
-<li>给定一个数组 <strong>nums</strong>，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。</li>
-<li>请注意 ，必须在不复制数组的情况下原地对数组进行操作。</li>
-</ul>
-<p>示例 1:</p>
-<pre><code>输入: nums = [0,1,0,3,12]
-输出: [1,3,12,0,0]
-示例 2:
-</code></pre>
-<pre><code>输入: nums = [0]
-输出: [0]
-</code></pre>
-<p>这里我就直接上代码了</p>
-<pre><code>class Solution {
-public:
-    void moveZeroes(vector&lt;int&gt;&amp; nums) {
-        int slow = 0;  // 指向下一个非零应放置的位置
-        for (int fast = 0; fast &lt; nums.size(); fast++) {
-            if (nums[fast] != 0) {
-                nums[slow] = nums[fast];
-                slow++;
-            }
-        }
-
-        // slow 之后的全部置为 0
-        for (int i = slow; i &lt; nums.size(); i++) {
-            nums[i] = 0;
-        }
-    }
-};
-
-</code></pre>
-<hr />
-<h2>二分搜索</h2>
-<ul>
-<li>
-<p>在我们都玩过的猜数字游戏中，用的就是二分搜素的技巧</p>
-</li>
-<li>
-<p>我们先看最笨的顺序查找，我们从1-100遍历全部数字，虽然说运气好可能一下会猜中，但是期望的次数还是很多，复杂度为O(n)</p>
-</li>
-<li>
-<p>如果是凭感觉找，一样还是要看运气</p>
-</li>
-<li>
-<p>如果第一次猜50，然后继续一半一半缩小区间，最坏也能在7次内解决</p>
-<ul>
-<li>如何数字来到1-1000000，二分搜索最坏20次就能找到答案</li>
-</ul>
-</li>
-<li>
-<p>二分搜索的时间复杂度是O(log  N)</p>
-</li>
-<li>
-<p>下面是最基本代码</p>
-</li>
-</ul>
-<pre><code>int binarySearch(vector&lt;int&gt;&amp; nums, int target) {
-    // 一左一右两个指针相向而行
-    int left = 0, right = nums.size() - 1;
-    while(left &lt;= right) {
-        int mid = (right + left) / 2;
-        if(nums[mid] == target)
-            return mid; 
-        else if (nums[mid] &lt; target)
-            left = mid + 1; 
-        else if (nums[mid] &gt; target)
-            right = mid - 1;
-    }
-    return -1;
-}
-</code></pre>
-]]></content>
-    <author>
-      <name>南叶酱</name>
-    </author>
-    <category term="算法"></category>
   </entry>
   <entry>
     <title>装甲板自动识别与位姿估计学习</title>
@@ -2951,6 +3200,276 @@ armors_pub_-&gt;publish(armors_msg_);
       <name>南叶酱</name>
     </author>
     <category term="RM"></category>
+  </entry>
+  <entry>
+    <title>双指针</title>
+    <link href="https://www.nanye404.top/posts/twop/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/twop/</id>
+    <published>2025-10-22T00:00:00.000Z</published>
+    <updated>2025-10-22T00:00:00.000Z</updated>
+    <summary>双指针常见技巧</summary>
+    <content type="html"><![CDATA[<ul>
+<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8">双指针在数组的运用</a>
+<ul>
+<li><a href="#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88">快慢指针</a></li>
+<li><a href="#%E4%BA%8C%E5%88%86%E6%90%9C%E7%B4%A2">二分搜索</a></li>
+<li><a href="#%E6%95%B0%E4%B9%8B%E5%92%8C">数之和</a></li>
+<li><a href="#%E5%9B%9E%E6%96%87/%E5%8F%8D%E8%BD%AC">回文/反转</a></li>
+<li><a href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3">滑动窗口</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8">双指针在链表的运用</a>
+<ul>
+<li><a href="#%E5%90%88%E5%B9%B6">合并</a></li>
+<li><a href="#%E5%88%86%E8%A7%A3">分解</a></li>
+<li><a href="#%E5%85%B6%E4%BB%96">其他</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<hr />
+<h2>双指针在数组的运用</h2>
+<hr />
+<h2>快慢指针</h2>
+<h3>数组的原地修改</h3>
+<ul>
+<li>力扣第 26 题「删除有序数组中的重复项」，让你在有序数组去重：
+https://leetcode.cn/problems/remove-duplicates-from-sorted-array/</li>
+</ul>
+<hr />
+<ul>
+<li>给你一个<strong>非严格递增排列</strong>的数组<code>nums</code> ，请你<strong>原地</strong>删除重复出现的元素，使每个元素<strong>只出现一次</strong>，返回删除后数组的新长度。元素的<strong>相对顺序</strong>应该保持<strong>一致</strong>。然后返回 <code>nums</code> 中唯一元素的个数。</li>
+<li>考虑 <code>nums </code>的唯一元素的数量为 <code>k</code>。去重后，返回唯一元素的数量 k。</li>
+<li><code>nums</code> 的前 k 个元素应包含 排序后 的唯一数字。下标 <code>k - 1 </code>之后的剩余元素可以忽略。</li>
+</ul>
+<p>判题标准:</p>
+<p>系统会用下面的代码来测试你的题解:</p>
+<pre><code>int[] nums = [...]; // 输入数组
+int[] expectedNums = [...]; // 长度正确的期望答案
+int k = removeDuplicates(nums); // 调用
+assert k == expectedNums.length;
+for (int i = 0; i &lt; k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+</code></pre>
+<p>如果所有断言都通过，那么您的题解将被<strong>通过</strong>。</p>
+<p>示例 1：</p>
+<pre><code>输入：nums = [1,1,2]
+输出：2, nums = [1,2,_]
+解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
+</code></pre>
+<p>示例 2：</p>
+<pre><code>输入：nums = [0,0,1,1,1,2,2,3,3,4]
+输出：5, nums = [0,1,2,3,4,_,_,_,_,_]
+解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4 。不需要考虑数组中超出新长度后面的
+</code></pre>
+<ul>
+<li><strong>原地</strong>意味着只能对当前数组进行修改，不能新建一个数组</li>
+<li>这里所需要用到的就是<strong>快慢指针</strong></li>
+<li>简单来说就是一个快指针去识别，另一个慢指针去操作</li>
+<li><strong>注意</strong>  这里指针是广义上的指针，数组的索引也可以是<strong>指针</strong></li>
+<li>如果 <code>fast</code> 遇到值为 <code>val </code>的元素，则直接跳过，否则就赋值给 <code>slow</code> 指针，并让 <code>slow </code>前进一步。</li>
+</ul>
+<p>具体代码如下</p>
+<pre><code>class Solution {
+public:
+    int removeDuplicates(vector&lt;int&gt;&amp; nums) {
+        if (nums.empty()) return 0;
+
+        int slow = 0;
+        for (int fast = 1; fast &lt; nums.size(); fast++) {
+            if (nums[slow] != nums[fast]) {
+                slow++;
+                nums[slow] = nums[fast];
+            }
+        }
+
+        return slow + 1;
+    }
+};
+</code></pre>
+<ul>
+<li>注意这里需要<strong>先<code>slow++</code>再赋值</strong>，要不然第一个会被吞掉</li>
+</ul>
+<hr />
+<ul>
+<li>下面一道题也是快慢指针的思想，如果掌握了前一道题，这题会很简单</li>
+<li><strong>力扣283移动0</strong>https://leetcode.cn/problems/move-zeroes/</li>
+<li>给定一个数组 <strong>nums</strong>，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。</li>
+<li>请注意 ，必须在不复制数组的情况下原地对数组进行操作。</li>
+</ul>
+<p>示例 1:</p>
+<pre><code>输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+示例 2:
+</code></pre>
+<pre><code>输入: nums = [0]
+输出: [0]
+</code></pre>
+<p>这里我就直接上代码了</p>
+<pre><code>class Solution {
+public:
+    void moveZeroes(vector&lt;int&gt;&amp; nums) {
+        int slow = 0;  // 指向下一个非零应放置的位置
+        for (int fast = 0; fast &lt; nums.size(); fast++) {
+            if (nums[fast] != 0) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+        }
+
+        // slow 之后的全部置为 0
+        for (int i = slow; i &lt; nums.size(); i++) {
+            nums[i] = 0;
+        }
+    }
+};
+
+</code></pre>
+<hr />
+<h2>二分搜索</h2>
+<ul>
+<li>
+<p>在我们都玩过的猜数字游戏中，用的就是二分搜素的技巧</p>
+</li>
+<li>
+<p>我们先看最笨的顺序查找，我们从1-100遍历全部数字，虽然说运气好可能一下会猜中，但是期望的次数还是很多，复杂度为O(n)</p>
+</li>
+<li>
+<p>如果是凭感觉找，一样还是要看运气</p>
+</li>
+<li>
+<p>如果第一次猜50，然后继续一半一半缩小区间，最坏也能在7次内解决</p>
+<ul>
+<li>如何数字来到1-1000000，二分搜索最坏20次就能找到答案</li>
+</ul>
+</li>
+<li>
+<p>二分搜索的时间复杂度是O(log  N)</p>
+</li>
+<li>
+<p>下面是最基本代码</p>
+</li>
+</ul>
+<pre><code>int binarySearch(vector&lt;int&gt;&amp; nums, int target) {
+    // 一左一右两个指针相向而行
+    int left = 0, right = nums.size() - 1;
+    while(left &lt;= right) {
+        int mid = (right + left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] &lt; target)
+            left = mid + 1; 
+        else if (nums[mid] &gt; target)
+            right = mid - 1;
+    }
+    return -1;
+}
+</code></pre>
+<h2>两数之和</h2>
+<ul>
+<li>作为力扣的第一道题，很多人上来直接就是两个for循环暴力枚举，但实际上有更聪明的枚举方式，这个题就是一个典型的双指针问题</li>
+<li>https://leetcode.cn/problems/two-sum/</li>
+</ul>
+<hr />
+<ul>
+<li>给定一个整数数组<code> num</code>s 和一个整数目标值<code> target</code>，请你在该数组中找出 <strong>和为目标值</strong><code> target</code>  的那 <strong>两个</strong> 整数，并返回它们的数组下标。</li>
+</ul>
+<p>你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。</p>
+<p>示例 1：</p>
+<pre><code>输入：nums = [2,7,11,15], target = 9
+输出：[0,1]
+解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。
+</code></pre>
+<p>示例 2：</p>
+<pre><code>输入：nums = [3,2,4], target = 6
+输出：[1,2]
+
+</code></pre>
+<ul>
+<li>这题的思路和二分搜索很相似，而且这种问题显然让数组有序会更好做</li>
+<li>当数组有序之后，<code>首项+尾项/2</code>很接近所有数的平均数，因此也最可能接近<code>target</code>。</li>
+<li>我们让<code>left</code>指向最小<code>right</code>指向最大,如果小了就让left++，大了就让right--
+--- 下面是代码</li>
+</ul>
+<pre><code>class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) {
+        vector&lt;pair&lt;int, int&gt;&gt; vec;//这里为了保留原数组的索引
+        for (int i = 0; i &lt; nums.size(); ++i)
+            vec.push_back({nums[i], i});
+
+        sort(vec.begin(), vec.end());
+
+        int left = 0, right = vec.size() - 1;
+        while (left &lt; right) {
+            int sum = vec[left].first + vec[right].first;
+            if (sum == target) {
+                return {vec[left].second, vec[right].second};
+            } else if (sum &lt; target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        
+    }
+};
+</code></pre>
+<ul>
+<li>其实这题的最优解是哈希表，但是现在讲的是双指针，后面再说</li>
+</ul>
+<hr />
+<h2>回文/反转</h2>
+<h3>反转字符串</h3>
+<ul>
+<li>https://leetcode.cn/problems/reverse-string/description/</li>
+<li>编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 s 的形式给出。</li>
+<li>不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
+示例 1：</li>
+</ul>
+<pre><code>输入：s = ["h","e","l","l","o"]
+输出：["o","l","l","e","h"]
+</code></pre>
+<p>示例 2：</p>
+<pre><code>输入：s = ["H","a","n","n","a","h"]
+输出：["h","a","n","n","a","H"]
+</code></pre>
+<ul>
+<li>这题很简单，我就直接给代码了</li>
+</ul>
+<pre><code>class Solution {
+public:
+    void reverseString(vector&lt;char&gt;&amp; s) {
+        int n = s.size();
+        for (int left = 0, right = n - 1; left &lt; right; ++left, --right) {
+            swap(s[left], s[right]);
+        }
+    }
+};
+</code></pre>
+<h3>最长回文子串</h3>
+<ul>
+<li>给你一个字符串 <code>s</code>，找到<code>s</code>中最长的 <strong>回文</strong> 子串。</li>
+</ul>
+<p>示例 1：</p>
+<pre><code>输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+</code></pre>
+<p>示例 2：</p>
+<pre><code>输入：s = "cbbd"
+输出："bb"
+</code></pre>
+<ul>
+<li>像这种回文/对称，应该想到用双指针</li>
+<li>但是需要注意一下回文序列的奇偶</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
   </entry>
   <entry>
     <title>视频测试</title>
