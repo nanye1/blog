@@ -2790,6 +2790,11 @@ int main() {
 &lt;ul&gt;
 &lt;li&gt;更新了两篇opencv入门，ai写的，以后看着能不能精简一下&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2&gt;2025-10-26&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;装甲板识别基本更完&lt;/li&gt;
+&lt;li&gt;双指针更完&lt;/li&gt;
+&lt;/ul&gt;
 </content:encoded></item><item><title>装甲板自动识别与位姿估计学习</title><link>https://www.nanye404.top/posts/armor/</link><guid isPermaLink="true">https://www.nanye404.top/posts/armor/</guid><description>一些小笔记</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;目录&lt;/h2&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;#%E6%80%BB%E8%A7%88%E7%B3%BB%E7%BB%9F%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E6%98%AF%E4%BB%80%E4%B9%88&quot;&gt;总览：系统做的事情是什么&lt;/a&gt;&lt;/li&gt;
@@ -3102,6 +3107,7 @@ armors_pub_-&amp;gt;publish(armors_msg_);
 &lt;hr /&gt;
 &lt;h2&gt;术语与坐标系小抄&lt;/h2&gt;
 </content:encoded></item><item><title>双指针</title><link>https://www.nanye404.top/posts/twop/</link><guid isPermaLink="true">https://www.nanye404.top/posts/twop/</guid><description>双指针常见技巧</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;本篇参考labuladong的算法笔记编写&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在数组的运用&lt;/a&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88&quot;&gt;快慢指针&lt;/a&gt;&lt;/li&gt;
@@ -3113,8 +3119,8 @@ armors_pub_-&amp;gt;publish(armors_msg_);
 &lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E9%93%BE%E8%A1%A8%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在链表的运用&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%90%88%E5%B9%B6&quot;&gt;合并&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%88%86%E8%A7%A3&quot;&gt;分解&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%90%88%E5%B9%B6%E4%B8%A4%E4%B8%AA%E6%9C%89%E5%BA%8F%E5%88%97%E8%A1%A8&quot;&gt;合并&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%8D%95%E9%93%BE%E8%A1%A8%E7%9A%84%E5%88%86%E8%A7%A3&quot;&gt;分解&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#%E5%85%B6%E4%BB%96&quot;&gt;其他&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -3259,7 +3265,7 @@ public:
     return -1;
 }
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;两数之和&lt;/h2&gt;
+&lt;h2&gt;数之和&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;作为力扣的第一道题，很多人上来直接就是两个for循环暴力枚举，但实际上有更聪明的枚举方式，这个题就是一个典型的双指针问题&lt;/li&gt;
 &lt;li&gt;https://leetcode.cn/problems/two-sum/&lt;/li&gt;
@@ -3356,7 +3362,255 @@ public:
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;像这种回文/对称，应该想到用双指针&lt;/li&gt;
-&lt;li&gt;但是需要注意一下回文序列的奇偶&lt;/li&gt;
+&lt;li&gt;但是需要先判断一下回文序列的奇偶，奇偶需要不同的处理方式
+&lt;ul&gt;
+&lt;li&gt;如果是奇数，那么两个指针应该重合，再向两侧寻找&lt;/li&gt;
+&lt;li&gt;如果是偶数，两个指针停留在相同的字符上，再向两侧寻找&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;lass Solution {
+public:
+    string longestPalindrome(string s) {
+        string res = &quot;&quot;;
+        for (int i = 0; i &amp;lt; s.length(); i++) {
+            // 以 s[i] 为中心的最长回文子串
+            string s1 = palindrome(s, i, i);
+            // 以 s[i] 和 s[i+1] 为中心的最长回文子串
+            string s2 = palindrome(s, i, i + 1);
+            // res = longest(res, s1, s2)
+            res = res.length() &amp;gt; s1.length() ? res : s1;
+            res = res.length() &amp;gt; s2.length() ? res : s2;
+        }
+        return res;
+    }
+
+private:
+    string palindrome(string s, int l, int r) {
+        // 防止索引越界
+        while (l &amp;gt;= 0 &amp;amp;&amp;amp; r &amp;lt; s.length() &amp;amp;&amp;amp; s[l] == s[r]) {
+            // 向两边展开
+            l--;
+            r++;
+        }
+        // 此时 s[l+1..r-1] 就是最长回文串
+        return s.substr(l + 1, r - l - 1);
+    }
+};
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;滑动窗口&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;滑动窗口可以归为快慢双指针，一快一慢两个指针前后相随，中间的部分就是窗口。滑动窗口算法技巧主要用来解决子数组问题，比如让你寻找符合某个条件的最长/最短子数组。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;滑动窗口框架&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;void slidingWindow(string s) {
+    // 用合适的数据结构记录窗口中的数据，根据具体场景变通
+    // 比如说，我想记录窗口中元素出现的次数，就用 map
+    // 如果我想记录窗口中的元素和，就可以只用一个 int
+    auto window = ...
+
+    int left = 0, right = 0;
+    while (right &amp;lt; s.size()) {
+        // c 是将移入窗口的字符
+        char c = s[right];
+        window.add(c);
+        // 增大窗口
+        right++;
+
+        // 进行窗口内数据的一系列更新
+        ...
+
+        // *** debug 输出的位置 ***
+        printf(&quot;window: [%d, %d)\n&quot;, left, right);
+        // 注意在最终的解法代码中不要 print
+        // 因为 IO 操作很耗时，可能导致超时
+
+        // 判断左侧窗口是否要收缩
+        while (window needs shrink) {
+            // d 是将移出窗口的字符
+            char d = s[left];
+            window.remove(d);
+            // 缩小窗口
+            left++;
+
+            // 进行窗口内数据的一系列更新
+            ...
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;字符串的排列&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;给你两个字符串 &lt;code&gt;s1&lt;/code&gt; 和 &lt;code&gt;s2&lt;/code&gt; ，写一个函数来判断 &lt;code&gt;s2&lt;/code&gt; 是否包含 &lt;code&gt;s1&lt;/code&gt; 的 排列。如果是，返回 &lt;code&gt;true&lt;/code&gt; ；否则，返回 &lt;code&gt;false&lt;/code&gt; 。&lt;/li&gt;
+&lt;li&gt;换句话说，&lt;code&gt;s1&lt;/code&gt; 的排列之一是 &lt;code&gt;s2&lt;/code&gt; 的 子串 。
+示例 1：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;输入：s1 = &quot;ab&quot; s2 = &quot;eidbaooo&quot;
+输出：true
+解释：s2 包含 s1 的排列之一 (&quot;ba&quot;).
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 2：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：s1= &quot;ab&quot; s2 = &quot;eidboaoo&quot;
+输出：false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;窗口大小固定为 s1.size()
+&lt;ul&gt;
+&lt;li&gt;因为 s2 中可能存在的子串长度必须等于 s1。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;维护一个频次数组
+&lt;ul&gt;
+&lt;li&gt;用 cnt1[26] 保存 s1 中每个字母出现的次数。&lt;/li&gt;
+&lt;li&gt;遍历 s2 时，维护一个窗口 [l, r]，每次加入一个字符，尝试匹配 cnt1。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;匹配条件
+&lt;ul&gt;
+&lt;li&gt;定义 count = k = s1.size()，表示还差多少个字符能匹配成功。&lt;/li&gt;
+&lt;li&gt;每次加入新字符 s2[r]：
+&lt;ul&gt;
+&lt;li&gt;让 cnt1[s2[r]]--。&lt;/li&gt;
+&lt;li&gt;如果 cnt1[s2[r]] 还大于 0，说明这个字符是需要的 → count--。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;当窗口长度等于 k 时：
+&lt;ul&gt;
+&lt;li&gt;如果 count == 0，说明窗口里的字符正好是一个排列 → 返回 true。&lt;/li&gt;
+&lt;li&gt;窗口右移时，把 s2[l] 移出：
+&lt;ul&gt;
+&lt;li&gt;如果 ++cnt1[s2[l]] &amp;gt; 0，说明移出了一个必须的字符 → count++。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;下一步窗口大小 &amp;gt;k 了，需要l++  → 维持窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    // 判断 s 中是否存在 t 的排列
+    bool checkInclusion(string t, string s) {
+        unordered_map&amp;lt;char, int&amp;gt; need, window;
+        for (char c : t) need[c]++;
+
+        int left = 0, right = 0;
+        int valid = 0;
+        while (right &amp;lt; s.size()) {
+            char c = s[right];
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.count(c)) {
+                window[c]++;
+                if (window[c] == need[c])
+                    valid++;
+            }
+
+            // 判断左侧窗口是否要收缩
+            while (right - left &amp;gt;= t.size()) {
+                // 在这里判断是否找到了合法的子串
+                if (valid == need.size())
+                    return true;
+                char d = s[left];
+                left++;
+                // 进行窗口内数据的一系列更新
+                if (need.count(d)) {
+                    if (window[d] == need[d])
+                        valid--;
+                    window[d]--;
+                }
+            }
+        }
+        // 未找到符合条件的子串
+        return false;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;双指针在链表的运用&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;h2&gt;合并两个有序列表&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;https://leetcode.cn/problems/merge-two-sorted-lists/description/&lt;/li&gt;
+&lt;li&gt;将两个升序链表合并为一个新的 &lt;code&gt;升序&lt;/code&gt; 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+示例 1:
+&amp;lt;img src=&quot;/img/merge_ex1.jpg&quot;&amp;gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 2：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：l1 = [], l2 = []
+输出：[]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 3：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：l1 = [], l2 = [0]
+输出：[0]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;比较简单，下面是代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        // 虚拟头结点
+        ListNode dummy(-1), *p = &amp;amp;dummy;
+        ListNode *p1 = l1, *p2 = l2;
+        
+        while (p1 != nullptr &amp;amp;&amp;amp; p2 != nullptr) {
+            // 比较 p1 和 p2 两个指针
+            // 将值较小的的节点接到 p 指针
+            if (p1-&amp;gt;val &amp;gt; p2-&amp;gt;val) {
+                p-&amp;gt;next = p2;
+                p2 = p2-&amp;gt;next;
+            } else {
+                p-&amp;gt;next = p1;
+                p1 = p1-&amp;gt;next;
+            }
+            // p 指针不断前进
+            p = p-&amp;gt;next;
+        }
+        
+        if (p1 != nullptr) {
+            p-&amp;gt;next = p1;
+        }
+        
+        if (p2 != nullptr) {
+            p-&amp;gt;next = p2;
+        }
+        
+        return dummy.next;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h2&gt;单链表的分解&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;https://leetcode.cn/problems/partition-list/description/&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;给你一个链表的头节点 &lt;code&gt;head&lt;/code&gt; 和一个特定值 &lt;code&gt;x&lt;/code&gt; ，请你对链表进行分隔，使得所有 小于 &lt;code&gt;x&lt;/code&gt; &lt;strong&gt;的节点都出现在&lt;/strong&gt; 大于或等于 &lt;code&gt;x&lt;/code&gt; 的节点之前。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;你应当 保留 两个分区中每个节点的初始相对位置。
+实例 1：
+&amp;lt;img src=&quot;/img/partition.jpg&quot;&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;输入：head = [1,4,3,2,5,2], x = 3
+输出：[1,2,2,4,3,5]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 2：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：head = [2,1], x = 2
+输出：[1,2]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;是不是很像之前讲过的移动0？&lt;/li&gt;
+&lt;li&gt;思路其实都差不多，快慢指针的思想，一个查找，一个处理&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded></item><item><title>视频测试</title><link>https://www.nanye404.top/posts/video/</link><guid isPermaLink="true">https://www.nanye404.top/posts/video/</guid><description>视频测试。</description><pubDate>Tue, 21 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这是视频测试&lt;/p&gt;
 &lt;h2&gt;YouTube&lt;/h2&gt;
