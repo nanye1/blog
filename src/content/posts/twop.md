@@ -6,6 +6,7 @@ tags: [算法]
 category: 算法
 draft: false
 --- 
+- 本篇参考labuladong的算法笔记编写
 - [双指针在数组的运用](#双指针在数组的运用)
     - [快慢指针](#快慢指针)
     - [二分搜索](#二分搜索)
@@ -13,8 +14,8 @@ draft: false
     - [回文/反转](#回文/反转)
     - [滑动窗口](#滑动窗口)
 - [双指针在链表的运用](#双指针在链表的运用)
-    - [合并](#合并)
-    - [分解](#分解)
+    - [合并](#合并两个有序列表)
+    - [分解](#单链表的分解)
     - [其他](#其他)
 - [总结](#总结)
 ---
@@ -147,7 +148,7 @@ int binarySearch(vector<int>& nums, int target) {
     return -1;
 }
 ```
-## 两数之和
+## 数之和
 - 作为力扣的第一道题，很多人上来直接就是两个for循环暴力枚举，但实际上有更聪明的枚举方式，这个题就是一个典型的双指针问题
 - https://leetcode.cn/problems/two-sum/
 ---
@@ -241,4 +242,226 @@ public:
 输出："bb"
 ``` 
 - 像这种回文/对称，应该想到用双指针
-- 但是需要注意一下回文序列的奇偶 
+- 但是需要先判断一下回文序列的奇偶，奇偶需要不同的处理方式
+     - 如果是奇数，那么两个指针应该重合，再向两侧寻找
+     - 如果是偶数，两个指针停留在相同的字符上，再向两侧寻找
+
+```cpp
+lass Solution {
+public:
+    string longestPalindrome(string s) {
+        string res = "";
+        for (int i = 0; i < s.length(); i++) {
+            // 以 s[i] 为中心的最长回文子串
+            string s1 = palindrome(s, i, i);
+            // 以 s[i] 和 s[i+1] 为中心的最长回文子串
+            string s2 = palindrome(s, i, i + 1);
+            // res = longest(res, s1, s2)
+            res = res.length() > s1.length() ? res : s1;
+            res = res.length() > s2.length() ? res : s2;
+        }
+        return res;
+    }
+
+private:
+    string palindrome(string s, int l, int r) {
+        // 防止索引越界
+        while (l >= 0 && r < s.length() && s[l] == s[r]) {
+            // 向两边展开
+            l--;
+            r++;
+        }
+        // 此时 s[l+1..r-1] 就是最长回文串
+        return s.substr(l + 1, r - l - 1);
+    }
+};
+
+```
+## 滑动窗口
+
+- 滑动窗口可以归为快慢双指针，一快一慢两个指针前后相随，中间的部分就是窗口。滑动窗口算法技巧主要用来解决子数组问题，比如让你寻找符合某个条件的最长/最短子数组。
+### 滑动窗口框架
+```cpp
+void slidingWindow(string s) {
+    // 用合适的数据结构记录窗口中的数据，根据具体场景变通
+    // 比如说，我想记录窗口中元素出现的次数，就用 map
+    // 如果我想记录窗口中的元素和，就可以只用一个 int
+    auto window = ...
+
+    int left = 0, right = 0;
+    while (right < s.size()) {
+        // c 是将移入窗口的字符
+        char c = s[right];
+        window.add(c);
+        // 增大窗口
+        right++;
+
+        // 进行窗口内数据的一系列更新
+        ...
+
+        // *** debug 输出的位置 ***
+        printf("window: [%d, %d)\n", left, right);
+        // 注意在最终的解法代码中不要 print
+        // 因为 IO 操作很耗时，可能导致超时
+
+        // 判断左侧窗口是否要收缩
+        while (window needs shrink) {
+            // d 是将移出窗口的字符
+            char d = s[left];
+            window.remove(d);
+            // 缩小窗口
+            left++;
+
+            // 进行窗口内数据的一系列更新
+            ...
+        }
+    }
+}
+
+```
+## 字符串的排列
+- 给你两个字符串 `s1` 和 `s2` ，写一个函数来判断 `s2` 是否包含 `s1` 的 排列。如果是，返回 `true` ；否则，返回 `false` 。
+- 换句话说，`s1` 的排列之一是 `s2` 的 子串 。
+示例 1：
+```
+输入：s1 = "ab" s2 = "eidbaooo"
+输出：true
+解释：s2 包含 s1 的排列之一 ("ba").
+```
+示例 2：
+```
+输入：s1= "ab" s2 = "eidboaoo"
+输出：false
+```
+- 窗口大小固定为 s1.size()
+    - 因为 s2 中可能存在的子串长度必须等于 s1。
+- 维护一个频次数组
+    - 用 cnt1[26] 保存 s1 中每个字母出现的次数。
+    - 遍历 s2 时，维护一个窗口 [l, r]，每次加入一个字符，尝试匹配 cnt1。
+- 匹配条件
+    - 定义 count = k = s1.size()，表示还差多少个字符能匹配成功。
+    - 每次加入新字符 s2[r]：
+        - 让 cnt1[s2[r]]--。
+        - 如果 cnt1[s2[r]] 还大于 0，说明这个字符是需要的 → count--。
+    - 当窗口长度等于 k 时：
+        - 如果 count == 0，说明窗口里的字符正好是一个排列 → 返回 true。
+        - 窗口右移时，把 s2[l] 移出：
+            - 如果 ++cnt1[s2[l]] > 0，说明移出了一个必须的字符 → count++。
+        - 下一步窗口大小 >k 了，需要l++  → 维持窗口
+```cpp
+class Solution {
+public:
+    // 判断 s 中是否存在 t 的排列
+    bool checkInclusion(string t, string s) {
+        unordered_map<char, int> need, window;
+        for (char c : t) need[c]++;
+
+        int left = 0, right = 0;
+        int valid = 0;
+        while (right < s.size()) {
+            char c = s[right];
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.count(c)) {
+                window[c]++;
+                if (window[c] == need[c])
+                    valid++;
+            }
+
+            // 判断左侧窗口是否要收缩
+            while (right - left >= t.size()) {
+                // 在这里判断是否找到了合法的子串
+                if (valid == need.size())
+                    return true;
+                char d = s[left];
+                left++;
+                // 进行窗口内数据的一系列更新
+                if (need.count(d)) {
+                    if (window[d] == need[d])
+                        valid--;
+                    window[d]--;
+                }
+            }
+        }
+        // 未找到符合条件的子串
+        return false;
+    }
+};
+```
+---
+## 双指针在链表的运用
+---
+## 合并两个有序列表
+- https://leetcode.cn/problems/merge-two-sorted-lists/description/
+- 将两个升序链表合并为一个新的 `升序` 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+示例 1:
+<img src="/img/merge_ex1.jpg">
+```
+输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+```
+示例 2：
+```
+输入：l1 = [], l2 = []
+输出：[]
+```
+示例 3：
+```
+输入：l1 = [], l2 = [0]
+输出：[0]
+```
+- 比较简单，下面是代码
+```cpp
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        // 虚拟头结点
+        ListNode dummy(-1), *p = &dummy;
+        ListNode *p1 = l1, *p2 = l2;
+        
+        while (p1 != nullptr && p2 != nullptr) {
+            // 比较 p1 和 p2 两个指针
+            // 将值较小的的节点接到 p 指针
+            if (p1->val > p2->val) {
+                p->next = p2;
+                p2 = p2->next;
+            } else {
+                p->next = p1;
+                p1 = p1->next;
+            }
+            // p 指针不断前进
+            p = p->next;
+        }
+        
+        if (p1 != nullptr) {
+            p->next = p1;
+        }
+        
+        if (p2 != nullptr) {
+            p->next = p2;
+        }
+        
+        return dummy.next;
+    }
+};
+```
+---
+
+## 单链表的分解
+- https://leetcode.cn/problems/partition-list/description/
+- 给你一个链表的头节点 `head` 和一个特定值 `x` ，请你对链表进行分隔，使得所有 小于 `x` **的节点都出现在** 大于或等于 `x` 的节点之前。
+
+- 你应当 保留 两个分区中每个节点的初始相对位置。
+实例 1：
+<img src="/img/partition.jpg">
+```
+输入：head = [1,4,3,2,5,2], x = 3
+输出：[1,2,2,4,3,5]
+```
+示例 2：
+```
+输入：head = [2,1], x = 2
+输出：[1,2]
+```
+- 是不是很像之前讲过的移动0？
+- 思路其实都差不多，快慢指针的思想，一个查找，一个处理
