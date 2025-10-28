@@ -5,7 +5,7 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-27T07:02:47.194Z</updated>
+  <updated>2025-10-28T01:49:29.752Z</updated>
   <language>zh_CN</language>
   <entry>
     <title>RM装甲板识别 - 05灯条配对</title>
@@ -2533,7 +2533,11 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
     <published>2025-10-23T00:00:00.000Z</published>
     <updated>2025-10-23T00:00:00.000Z</updated>
     <summary>无</summary>
-    <content type="html"><![CDATA[<h2>本阶段核心API清单</h2>
+    <content type="html"><![CDATA[<h2>写到现在发现自己写的太垃圾了，详见</h2>
+<ul>
+<li>https://harry-hhj.github.io/posts/RM-Tutorial-3-Getting-Started-with-OpenCV/</li>
+</ul>
+<h2>本阶段核心API清单</h2>
 <table>
 <thead>
 <tr>
