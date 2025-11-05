@@ -48,7 +48,7 @@ double distance = cv::norm(p1 - p2);
 cv::Point2f center1 = bar1.rect.center;
 cv::Point2f center2 = bar2.rect.center;
 
-// 计算距离
+// 计算距离-
 float distance = cv::norm(center1 - center2);
 
 // 判断距离是否合理（参数随便给的）

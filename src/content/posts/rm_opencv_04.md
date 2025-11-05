@@ -365,6 +365,7 @@ std::vector<LightBar> detectLightBars(const cv::Mat& binary) {
 ```cpp 
 cv::Mat display = img.clone();
 
+
 // 绘制所有轮廓
 cv::drawContours(display, contours, -1, cv::Scalar(0, 255, 0), 2);
 // -1 表示绘制所有轮廓

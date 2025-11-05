@@ -6,8 +6,6 @@ tags: [RM,学习]
 category: RM
 ---
 
-## 写到现在发现自己写的太垃圾了，详见
-- https://harry-hhj.github.io/posts/RM-Tutorial-3-Getting-Started-with-OpenCV/
 ## 本阶段核心API清单
 
 | API | 作用 | 

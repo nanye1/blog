@@ -446,13 +446,70 @@ public:
 };
 ```
 ---
+## 合并`k`个有序链表
+- https://leetcode.cn/problems/merge-k-sorted-lists/description/
+- 给你一个链表数组，每个链表都已经按升序排列。
+- 请你将所有链表合并到一个升序链表中，返回合并后的链表。
+示例 1：
+```
+输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+将它们合并到一个有序链表中得到。
+1->1->2->3->4->4->5->6
+```
+示例 2：
+```
+输入：lists = []
+输出：[]
+```
+- 合并 `k` 个有序链表的逻辑类似合并两个有序链表，难点在于，如何快速得到 `k` 个节点中的最小节点，接到结果链表上
+```cpp
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.empty()) return nullptr;
+        // 虚拟头结点
+        ListNode* dummy = new ListNode(-1);
+        ListNode* p = dummy;
+        // 优先级队列，最小堆
+        auto cmp = [](ListNode* a, ListNode* b) { return a->val > b->val; };
+        priority_queue<ListNode*, vector<ListNode*>, decltype(cmp)> pq(cmp);
+        // 将 k 个链表的头结点加入最小堆
+        for (ListNode* head : lists) {
+            if (head != nullptr) {
+                pq.push(head);
+            }
+        }
 
+        while (!pq.empty()) {
+            // 获取最小节点，接到结果链表中
+            ListNode* node = pq.top();
+            pq.pop();
+            p->next = node;
+            if (node->next != nullptr) {
+                pq.push(node->next);
+            }
+            // p 指针不断前进
+            p = p->next;
+        }
+        return dummy->next;
+    }
+};
+```
+
+---
 ## 单链表的分解
 - https://leetcode.cn/problems/partition-list/description/
 - 给你一个链表的头节点 `head` 和一个特定值 `x` ，请你对链表进行分隔，使得所有 小于 `x` **的节点都出现在** 大于或等于 `x` 的节点之前。
 
 - 你应当 保留 两个分区中每个节点的初始相对位置。
-实例 1：
+示例 1：
 <img src="/img/partition.jpg">
 ```
 输入：head = [1,4,3,2,5,2], x = 3
@@ -465,3 +522,42 @@ public:
 ```
 - 是不是很像之前讲过的移动0？
 - 思路其实都差不多，快慢指针的思想，一个查找，一个处理
+- 然后把所有大于等于x的穿成一个新的链表，最后两个链表合并即可
+- 下面是代码
+
+
+```cpp
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        // 存放小于 x 的链表的虚拟头结点
+        ListNode* dummy1 = new ListNode(-1);
+        // 存放大于等于 x 的链表的虚拟头结点
+        ListNode* dummy2 = new ListNode(-1);
+        // p1, p2 指针负责生成结果链表
+        ListNode* p1 = dummy1, *p2 = dummy2;
+        // p 负责遍历原链表，类似合并两个有序链表的逻辑
+        // 这里是将一个链表分解成两个链表
+        ListNode* p = head;
+        while (p != nullptr) {
+            if (p->val >= x) {
+                p2->next = p;
+                p2 = p2->next;
+            } else {
+                p1->next = p;
+                p1 = p1->next;
+            }
+            // 不能直接让 p 指针前进，
+            // p = p->next
+            // 断开原链表中的每个节点的 next 指针
+            ListNode* temp = p->next;
+            p->next = nullptr;
+            p = temp;
+        }
+        // 连接两个链表
+        p1->next = dummy2->next;
+
+        return dummy1->next;
+    }
+};
+```
