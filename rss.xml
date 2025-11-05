@@ -1,4 +1,119 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>RM装甲板识别 - 05灯条配对</title><link>https://www.nanye404.top/posts/armor_detection_part1/</link><guid isPermaLink="true">https://www.nanye404.top/posts/armor_detection_part1/</guid><description>无</description><pubDate>Sun, 26 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;核心API清单&lt;/h2&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>递归，分治</title><link>https://www.nanye404.top/posts/digui/</link><guid isPermaLink="true">https://www.nanye404.top/posts/digui/</guid><description>递归，分治</description><pubDate>Wed, 05 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;递归&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;递归其实很好理解，类比于数学数列的递推，或者说数学归纳法&lt;/li&gt;
+&lt;li&gt;用cpp的语言来说就是函数不断地调用自身&lt;/li&gt;
+&lt;li&gt;递归的核心思想就是把原问题分解成重复的子问题，也就是分治&lt;/li&gt;
+&lt;li&gt;比如怎么排序，一种方法是先排左后排右，至于怎么排，就再执行前面一句话（这也是一种重要的排序方式，即快速排序）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;为什么用递归？&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;代码简简洁，可读性强&lt;/li&gt;
+&lt;li&gt;更利于维护和调试&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;分治&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;上面也说了，分治思想就是把原问题分解成重复的子问题&lt;/li&gt;
+&lt;li&gt;分治的流程就是 分解-&amp;gt;解决-&amp;gt;合并&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;ul&gt;
+&lt;li&gt;注意，分治是思维方式，递归是实现方法，分治很大程度都是基于递归的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;快速排序&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;下面我将用最基本的快速排序讲解递归和分治&lt;/li&gt;
+&lt;li&gt;快排的基本原理就是上面的例子，不断的二分分解，排序，然后合并&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>前缀和</title><link>https://www.nanye404.top/posts/pre/</link><guid isPermaLink="true">https://www.nanye404.top/posts/pre/</guid><description>前缀和</description><pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
+&lt;li&gt;基本的代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;  vector&amp;lt;int&amp;gt; pre(n + 1, 0);
+    for (int i = 0; i &amp;lt; n; i++) {
+        pre[i + 1] = pre[i] + o[i];
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;主要是在O（1）用来算一段区间的和&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>哈希表</title><link>https://www.nanye404.top/posts/map/</link><guid isPermaLink="true">https://www.nanye404.top/posts/map/</guid><description>哈希表的基础知识</description><pubDate>Mon, 03 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;哈希表的基本原理&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;哈希表就是一个加强版的数组&lt;/li&gt;
+&lt;li&gt;可以用过&lt;code&gt;key&lt;/code&gt;在O(1)的时间复杂度查找到对应的&lt;code&gt;value&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;key&lt;/code&gt;可以是数字或字符串&lt;/li&gt;
+&lt;li&gt;相比于数组，哈希表在日常的使用更加广泛，比如通讯录就可以理解成一个哈希表&lt;/li&gt;
+&lt;li&gt;下面用代码实现一个哈希表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class MyHashMap {
+
+private:
+    vector&amp;lt;void*&amp;gt; table;//表示任意类型的指针
+
+public:
+    // 增/改，复杂度 O(1)
+    void put(auto key, auto value) {
+        int index = hash(key);
+        table[index] = value;
+    }
+
+    // 查，复杂度 O(1)
+    auto get(auto key) {
+        int index = hash(key);
+        return table[index];
+    }
+
+    // 删，复杂度 O(1)
+    void remove(auto key) {
+        int index = hash(key);
+        table[index] = nullptr;
+    }
+
+private:
+    // 哈希函数，把 key 转化成 table 中的合法索引
+    // 时间复杂度必须是 O(1)，才能保证上述方法的复杂度都是 O(1)
+    int hash(auto key) {
+        // ...
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;h3&gt;注意&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;key&lt;/code&gt; 是唯一的，&lt;code&gt;value&lt;/code&gt; 可以重复&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;哈希冲突&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如果两个不同的 &lt;code&gt;key&lt;/code&gt; 通过哈希函数得到了相同的索引,这种情况就叫做「哈希冲突」。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;哈希冲突不可能避免，只能在算法层面妥善处理出现哈希冲突的情况。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;哈希冲突是一定会出现的，因为这个 hash 函数相当于是把一个无穷大的空间映射到了一个有限的索引空间，所以必然会有不同的 key 映射到同一个索引上。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有两种常见的解决方法，一种是拉链法，另一种是线性探查法（也经常被叫做开放寻址法）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;拉链法简单来说就是让哈希表储存的是一个链表，每有一个新的就加上去&lt;/li&gt;
+&lt;li&gt;而线性探查法的思路是，一个 &lt;code&gt;key&lt;/code&gt; 发现算出来的 &lt;code&gt;index&lt;/code&gt; 值已经被别的 &lt;code&gt;key&lt;/code&gt; 占了，那么它就去 &lt;code&gt;index + 1&lt;/code&gt; 的位置看看，如果还是被占了，就继续往后找，直到找到一个空的位置为止。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;拉链法和线性探查法虽然能解决哈希冲突的问题，但是它们会导致性能下降。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;比如拉链法，你算出来 &lt;code&gt;index = hash(key)&lt;/code&gt; 这个索引了，结果过去查出来的是个链表，你还得遍历一下这个链表，才能在里面找到你要的 value。这个过程的时间复杂度是 O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;线性探查法也是类似的，你算出来 &lt;code&gt;index = hash(key)&lt;/code&gt; 这个索引了，你去这个索引位置查看，发现存储的不是要找的 &lt;code&gt;key&lt;/code&gt;，但由于线性探查法解决哈希冲突的方式，你并不能确定这个 &lt;code&gt;key&lt;/code&gt; 真的不存在，你必须顺着这个索引往后找，直到找到一个空的位置或者找到这个 &lt;code&gt;key&lt;/code&gt; 为止，这个过程的时间复杂度也是 O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为了避免哈希冲突（也就是哈希表被塞太满），就有了&lt;strong&gt;负载因子&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>RM装甲板识别 - 05灯条配对</title><link>https://www.nanye404.top/posts/armor_detection_part1/</link><guid isPermaLink="true">https://www.nanye404.top/posts/armor_detection_part1/</guid><description>无</description><pubDate>Sun, 26 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;核心API清单&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -76,7 +191,7 @@ double distance = cv::norm(p1 - p2);
 cv::Point2f center1 = bar1.rect.center;
 cv::Point2f center2 = bar2.rect.center;
 
-// 计算距离
+// 计算距离-
 float distance = cv::norm(center1 - center2);
 
 // 判断距离是否合理（参数随便给的）
@@ -2172,6 +2287,7 @@ std::vector&amp;lt;LightBar&amp;gt; detectLightBars(const cv::Mat&amp;amp; binar
 &lt;h3&gt;基础用法&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;cv::Mat display = img.clone();
 
+
 // 绘制所有轮廓
 cv::drawContours(display, contours, -1, cv::Scalar(0, 255, 0), 2);
 // -1 表示绘制所有轮廓
@@ -2465,11 +2581,71 @@ cv::Point2f edge = vertices[1] - vertices[0];
 float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
-</content:encoded></item><item><title>RM装甲板识别 - 01 图像读取与显示</title><link>https://www.nanye404.top/posts/rm_opencv_01/</link><guid isPermaLink="true">https://www.nanye404.top/posts/rm_opencv_01/</guid><description>无</description><pubDate>Thu, 23 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;写到现在发现自己写的太垃圾了，详见&lt;/h2&gt;
+</content:encoded></item><item><title>中南自瞄</title><link>https://www.nanye404.top/posts/fyt/</link><guid isPermaLink="true">https://www.nanye404.top/posts/fyt/</guid><description>中南自瞄的代码框架解读</description><pubDate>Thu, 23 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;装甲板检测&lt;/h2&gt;
+&lt;h3&gt;&lt;strong&gt;检测类&lt;/strong&gt;&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;https://harry-hhj.github.io/posts/RM-Tutorial-3-Getting-Started-with-OpenCV/&lt;/li&gt;
+&lt;li&gt;Detector
+&lt;ul&gt;
+&lt;li&gt;成员
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;LightParams&lt;/code&gt; 灯条参数
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;min_ratio&lt;/code&gt;，&lt;code&gt;max_ratio&lt;/code&gt; 宽高比&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;max_angle&lt;/code&gt; 最大倾斜角&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;color_diff_thresh&lt;/code&gt; 颜色阈值，用来判断颜色（通道相减）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;本阶段核心API清单&lt;/h2&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ArmorParams&lt;/code&gt; 装甲板参数
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;min_light_ratio&lt;/code&gt; 最小灯条宽高比（那上面的是什么）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;center_distance&lt;/code&gt; 装甲板距离&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;max_angle&lt;/code&gt; 最大倾斜角（那上面的是什么）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;binary_thres&lt;/code&gt; 二值化阈值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;detect_color&lt;/code&gt; 颜色&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;classifier&lt;/code&gt; 识别数字 &lt;code&gt;corner_corrector&lt;/code&gt; 角点修正（智能指针？不会用）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;binary_img&lt;/code&gt; 二值化图像&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rm_interfaces::msg::DebugLights debug_lights&lt;/code&gt; &lt;code&gt;rm_interfaces::msg::DebugArmors debug_armors&lt;/code&gt; 发布消息&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gray_img_&lt;/code&gt; 灰度图&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lights_&lt;/code&gt; &lt;code&gt;armors_&lt;/code&gt; 检测的所有灯条和装甲板&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;函数（noexcept性能优化？）
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;detect&lt;/code&gt; 检测入口
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;preprocessImage&lt;/code&gt; 图像预处理
+&lt;ul&gt;
+&lt;li&gt;转灰度，二值化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;findLights&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;寻找轮廓，然后简单判断，如果点太少就跳过&lt;/li&gt;
+&lt;li&gt;转换成灯条&lt;/li&gt;
+&lt;li&gt;判断是否是灯条
+&lt;ul&gt;
+&lt;li&gt;判断颜色&lt;/li&gt;
+&lt;li&gt;保存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;按横坐标排序，返回&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;matchLights&lt;/code&gt; 匹配装甲板&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;getAllNumbersImage&lt;/code&gt; 调试函数&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;drawResults&lt;/code&gt; 绘制结果&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;isLight&lt;/code&gt; 判断灯条 &lt;code&gt;isArmor&lt;/code&gt; 判断装甲板（为啥一个公有一个私有，对于什么公有什么私有有点晕其实）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;containLight&lt;/code&gt; 判断是否已配对&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>RM装甲板识别 - 01 图像读取与显示</title><link>https://www.nanye404.top/posts/rm_opencv_01/</link><guid isPermaLink="true">https://www.nanye404.top/posts/rm_opencv_01/</guid><description>无</description><pubDate>Thu, 23 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;本阶段核心API清单&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -3280,6 +3456,64 @@ public:
 };
 &lt;/code&gt;&lt;/pre&gt;
 &lt;hr /&gt;
+&lt;h2&gt;合并&lt;code&gt;k&lt;/code&gt;个有序链表&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;https://leetcode.cn/problems/merge-k-sorted-lists/description/&lt;/li&gt;
+&lt;li&gt;给你一个链表数组，每个链表都已经按升序排列。&lt;/li&gt;
+&lt;li&gt;请你将所有链表合并到一个升序链表中，返回合并后的链表。
+示例 1：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1-&amp;gt;4-&amp;gt;5,
+  1-&amp;gt;3-&amp;gt;4,
+  2-&amp;gt;6
+]
+将它们合并到一个有序链表中得到。
+1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;4-&amp;gt;5-&amp;gt;6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;示例 2：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;输入：lists = []
+输出：[]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;合并 &lt;code&gt;k&lt;/code&gt; 个有序链表的逻辑类似合并两个有序链表，难点在于，如何快速得到 &lt;code&gt;k&lt;/code&gt; 个节点中的最小节点，接到结果链表上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    ListNode* mergeKLists(vector&amp;lt;ListNode*&amp;gt;&amp;amp; lists) {
+        if (lists.empty()) return nullptr;
+        // 虚拟头结点
+        ListNode* dummy = new ListNode(-1);
+        ListNode* p = dummy;
+        // 优先级队列，最小堆
+        auto cmp = [](ListNode* a, ListNode* b) { return a-&amp;gt;val &amp;gt; b-&amp;gt;val; };
+        priority_queue&amp;lt;ListNode*, vector&amp;lt;ListNode*&amp;gt;, decltype(cmp)&amp;gt; pq(cmp);
+        // 将 k 个链表的头结点加入最小堆
+        for (ListNode* head : lists) {
+            if (head != nullptr) {
+                pq.push(head);
+            }
+        }
+
+        while (!pq.empty()) {
+            // 获取最小节点，接到结果链表中
+            ListNode* node = pq.top();
+            pq.pop();
+            p-&amp;gt;next = node;
+            if (node-&amp;gt;next != nullptr) {
+                pq.push(node-&amp;gt;next);
+            }
+            // p 指针不断前进
+            p = p-&amp;gt;next;
+        }
+        return dummy-&amp;gt;next;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
 &lt;h2&gt;单链表的分解&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -3290,7 +3524,7 @@ public:
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;你应当 保留 两个分区中每个节点的初始相对位置。
-实例 1：
+示例 1：
 &amp;lt;img src=&quot;/img/partition.jpg&quot;&amp;gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -3304,7 +3538,43 @@ public:
 &lt;ul&gt;
 &lt;li&gt;是不是很像之前讲过的移动0？&lt;/li&gt;
 &lt;li&gt;思路其实都差不多，快慢指针的思想，一个查找，一个处理&lt;/li&gt;
+&lt;li&gt;然后把所有大于等于x的穿成一个新的链表，最后两个链表合并即可&lt;/li&gt;
+&lt;li&gt;下面是代码&lt;/li&gt;
 &lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        // 存放小于 x 的链表的虚拟头结点
+        ListNode* dummy1 = new ListNode(-1);
+        // 存放大于等于 x 的链表的虚拟头结点
+        ListNode* dummy2 = new ListNode(-1);
+        // p1, p2 指针负责生成结果链表
+        ListNode* p1 = dummy1, *p2 = dummy2;
+        // p 负责遍历原链表，类似合并两个有序链表的逻辑
+        // 这里是将一个链表分解成两个链表
+        ListNode* p = head;
+        while (p != nullptr) {
+            if (p-&amp;gt;val &amp;gt;= x) {
+                p2-&amp;gt;next = p;
+                p2 = p2-&amp;gt;next;
+            } else {
+                p1-&amp;gt;next = p;
+                p1 = p1-&amp;gt;next;
+            }
+            // 不能直接让 p 指针前进，
+            // p = p-&amp;gt;next
+            // 断开原链表中的每个节点的 next 指针
+            ListNode* temp = p-&amp;gt;next;
+            p-&amp;gt;next = nullptr;
+            p = temp;
+        }
+        // 连接两个链表
+        p1-&amp;gt;next = dummy2-&amp;gt;next;
+
+        return dummy1-&amp;gt;next;
+    }
+};
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>视频测试</title><link>https://www.nanye404.top/posts/video/</link><guid isPermaLink="true">https://www.nanye404.top/posts/video/</guid><description>视频测试。</description><pubDate>Tue, 21 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这是视频测试&lt;/p&gt;
 &lt;h2&gt;YouTube&lt;/h2&gt;
 &lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;

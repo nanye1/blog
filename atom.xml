@@ -5,8 +5,162 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-10-28T01:49:29.752Z</updated>
+  <updated>2025-11-05T07:59:21.303Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>递归，分治</title>
+    <link href="https://www.nanye404.top/posts/digui/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/digui/</id>
+    <published>2025-11-05T00:00:00.000Z</published>
+    <updated>2025-11-05T00:00:00.000Z</updated>
+    <summary>递归，分治</summary>
+    <content type="html"><![CDATA[<h2>递归</h2>
+<ul>
+<li>递归其实很好理解，类比于数学数列的递推，或者说数学归纳法</li>
+<li>用cpp的语言来说就是函数不断地调用自身</li>
+<li>递归的核心思想就是把原问题分解成重复的子问题，也就是分治</li>
+<li>比如怎么排序，一种方法是先排左后排右，至于怎么排，就再执行前面一句话（这也是一种重要的排序方式，即快速排序）</li>
+</ul>
+<h2>为什么用递归？</h2>
+<ul>
+<li>代码简简洁，可读性强</li>
+<li>更利于维护和调试</li>
+</ul>
+<h2>分治</h2>
+<ul>
+<li>上面也说了，分治思想就是把原问题分解成重复的子问题</li>
+<li>分治的流程就是 分解-&gt;解决-&gt;合并</li>
+</ul>
+<hr />
+<ul>
+<li>注意，分治是思维方式，递归是实现方法，分治很大程度都是基于递归的</li>
+</ul>
+<h2>快速排序</h2>
+<ul>
+<li>下面我将用最基本的快速排序讲解递归和分治</li>
+<li>快排的基本原理就是上面的例子，不断的二分分解，排序，然后合并</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>前缀和</title>
+    <link href="https://www.nanye404.top/posts/pre/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/pre/</id>
+    <published>2025-11-04T00:00:00.000Z</published>
+    <updated>2025-11-04T00:00:00.000Z</updated>
+    <summary>前缀和</summary>
+    <content type="html"><![CDATA[<ul>
+<li>基本的代码</li>
+</ul>
+<pre><code>  vector&lt;int&gt; pre(n + 1, 0);
+    for (int i = 0; i &lt; n; i++) {
+        pre[i + 1] = pre[i] + o[i];
+    }
+</code></pre>
+<ul>
+<li>主要是在O（1）用来算一段区间的和</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>哈希表</title>
+    <link href="https://www.nanye404.top/posts/map/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/map/</id>
+    <published>2025-11-03T00:00:00.000Z</published>
+    <updated>2025-11-03T00:00:00.000Z</updated>
+    <summary>哈希表的基础知识</summary>
+    <content type="html"><![CDATA[<h2>哈希表的基本原理</h2>
+<ul>
+<li>哈希表就是一个加强版的数组</li>
+<li>可以用过<code>key</code>在O(1)的时间复杂度查找到对应的<code>value</code></li>
+<li><code>key</code>可以是数字或字符串</li>
+<li>相比于数组，哈希表在日常的使用更加广泛，比如通讯录就可以理解成一个哈希表</li>
+<li>下面用代码实现一个哈希表</li>
+</ul>
+<pre><code>class MyHashMap {
+
+private:
+    vector&lt;void*&gt; table;//表示任意类型的指针
+
+public:
+    // 增/改，复杂度 O(1)
+    void put(auto key, auto value) {
+        int index = hash(key);
+        table[index] = value;
+    }
+
+    // 查，复杂度 O(1)
+    auto get(auto key) {
+        int index = hash(key);
+        return table[index];
+    }
+
+    // 删，复杂度 O(1)
+    void remove(auto key) {
+        int index = hash(key);
+        table[index] = nullptr;
+    }
+
+private:
+    // 哈希函数，把 key 转化成 table 中的合法索引
+    // 时间复杂度必须是 O(1)，才能保证上述方法的复杂度都是 O(1)
+    int hash(auto key) {
+        // ...
+    }
+};
+</code></pre>
+<hr />
+<h3>注意</h3>
+<ul>
+<li><code>key</code> 是唯一的，<code>value</code> 可以重复</li>
+</ul>
+<h2>哈希冲突</h2>
+<ul>
+<li>
+<p>如果两个不同的 <code>key</code> 通过哈希函数得到了相同的索引,这种情况就叫做「哈希冲突」。</p>
+</li>
+<li>
+<p>哈希冲突不可能避免，只能在算法层面妥善处理出现哈希冲突的情况。</p>
+</li>
+<li>
+<p>哈希冲突是一定会出现的，因为这个 hash 函数相当于是把一个无穷大的空间映射到了一个有限的索引空间，所以必然会有不同的 key 映射到同一个索引上。</p>
+</li>
+<li>
+<p>有两种常见的解决方法，一种是拉链法，另一种是线性探查法（也经常被叫做开放寻址法）。</p>
+<ul>
+<li>拉链法简单来说就是让哈希表储存的是一个链表，每有一个新的就加上去</li>
+<li>而线性探查法的思路是，一个 <code>key</code> 发现算出来的 <code>index</code> 值已经被别的 <code>key</code> 占了，那么它就去 <code>index + 1</code> 的位置看看，如果还是被占了，就继续往后找，直到找到一个空的位置为止。</li>
+</ul>
+</li>
+<li>
+<p>拉链法和线性探查法虽然能解决哈希冲突的问题，但是它们会导致性能下降。</p>
+<ul>
+<li>
+<p>比如拉链法，你算出来 <code>index = hash(key)</code> 这个索引了，结果过去查出来的是个链表，你还得遍历一下这个链表，才能在里面找到你要的 value。这个过程的时间复杂度是 O(n)</p>
+</li>
+<li>
+<p>线性探查法也是类似的，你算出来 <code>index = hash(key)</code> 这个索引了，你去这个索引位置查看，发现存储的不是要找的 <code>key</code>，但由于线性探查法解决哈希冲突的方式，你并不能确定这个 <code>key</code> 真的不存在，你必须顺着这个索引往后找，直到找到一个空的位置或者找到这个 <code>key</code> 为止，这个过程的时间复杂度也是 O(n)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>为了避免哈希冲突（也就是哈希表被塞太满），就有了<strong>负载因子</strong></p>
+</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
   <entry>
     <title>RM装甲板识别 - 05灯条配对</title>
     <link href="https://www.nanye404.top/posts/armor_detection_part1/" rel="alternate" type="text/html"/>
@@ -92,7 +246,7 @@ double distance = cv::norm(p1 - p2);
 cv::Point2f center1 = bar1.rect.center;
 cv::Point2f center2 = bar2.rect.center;
 
-// 计算距离
+// 计算距离-
 float distance = cv::norm(center1 - center2);
 
 // 判断距离是否合理（参数随便给的）
@@ -2227,6 +2381,7 @@ std::vector&lt;LightBar&gt; detectLightBars(const cv::Mat&amp; binary) {
 <h3>基础用法</h3>
 <pre><code>cv::Mat display = img.clone();
 
+
 // 绘制所有轮廓
 cv::drawContours(display, contours, -1, cv::Scalar(0, 255, 0), 2);
 // -1 表示绘制所有轮廓
@@ -2527,17 +2682,90 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
     <category term="RM"></category>
   </entry>
   <entry>
+    <title>中南自瞄</title>
+    <link href="https://www.nanye404.top/posts/fyt/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/fyt/</id>
+    <published>2025-10-23T00:00:00.000Z</published>
+    <updated>2025-10-23T00:00:00.000Z</updated>
+    <summary>中南自瞄的代码框架解读</summary>
+    <content type="html"><![CDATA[<h2>装甲板检测</h2>
+<h3><strong>检测类</strong></h3>
+<ul>
+<li>Detector
+<ul>
+<li>成员
+<ul>
+<li><code>LightParams</code> 灯条参数
+<ul>
+<li><code>min_ratio</code>，<code>max_ratio</code> 宽高比</li>
+<li><code>max_angle</code> 最大倾斜角</li>
+<li><code>color_diff_thresh</code> 颜色阈值，用来判断颜色（通道相减）</li>
+</ul>
+</li>
+<li><code>ArmorParams</code> 装甲板参数
+<ul>
+<li><code>min_light_ratio</code> 最小灯条宽高比（那上面的是什么）</li>
+<li><code>center_distance</code> 装甲板距离</li>
+<li><code>max_angle</code> 最大倾斜角（那上面的是什么）</li>
+</ul>
+</li>
+<li><code>binary_thres</code> 二值化阈值</li>
+<li><code>detect_color</code> 颜色</li>
+<li><code>classifier</code> 识别数字 <code>corner_corrector</code> 角点修正（智能指针？不会用）</li>
+<li><code>binary_img</code> 二值化图像</li>
+<li><code>rm_interfaces::msg::DebugLights debug_lights</code> <code>rm_interfaces::msg::DebugArmors debug_armors</code> 发布消息</li>
+<li><code>gray_img_</code> 灰度图</li>
+<li><code>lights_</code> <code>armors_</code> 检测的所有灯条和装甲板</li>
+</ul>
+</li>
+<li>函数（noexcept性能优化？）
+<ul>
+<li><code>detect</code> 检测入口
+<ul>
+<li><code>preprocessImage</code> 图像预处理
+<ul>
+<li>转灰度，二值化</li>
+</ul>
+</li>
+<li><code>findLights</code>
+<ul>
+<li>寻找轮廓，然后简单判断，如果点太少就跳过</li>
+<li>转换成灯条</li>
+<li>判断是否是灯条
+<ul>
+<li>判断颜色</li>
+<li>保存</li>
+</ul>
+</li>
+<li>按横坐标排序，返回</li>
+</ul>
+</li>
+<li><code>matchLights</code> 匹配装甲板</li>
+</ul>
+</li>
+<li><code>getAllNumbersImage</code> 调试函数</li>
+<li><code>drawResults</code> 绘制结果</li>
+<li><code>isLight</code> 判断灯条 <code>isArmor</code> 判断装甲板（为啥一个公有一个私有，对于什么公有什么私有有点晕其实）</li>
+<li><code>containLight</code> 判断是否已配对</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="RM"></category>
+  </entry>
+  <entry>
     <title>RM装甲板识别 - 01 图像读取与显示</title>
     <link href="https://www.nanye404.top/posts/rm_opencv_01/" rel="alternate" type="text/html"/>
     <id>https://www.nanye404.top/posts/rm_opencv_01/</id>
     <published>2025-10-23T00:00:00.000Z</published>
     <updated>2025-10-23T00:00:00.000Z</updated>
     <summary>无</summary>
-    <content type="html"><![CDATA[<h2>写到现在发现自己写的太垃圾了，详见</h2>
-<ul>
-<li>https://harry-hhj.github.io/posts/RM-Tutorial-3-Getting-Started-with-OpenCV/</li>
-</ul>
-<h2>本阶段核心API清单</h2>
+    <content type="html"><![CDATA[<h2>本阶段核心API清单</h2>
 <table>
 <thead>
 <tr>
@@ -3374,6 +3602,64 @@ public:
 };
 </code></pre>
 <hr />
+<h2>合并<code>k</code>个有序链表</h2>
+<ul>
+<li>https://leetcode.cn/problems/merge-k-sorted-lists/description/</li>
+<li>给你一个链表数组，每个链表都已经按升序排列。</li>
+<li>请你将所有链表合并到一个升序链表中，返回合并后的链表。
+示例 1：</li>
+</ul>
+<pre><code>输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1-&gt;4-&gt;5,
+  1-&gt;3-&gt;4,
+  2-&gt;6
+]
+将它们合并到一个有序链表中得到。
+1-&gt;1-&gt;2-&gt;3-&gt;4-&gt;4-&gt;5-&gt;6
+</code></pre>
+<p>示例 2：</p>
+<pre><code>输入：lists = []
+输出：[]
+</code></pre>
+<ul>
+<li>合并 <code>k</code> 个有序链表的逻辑类似合并两个有序链表，难点在于，如何快速得到 <code>k</code> 个节点中的最小节点，接到结果链表上</li>
+</ul>
+<pre><code>class Solution {
+public:
+    ListNode* mergeKLists(vector&lt;ListNode*&gt;&amp; lists) {
+        if (lists.empty()) return nullptr;
+        // 虚拟头结点
+        ListNode* dummy = new ListNode(-1);
+        ListNode* p = dummy;
+        // 优先级队列，最小堆
+        auto cmp = [](ListNode* a, ListNode* b) { return a-&gt;val &gt; b-&gt;val; };
+        priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, decltype(cmp)&gt; pq(cmp);
+        // 将 k 个链表的头结点加入最小堆
+        for (ListNode* head : lists) {
+            if (head != nullptr) {
+                pq.push(head);
+            }
+        }
+
+        while (!pq.empty()) {
+            // 获取最小节点，接到结果链表中
+            ListNode* node = pq.top();
+            pq.pop();
+            p-&gt;next = node;
+            if (node-&gt;next != nullptr) {
+                pq.push(node-&gt;next);
+            }
+            // p 指针不断前进
+            p = p-&gt;next;
+        }
+        return dummy-&gt;next;
+    }
+};
+</code></pre>
+<hr />
 <h2>单链表的分解</h2>
 <ul>
 <li>
@@ -3384,7 +3670,7 @@ public:
 </li>
 <li>
 <p>你应当 保留 两个分区中每个节点的初始相对位置。
-实例 1：
+示例 1：
 &lt;img src="/img/partition.jpg"&gt;</p>
 </li>
 </ul>
@@ -3398,7 +3684,43 @@ public:
 <ul>
 <li>是不是很像之前讲过的移动0？</li>
 <li>思路其实都差不多，快慢指针的思想，一个查找，一个处理</li>
+<li>然后把所有大于等于x的穿成一个新的链表，最后两个链表合并即可</li>
+<li>下面是代码</li>
 </ul>
+<pre><code>class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        // 存放小于 x 的链表的虚拟头结点
+        ListNode* dummy1 = new ListNode(-1);
+        // 存放大于等于 x 的链表的虚拟头结点
+        ListNode* dummy2 = new ListNode(-1);
+        // p1, p2 指针负责生成结果链表
+        ListNode* p1 = dummy1, *p2 = dummy2;
+        // p 负责遍历原链表，类似合并两个有序链表的逻辑
+        // 这里是将一个链表分解成两个链表
+        ListNode* p = head;
+        while (p != nullptr) {
+            if (p-&gt;val &gt;= x) {
+                p2-&gt;next = p;
+                p2 = p2-&gt;next;
+            } else {
+                p1-&gt;next = p;
+                p1 = p1-&gt;next;
+            }
+            // 不能直接让 p 指针前进，
+            // p = p-&gt;next
+            // 断开原链表中的每个节点的 next 指针
+            ListNode* temp = p-&gt;next;
+            p-&gt;next = nullptr;
+            p = temp;
+        }
+        // 连接两个链表
+        p1-&gt;next = dummy2-&gt;next;
+
+        return dummy1-&gt;next;
+    }
+};
+</code></pre>
 ]]></content>
     <author>
       <name>南叶酱</name>
