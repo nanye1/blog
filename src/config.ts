@@ -400,7 +400,7 @@ export const commentConfig: CommentConfig = {
 
 export const announcementConfig: AnnouncementConfig = {
 	title: "公告", // 公告标题
-	content: "评论不能用！！！\n其他里的东西暂时还没改，不是我的！！\n问题反馈和建议请加qq420883290", 
+	content: "评论不能用！！！\n其他里的东西暂时还没改，不是我的！！\n问题反馈和建议请加qq420883290 主页很乱，想看相关内容请看分类", 
 	// 公告内容
 	closable: false, // 允许用户关闭公告
 	link: {

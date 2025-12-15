@@ -6,25 +6,25 @@ tags: [RM,学习]
 category: RM
 ---
 ## 装甲板检测
-### **检测类**
-- Detector
-    - 成员
+
+- `Detector`
+    - **成员**
         - `LightParams` 灯条参数
-            - `min_ratio`，`max_ratio` 宽高比
+            - `min_ratio`，`max_ratio` 灯条宽高比
             - `max_angle` 最大倾斜角
             - `color_diff_thresh` 颜色阈值，用来判断颜色（通道相减）
         - `ArmorParams` 装甲板参数
-            - `min_light_ratio` 最小灯条宽高比（那上面的是什么）
+            - `min_light_ratio` 最小灯条宽高比
             - `center_distance` 装甲板距离
-            - `max_angle` 最大倾斜角（那上面的是什么）
+            - `max_angle` 最大倾斜角
         - `binary_thres` 二值化阈值
         - `detect_color` 颜色
-        - `classifier` 识别数字 `corner_corrector` 角点修正（智能指针？不会用）
+        - `classifier` 识别数字 `corner_corrector` 角点修正
         - `binary_img` 二值化图像 
         - `rm_interfaces::msg::DebugLights debug_lights` `rm_interfaces::msg::DebugArmors debug_armors` 发布消息
         - `gray_img_` 灰度图
         - `lights_` `armors_` 检测的所有灯条和装甲板
-    - 函数（noexcept性能优化？）
+    - **函数**
         - `detect` 检测入口
             - `preprocessImage` 图像预处理
                 - 转灰度，二值化
@@ -36,9 +36,149 @@ category: RM
                     - 保存
                 - 按横坐标排序，返回
             - `matchLights` 匹配装甲板
+                - 判断颜色，距离初步筛选
+                - 左右灯条配对
+                - `containLight` 判断灯条中间是否还有别的
+                    - 最小旋转矩形，计算尺寸
+                    - 太宽太窄都跳过
+                    - 判断是否有点在矩形里
+                - `isArmor` 判断装甲板
+                    - 灯条长度比，灯条距离，倾斜角
+                    - 判断大小装甲板
         - `getAllNumbersImage` 调试函数
+            - 将收集的装甲板数字拼起来输出图像用于调试？
         - `drawResults` 绘制结果
-        - `isLight` 判断灯条 `isArmor` 判断装甲板（为啥一个公有一个私有，对于什么公有什么私有有点晕其实）
-        - `containLight` 判断是否已配对
+            - 画出装甲板，画出大小，数字
+        - `isLight` 判断灯条 
+            - 宽高比，倾斜角
+            - 保存调试信息
+        - `isArmor` 判断装甲板
+        - `containLight` 判断灯条中间是否还有别的
+---
 
+## 装甲板检测节点
+- `ArmorDetectorNode`
+    - **流程**
+        - `构造函数` 
+            - `initDetector`
+                - 初始化二值化，装甲板参数，灯条参数等信息
+                - 初始化数字识别和角点修正
+                - 设置动态参数回调
+            - 设置参数
+            - 启动发布者，订阅者，服务端
+        - `imageCallback` 图像回调函数
+            - 读取tf2中的消息
+            - 获取装甲板检测结果
+            - 求解位姿
+            - debug调试
+            - 发布装甲板消息
+        - `detectArmors`
+            - 读取图像
+            - 装甲板检测
+            - 调试模式
+                - 发布二值化图像
+                - 按照x坐标排序
+                - 发布灯条和装甲板结果
+            - 返回装甲板
+        - `onSetParameters`
+            - 更新参数
+        - `createDebugPublishers`，`destroyDebugPublishers` 开启和关闭调试
+        - `publishMarkers` 发布markers信息
+        - `setModeCallback` 模式切换
 
+---
+## 解算
+- `Solver`
+    - `构造函数` 
+        - 读取参数
+        - 初始化各种信息
+    - `solve` 
+        - 从节点获取参数（最大跟踪 yaw 速度、延时、侧角、最小切换速度等） 异常记录日志
+        - 读取rpy
+        - 读取位置，朝向，速度
+        - 计算弹丸飞行视角
+        - 生成装甲板的三维点
+        - 选择最优的装甲板
+        - 给出开火建议
+    - `isOnTarget`
+        - 判断是否瞄准成功，能否开火
+    - `getArmorPositions`
+        - 计算装甲板的三维坐标
+    - `selectBestArmor`
+        - 计算位置，旋转角速度
+        - 选择要击打的装甲板
+    - `trajectory_compensator_`
+        - 修正弹道
+---
+
+## 解算节点
+- `ArmorSolverNode`
+    - 构造函数
+        - 节点初始化
+        - 输出启动信息
+        - 追踪器，卡尔曼滤波初始化
+        - 订阅和发布
+        - 定时器
+    - `timerCallback`
+        - 检查是否启动
+        - 初始化
+        - 检测是否有目标
+        - 解算
+        - 发布消息
+    - `initMarkers`
+        - marker调试
+    - `armorsCallback`
+        - 坐标变换
+        - 排除异常装甲板
+        - 发布消息
+        - 更新状态
+    - `publishMarker`
+        - 绘制信息
+    - `setModeCallback`
+        - 设置模式
+---
+## 追踪
+- `Tracker`
+    - `构造函数`
+        - 初始化参数
+    - `init`
+        - 选择最近的装甲板
+        - 初始化卡尔曼滤波
+        - 设置装甲板信息
+    - `update`
+        - 更新卡尔曼滤波的状态
+        - 选择最合适的装甲板
+        - 更新装甲板
+    - `initEKF` 
+        - 初始化卡尔曼滤波
+    - `handleArmorJump`
+        - 处理快速旋转的装甲板
+            - 判断角度
+            - 修正卡尔曼
+            - 计算距离
+            - 重置卡尔曼
+    - `orientationToYaw`
+        - 修正yaw角
+    - `getArmorPositionFromState`
+        - 推算位置
+---
+## 位姿估计
+- `ArmorPoseEstimator`
+    - `构造函数`
+        - 初始化pnp，ba
+    - `extractArmorPoses`
+        - 提取位姿
+    - `rotationMatrixToRPY`
+        - 提取欧拉角
+    - `sortPnPResult`
+        - 选择正确的pnp
+---
+## 问题
+- 只能看懂大概在干什么，里面有很多处理细节没咋细看，具体的可能需要自己动手调车才能更深理解
+- 智能指针没学太多，很多地方都看不懂
+- 预处理为什么没有形态学操作
+- 是不是需要增加一些亮度判断
+- 调试那部分似懂非懂
+- 数字识别那里神经网络没学
+- 感觉要学的还是太多了，下一步我该学啥
+---
