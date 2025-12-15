@@ -5,8 +5,608 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-11-05T07:59:21.303Z</updated>
+  <updated>2025-12-15T11:25:58.078Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>算法竞赛入门</title>
+    <link href="https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/</id>
+    <published>2025-12-12T00:00:00.000Z</published>
+    <updated>2025-12-12T00:00:00.000Z</updated>
+    <summary>整合一下最近学过的</summary>
+    <content type="html"><![CDATA[<h1>首先是我的模板</h1>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long
+#define endl '\n'
+#define pb push_back
+#define rz resize
+#define pll pair&lt;int, int&gt;
+#define fi first
+#define se second
+const int mod = 998244353;
+const int inf = 0x3f3f3f3f3f3f3f3f;
+const int N = 1e6 + 10;//常用数据结构大小,根据题目修改
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
+void solve()
+{
+
+}
+signed main() {     
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int _ = 1;  
+    //cin &gt;&gt; _;
+    while (_--)
+    solve();
+    return 0;
+}
+</code></pre>
+<ul>
+<li>大概就是这样，用作参考</li>
+<li>基本的输入输出我就不讲了</li>
+</ul>
+<hr />
+<h1>stl：string</h1>
+<ul>
+<li>只写一些常用的</li>
+</ul>
+<pre><code>string t = s.substr(l, r - l);//获取字串，左闭右开，索引从0开始
+auto p = s.find("abc");
+auto q = s.rfind('x');
+if (pos != string::npos) {
+    // 找到了
+} else {
+    // 没找到
+}
+s.insert(pos, "ins");           // 在 pos 前插入
+s.erase(pos, len);              // 删 [pos, pos+len)
+s.erase(s.begin()+l, s.begin()+r);  // 删区间 [l, r)
+</code></pre>
+<ul>
+<li>还有一些桶计数，用scall码计算即可</li>
+</ul>
+<h1>位运算</h1>
+<ul>
+<li><code>&amp;</code> 与 同1为1</li>
+<li>`	或 有1为1</li>
+<li><code>^</code> 异或（最常用）不同为1</li>
+<li><code>&lt;&lt;</code> 左移 乘2^k</li>
+<li><code>&gt;&gt;</code> 右移 除2^k</li>
+</ul>
+<hr />
+<ul>
+<li>常用的性质
+<ul>
+<li>判断奇偶 <code>bool odd = (x &amp; 1);</code>最快的方法，因为是直接二进制计算（不过也不会用到）</li>
+<li><code>a ^ a = 0</code></li>
+<li><code>a ^ 0 = a</code></li>
+<li><code>a ^ b = b ^ a</code></li>
+<li><code>(a ^ b) ^ c = a ^ (b ^ c)</code></li>
+<li><code>a ^ b ^ a = b</code></li>
+</ul>
+</li>
+<li>应用
+<ul>
+<li>找出只出现一次的数，其他都是偶数次</li>
+</ul>
+<pre><code>for (int i = 1; i &lt;= n; i++)
+ans ^= a[i];
+</code></pre>
+<ul>
+<li>nim游戏
+<ul>
+<li>异或和为0先手必败，否则必胜</li>
+</ul>
+</li>
+<li>开关灯问题（翻转问题）</li>
+<li>前缀异或</li>
+</ul>
+</li>
+</ul>
+<h1>dfs</h1>
+<h2>排列</h2>
+<pre><code>void dfs(int x)
+{
+   if(x == n + 1){
+    for(int i = 1; i &lt;= n; i++)
+    {
+        cout &lt;&lt;setw(5)&lt;&lt; arr[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}
+
+    for(int i = 1; i &lt;= n; i++)
+    {
+        if(!st[i])
+        {
+            st[i] = true;
+            arr[x] = i;
+            dfs(x + 1);
+            st[i] = false;
+            arr[x] = 0;
+        }
+    }
+}
+</code></pre>
+<h2>组合</h2>
+<pre><code>void dfs(int x,int start)
+{
+    if(x &gt; r)
+    {
+        for(int i = 1; i &lt;= r; i++)
+        {
+            cout &lt;&lt; setw(3) &lt;&lt; arr[i];
+        }
+        cout &lt;&lt; endl;
+        return;
+    }
+    for(int i = start; i &lt;= n; i++)
+    {
+        arr[x] = i;
+        dfs(x + 1,i + 1);
+        arr[x] = 0;
+    }
+}
+</code></pre>
+<h2>模板</h2>
+<pre><code>void dfs(int x)
+{
+    递归出口;
+
+    剪枝函数;
+
+    向后搜索()
+    {
+        修改;
+
+        递归调用 dfs(x + 1);
+
+        恢复;
+    }
+}
+</code></pre>
+<hr />
+<h1>bfs</h1>
+<ul>
+<li>用队列实现</li>
+<li>八皇后</li>
+</ul>
+<pre><code>//c是撇，和为x + i d是捺，x - i + n
+void dfs(int x)
+{
+    if(x &gt; n)
+    {
+        cnt ++;
+        if(cnt &lt;= 3)
+        {
+            for(int i = 1; i &lt;= n; i++)
+            cout &lt;&lt; a[i] &lt;&lt;" ";
+            cout &lt;&lt; endl;
+        }
+        return;
+    }
+    for(int i = 1; i &lt;= n; i++)
+    {
+        if(b[i] || c[i + x] || d[x - i + n])
+        continue;
+        else
+        {
+            a[x] = i;
+            b[i] = 1;c[i + x] = 1; d[x - i + n] = 1;
+            dfs(x + 1);
+            b[i] = 0;c[i + x] = 0; d[x - i + n] = 0;
+            a[x] = 0;
+        }
+    }
+}
+</code></pre>
+<h2>模板</h2>
+<pre><code>void bfs()
+{
+    vis[1] = 0;
+    q.push(1);
+    while(!q.empty())
+    {
+        int x = q.fornt();q.pop;
+        //x出
+        for(int y : e[x]){
+            if(vis[y]) continue;
+            vis[y] = 1;
+            //y入
+            q.push(y);
+        }
+    }
+}
+</code></pre>
+<hr />
+<h1>二分</h1>
+<h2>二分搜索</h2>
+<ul>
+<li>直接用stl</li>
+</ul>
+<pre><code>//大于等于x的第一个数
+int k = *lower_bound(a.begin() + 1, a.end(), x);//获取值
+//大于x的第一个
+int pos = upper_bound(v.begin(), v.end(), x) - v.begin();//获取下标
+</code></pre>
+<h1>二分答案</h1>
+<ul>
+<li>答案具有单调性就可以用</li>
+</ul>
+<pre><code>//二分答案，用于判断
+int l = 0, r = 2e9;//取定二分左右边界
+while(l + 1 != r)//终止条件，这个很重要，我一般是这么写
+{
+int mid = l + r &gt;&gt; 1;//取中点值（本质是向下取整）
+    if(check(mid))//分类判断mid和标准答案的区别
+        l = mid;
+    else
+        r = mid;
+}
+return l;//返回左边界，注意左边界是答案，不同需求下可能是 r
+</code></pre>
+<ul>
+<li>分为最大化答案和最小化答案两种</li>
+<li>可行区在左边，找最大化答案，返回 l</li>
+<li>//可行区在右边，找最小化答案，返回 r</li>
+</ul>
+<h1>优先队列</h1>
+<pre><code>//优先队列/堆
+priority_queue &lt;int, vector&lt;int&gt; , less&lt;int&gt; &gt; pq; //大顶堆
+priority_queue &lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt; mpq; //小顶堆
+pq.size(); //元素个数
+pq.empty(); //是否为空
+pq.push(x); //插入元素
+pq.pop(); //删除堆顶元素
+pq.top(); //访问堆顶元素
+int a[5] = {4,1,3,5,2};
+for(int i = 0; i &lt; 5; i++)
+    pq.push(a[i]);
+while(!pq.empty()){
+    cout &lt;&lt; pq.top() &lt;&lt; " "; //输出堆顶元素
+    p.pop(); //删除堆顶元素
+}
+for(int i = 0; i &lt; 5; i++)
+    mpq.push(a[i]); 
+while(!mpq.empty()){
+    cout &lt;&lt; mpq.top() &lt;&lt; " "; //输出堆顶元素    
+    mpq.pop(); //删除堆顶元素
+}
+</code></pre>
+<hr />
+<h1>哈希</h1>
+<pre><code>map&lt;string, int&gt; mp; // 初始化
+mp["apple"] = 5; // 插入或修改元素
+mp.insert({"banana", 3}); // 插入元素
+mp.erase("apple"); // 删除元素
+auto it = mp.find("banana"); // 查找元素，返回迭代器
+int cnt = mp.count("banana"); // 返回键数量（0或1）
+int sz = mp.size(); // 返回映射大小
+bool empty = mp.empty(); // 判断是否为空
+mp.clear(); // 清空映射
+int value = mp["banana"]; // 访问键对应的值
+// 遍历映射
+for (auto it = mp.begin(); it != mp.end(); ++it)
+{
+    string key = it-&gt;first;
+    int value = it-&gt;second;
+}
+// 使用范围for循环遍历
+for (auto &amp;pair : mp)
+{
+    string key = pair.first;
+    int value = pair.second;
+}
+</code></pre>
+<hr />
+<h1>动态规划</h1>
+<ul>
+<li>简单的dp就是递推，状态转移方程很容易看出来，比如斐波那契</li>
+<li>关键是找到合适的f（x）</li>
+<li>就比如区间问题常见的就是选取以x结尾的f（x）</li>
+</ul>
+<h2>背包问题</h2>
+<hr />
+<h3>简化的01背包</h3>
+<ul>
+<li>背包的容积为<code>v</code>，有<code>n</code>个物品和<code>v[i]</code>代表每个物品的体积</li>
+<li>要求最小的剩余体积</li>
+<li>首先最先想到的应该都是贪心，先选最大的，然后依次选，但是也很容易证明贪心是错的</li>
+<li>比如容积为5，物品为4，3，2</li>
+<li>不难看出暴力的做法就是dfs，每个物品都有选和不选两种，一个指数型的dfs</li>
+<li>但是重点是我们并不关心这么去选，而是关心剩余的体积（或者已经选了的体积总和）</li>
+<li>因此开一个<code>f[i][j]</code>表示前i个是否能放满体积为j的背包，<code>f[i][j] = f[j - 1][j] || f[i - 1][j - v[i]]</code>，后者是放i，前者是不放i</li>
+</ul>
+<h3>01背包</h3>
+<ul>
+<li>n件物品,第i件的容量是<code>v[i]</code>,价值<code>w[i]</code>,哪些物品装入让总价值最大</li>
+<li>根据前面的思路，<code>f[i][j]</code>为前i件物品放入体积为j背包的最大价值<code>f[i][j] = max{f[i - 1][j] , f[i - 1][j -v[i]] + w[i]}</code></li>
+</ul>
+<h3>扩展</h3>
+<ul>
+<li>如果背包的体积太大了开不下了，怎么办？
+<ul>
+<li>如果n比较小，直接dfs</li>
+<li>如果n再大一点，用整体二分把两份的答案拼在一起</li>
+</ul>
+</li>
+</ul>
+<h3>完全背包</h3>
+<ul>
+<li>在01背包的基础上所有物品可以无限放</li>
+<li>思路和上面一样，就是要修改一下状态转移方程，<code>f[i][j] = max{f[i - 1][j] , f[i - 1][j - k * v[i]] + k * w[i]}</code>
+，此时<code>0 &lt;= k * v[i] &lt;= j</code></li>
+<li>但是这样的时间复杂度又太高了，那我们不妨换个思路，还是用01背包的处理方式，但是可以这么写<code>f[i][j] = max{f[i - 1][j] , f[i][j - v[i]] + w[i]}</code></li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>栈与队列</title>
+    <link href="https://www.nanye404.top/posts/stack/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/stack/</id>
+    <published>2025-11-08T00:00:00.000Z</published>
+    <updated>2025-11-08T00:00:00.000Z</updated>
+    <summary>栈与队列</summary>
+    <content type="html"><![CDATA[<h2>栈</h2>
+<ul>
+<li>栈的特点就是<strong>先入后出</strong></li>
+</ul>
+<hr />
+<h3>定义</h3>
+<pre><code>stack&lt;int&gt; st;            // 默认底层容器是 deque&lt;int&gt;
+stack&lt;string&gt; s2;
+stack&lt;int, vector&lt;int&gt;&gt; s3;  // 指定底层容器（如 vector / list / deque）
+
+</code></pre>
+<hr />
+<h3>手写栈</h3>
+<pre><code>struct stack
+{
+    vector&lt;int&gt; data;
+    int t=0;
+    bool empty()
+    {
+        return t==0;
+    }
+    void push(int x)
+    {
+        data.push_back(x);
+        t++;
+    }
+    void pop()
+    {
+        if(!empty())
+        {
+            data.pop_back();
+            t--;
+        }
+    }
+    int top()
+    {
+        if(!empty())
+        {
+            return data[t-1];
+        }
+        return -1; // or throw an exception
+    }
+};
+</code></pre>
+<h3>成员函数</h3>
+<hr />
+<pre><code>`push()`//入栈 O(1)
+`pop()`//出栈 O(1)
+`top()`//返回栈顶的元素引用 O(1)
+`empty()`//判断栈是否为空 O(1)
+</code></pre>
+<hr />
+<h3>括号匹配</h3>
+<pre><code>bool check(string s){
+    stack&lt;char&gt; st;
+    for (char c: s){
+        if (c=='('||c=='['||c=='{') st.push(c);
+        else {
+            if (st.empty()) return false;
+            char t=st.top(); st.pop();
+            if ((c==')'&amp;&amp;t!='(')||(c==']'&amp;&amp;t!='[')||(c=='}'&amp;&amp;t!='{')) return false;
+        }
+    }
+    return st.empty();
+}
+</code></pre>
+<hr />
+<h3>表达式求值（中缀转后缀）</h3>
+<pre><code>void solve() 
+{
+    string s, ts;
+    cin &gt;&gt; s;
+    stack&lt;int&gt; a;
+for (int i = 0; i &lt; s.length(); i++) 
+{
+    if (isdigit(s[i])) {
+        ts += s[i];
+    } else if (s[i] == '.') 
+    {
+        if (!ts.empty()) 
+        {
+            a.push(atoi(ts.c_str()));
+            ts.clear();
+        }
+    }
+    else if(s[i]=='+')
+    {
+        int x = a.top(); a.pop();
+        int y = a.top(); a.pop();
+        a.push(x + y);
+    }
+    else if(s[i]=='-')
+    {
+        int x = a.top(); a.pop();
+        int y = a.top(); a.pop();
+        a.push(y - x);
+    }
+    else if(s[i]=='*')
+    {
+        int x = a.top(); a.pop();
+        int y = a.top(); a.pop();
+        a.push(x * y);
+    }
+    else if(s[i]=='/')
+    {
+        int x = a.top(); a.pop();
+        int y = a.top(); a.pop();
+        a.push(y / x);
+    }
+    else if(s[i]=='@')
+    {
+        cout&lt;&lt;a.top()&lt;&lt;endl;
+    }
+}
+}
+</code></pre>
+<hr />
+<h2>队列</h2>
+<ul>
+<li>队列就是<strong>先入先出</strong></li>
+</ul>
+<hr />
+<h3>实现</h3>
+<ul>
+<li>一般有链队列和循环队列</li>
+<li>链队列实际上就是单项链表</li>
+<li>循环队列是一种顺序表，用两个指针head和tail指向队头和队尾
+<ul>
+<li>循环主要为了解决溢出问题</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3>极简代码</h3>
+<pre><code>const int N=1e5;
+int que[N],head,tail;
+head++;//弹出队头
+que[head];//读取队头数据
+que[++tail] = data;//data入队
+</code></pre>
+<hr />
+<h3>stl的queue</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>q.push(x)</code></td>
+<td>入队（放到队尾）</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.pop()</code></td>
+<td>出队（删除队首）</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.front()</code></td>
+<td>返回队首元素引用</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.back()</code></td>
+<td>返回队尾元素引用</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.empty()</code></td>
+<td>判空，返回 bool</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.size()</code></td>
+<td>队列中元素个数</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code>q.swap(q2)</code></td>
+<td>与另一个队列交换内容</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>手写队列</h3>
+<pre><code>const int N = 1e5 + 10;
+int q[N];
+int head = 0, tail = 0;   // 队头队尾
+
+bool empty() {
+    return head == tail;
+}
+
+bool full() {
+    return (tail + 1) % N == head;
+}
+
+void push(int x) {
+    if (full()) return;       // 可自行处理溢出
+    q[tail] = x;
+    tail = (tail + 1) % N;
+}
+
+int front() {
+    return q[head];
+}
+
+void pop() {
+    if (!empty())
+        head = (head + 1) % N;
+}
+</code></pre>
+<hr />
+<h3>双端队列和单调队列</h3>
+<ul>
+<li>双端队列
+<ul>
+<li>能在两端进行插入和删除</li>
+</ul>
+</li>
+<li>单调队列（用双端实现）
+<ul>
+<li>队列中的元素单调有序</li>
+<li>两端都能入队和出队</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>单调队列</li>
+</ul>
+<pre><code>int q[N],head,tail; //单调队列记录最小值的位置，方便后面判断某元素是否已经离开窗口
+...
+head=1,tail=0; //清空队列
+for(int i=1;i&lt;=n;i++) //枚举窗口右端
+{
+  while(head&lt;=tail &amp;&amp; i-q[head]+1&gt;k) q[head++]=0; //弹出已经离开窗口的元素
+  while(head&lt;=tail &amp;&amp; a[q[tail]]&gt;a[i]) q[tail--]=0; //从队尾踢掉之前所有不小于当前元素的数
+  q[++tail]=i; //当前元素自己加入队尾
+  if(i&gt;=k) res[i-k+1]=q[head]; //完成以上操作后，队头即为最小值
+}
+</code></pre>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
   <entry>
     <title>递归，分治</title>
     <link href="https://www.nanye404.top/posts/digui/" rel="alternate" type="text/html"/>
@@ -17,29 +617,155 @@
     <content type="html"><![CDATA[<h2>递归</h2>
 <ul>
 <li>递归其实很好理解，类比于数学数列的递推，或者说数学归纳法</li>
-<li>用cpp的语言来说就是函数不断地调用自身</li>
+<li>用编程语言来说就是函数不断地调用自身</li>
 <li>递归的核心思想就是把原问题分解成重复的子问题，也就是分治</li>
-<li>比如怎么排序，一种方法是先排左后排右，至于怎么排，就再执行前面一句话（这也是一种重要的排序方式，即快速排序）</li>
+<li>例如，计算阶乘：</li>
 </ul>
+<pre><code>int fact(int n) {
+    if (n == 1) return 1;   // 递归出口
+    return n * fact(n - 1); // 递归调用
+}
+</code></pre>
+<hr />
 <h2>为什么用递归？</h2>
 <ul>
-<li>代码简简洁，可读性强</li>
-<li>更利于维护和调试</li>
+<li>逻辑简洁，<strong>可读性强</strong>；</li>
+<li>适合表达 <strong>分治思想</strong>；</li>
+<li>在树、图、排序、搜索等问题中，递归往往比迭代更自然。</li>
 </ul>
+<p>但要注意：递归深度过大会带来栈空间问题，因此有时需要改写为循环或手动栈。</p>
+<h2>分析递归</h2>
+<ul>
+<li>画递归搜索树</li>
+</ul>
+<hr />
 <h2>分治</h2>
 <ul>
 <li>上面也说了，分治思想就是把原问题分解成重复的子问题</li>
-<li>分治的流程就是 分解-&gt;解决-&gt;合并</li>
+<li>分治的三个步骤：</li>
 </ul>
+<ol>
+<li><strong>分解</strong>：把原问题拆分成规模更小但性质相同的子问题</li>
+<li><strong>解决</strong>：递归求解这些子问题</li>
+<li><strong>合并</strong>：将子问题的结果合并成最终解</li>
+</ol>
 <hr />
 <ul>
 <li>注意，分治是思维方式，递归是实现方法，分治很大程度都是基于递归的</li>
+<li>几乎所有分治算法（如归并排序、快排、二分查找）都可以用递归来实现。</li>
+<li>下面是一些常见排序的实现</li>
 </ul>
-<h2>快速排序</h2>
+<hr />
+<h2>冒泡排序</h2>
+<hr />
+<pre><code>void bubble(vector&lt;int&gt;&amp; arr, int n) {
+    if (n == 1) return; // 递归出口
+    
+    for (int i = 0; i &lt; n - 1; i++) { // 每轮冒泡
+        if (arr[i] &gt; arr[i + 1]) {
+            swap(arr[i], arr[i + 1]);
+        }
+    }
+    // 最大元素已在末尾，对前 n-1 个元素递归
+    bubble(arr, n - 1);
+}
+
+</code></pre>
+<h2>选择排序</h2>
+<hr />
+<pre><code>void check(vector&lt;int&gt;&amp; arr, int n) {
+    if (n == 1) return; 
+
+    int max = 0;
+    for (int i = 1; i &lt; n; i++) {
+        if (arr[i] &gt; arr[max]) {
+            max = i;
+        }
+    }
+    // 把最大值放到末尾
+    swap(arr[max], arr[n - 1]);
+    check(arr, n - 1);
+}
+
+</code></pre>
+<h3>优化</h3>
+<hr />
 <ul>
-<li>下面我将用最基本的快速排序讲解递归和分治</li>
-<li>快排的基本原理就是上面的例子，不断的二分分解，排序，然后合并</li>
+<li>其实可以把最大最小同时选出来放在两边</li>
 </ul>
+<pre><code>void selection(vector&lt;int&gt;&amp; arr, int left,int right) {
+    if (right-left == 1||right-left == 0 )return; 
+    int max 0 ;int min = 0;
+    int left = 0;int right = size(arr) - 1;
+    for (int i = left; i &lt;= right; i++) {
+        if (arr[i] &gt; arr[max]) 
+            max = i;
+         if (arr[i] &lt; arr[min]) 
+            min = i;
+        
+    }
+    // 先把最大值放到右端
+    swap(arr[max], arr[right]);
+
+    // 注意：如果最大值原来在左边，而被换到右边，
+    // min 的位置可能被影响，因此要修正
+    if (min == right) min = max;
+
+    // 再把最小值放到左端
+    swap(arr[min], arr[left]);
+    selection(arr, left + 1,right - 1);
+}
+</code></pre>
+<h2>插入排序</h2>
+<hr />
+<pre><code>void insert(vector&lt;int&gt;&amp; arr, int n, int i = 1) {
+    if (i == n) return; // 递归出口：所有元素都已插入
+
+    int key = arr[i];
+    int pos = binary_search(arr, 0, i, key); //用二分搜索会更快
+
+    // 把 [pos, i-1] 后移一位
+    for (int j = i; j &gt; pos; j--)
+        arr[j] = arr[j - 1];
+    arr[pos] = key;
+
+    insert(arr, n, i + 1); // 递归处理下一个元素
+}
+int binary_search(const vector&lt;int&gt;&amp; arr, int left, int right, int key) {
+    if (left &gt;= right) 
+        return left; // 插入位置
+
+    int mid = (left + right) / 2;
+
+    if (key &lt; arr[mid]) 
+        return binary_search(arr, left, mid, key);
+    else if (key &gt; arr[mid])
+        return binary_search(arr, mid + 1, right, key);
+    else 
+        return mid; // 找到了相同值
+}
+
+</code></pre>
+<h2>快速排序</h2>
+<hr />
+<pre><code>void quicksort(vector&lt;int&gt;&amp; arr, int left, int right) {
+    if (left &gt;= right) return; // 递归出口
+
+    int i = left, j = right, pivot = arr[left]; // 选取基准
+
+    while (i &lt; j) {
+        while (i &lt; j &amp;&amp; arr[j] &gt;= pivot) j--; // 从右找比基准小的
+        while (i &lt; j &amp;&amp; arr[i] &lt;= pivot) i++; // 从左找比基准大的
+        if (i &lt; j) swap(arr[i], arr[j]); // 交换左右
+    }
+
+    swap(arr[left], arr[i]); // 把基准放到正确位置
+
+    quicksort(arr, left, i - 1); // 递归处理左区间
+    quicksort(arr, i + 1, right); // 递归处理右区间
+}
+</code></pre>
+<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -64,97 +790,36 @@
 <ul>
 <li>主要是在O（1）用来算一段区间的和</li>
 </ul>
-]]></content>
-    <author>
-      <name>南叶酱</name>
-    </author>
-    <category term="算法"></category>
-  </entry>
-  <entry>
-    <title>哈希表</title>
-    <link href="https://www.nanye404.top/posts/map/" rel="alternate" type="text/html"/>
-    <id>https://www.nanye404.top/posts/map/</id>
-    <published>2025-11-03T00:00:00.000Z</published>
-    <updated>2025-11-03T00:00:00.000Z</updated>
-    <summary>哈希表的基础知识</summary>
-    <content type="html"><![CDATA[<h2>哈希表的基本原理</h2>
-<ul>
-<li>哈希表就是一个加强版的数组</li>
-<li>可以用过<code>key</code>在O(1)的时间复杂度查找到对应的<code>value</code></li>
-<li><code>key</code>可以是数字或字符串</li>
-<li>相比于数组，哈希表在日常的使用更加广泛，比如通讯录就可以理解成一个哈希表</li>
-<li>下面用代码实现一个哈希表</li>
-</ul>
-<pre><code>class MyHashMap {
-
-private:
-    vector&lt;void*&gt; table;//表示任意类型的指针
-
-public:
-    // 增/改，复杂度 O(1)
-    void put(auto key, auto value) {
-        int index = hash(key);
-        table[index] = value;
+<h2>二维前缀和</h2>
+<pre><code>ll a[N][N], pre[N][N];
+void solve()
+{
+    ll n, m, c;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; c;
+    for(int i = 1; i &lt;= n; ++i)
+        for(int j = 1; j &lt;= m; ++j)
+         cin &gt;&gt; a[i][j];
+    for(int i = 1; i &lt;= n; ++i)
+        for(int j = 1; j &lt;= m; ++j)
+         pre[i][j] = pre[i][j - 1] + pre[i - 1][j] - pre[i - 1][j - 1] + a[i][j];
+    ll ans = -INF;
+    ll x = 0, y = 0;
+    for(int i = 1; i &lt;= n; ++i)
+    {   
+        for(int j = 1; j &lt;= m; ++j)
+        {
+            if(i + c - 1 &gt; n || j + c - 1 &gt; m)
+                continue;
+            if(ans &lt; pre[i + c - 1][j + c - 1] - pre[i + c - 1][j - 1] - pre[i - 1][j +c - 1] + pre[i - 1][j - 1])
+            {
+                ans = pre[i + c - 1][j + c - 1] - pre[i + c - 1][j - 1] - pre[i - 1][j+ c - 1] + pre[i - 1][j - 1];
+                x = i, y = j;
+            }
+        }
     }
-
-    // 查，复杂度 O(1)
-    auto get(auto key) {
-        int index = hash(key);
-        return table[index];
-    }
-
-    // 删，复杂度 O(1)
-    void remove(auto key) {
-        int index = hash(key);
-        table[index] = nullptr;
-    }
-
-private:
-    // 哈希函数，把 key 转化成 table 中的合法索引
-    // 时间复杂度必须是 O(1)，才能保证上述方法的复杂度都是 O(1)
-    int hash(auto key) {
-        // ...
-    }
-};
+    cout &lt;&lt; x &lt;&lt; " " &lt;&lt; y &lt;&lt; '\n';
+}
 </code></pre>
-<hr />
-<h3>注意</h3>
-<ul>
-<li><code>key</code> 是唯一的，<code>value</code> 可以重复</li>
-</ul>
-<h2>哈希冲突</h2>
-<ul>
-<li>
-<p>如果两个不同的 <code>key</code> 通过哈希函数得到了相同的索引,这种情况就叫做「哈希冲突」。</p>
-</li>
-<li>
-<p>哈希冲突不可能避免，只能在算法层面妥善处理出现哈希冲突的情况。</p>
-</li>
-<li>
-<p>哈希冲突是一定会出现的，因为这个 hash 函数相当于是把一个无穷大的空间映射到了一个有限的索引空间，所以必然会有不同的 key 映射到同一个索引上。</p>
-</li>
-<li>
-<p>有两种常见的解决方法，一种是拉链法，另一种是线性探查法（也经常被叫做开放寻址法）。</p>
-<ul>
-<li>拉链法简单来说就是让哈希表储存的是一个链表，每有一个新的就加上去</li>
-<li>而线性探查法的思路是，一个 <code>key</code> 发现算出来的 <code>index</code> 值已经被别的 <code>key</code> 占了，那么它就去 <code>index + 1</code> 的位置看看，如果还是被占了，就继续往后找，直到找到一个空的位置为止。</li>
-</ul>
-</li>
-<li>
-<p>拉链法和线性探查法虽然能解决哈希冲突的问题，但是它们会导致性能下降。</p>
-<ul>
-<li>
-<p>比如拉链法，你算出来 <code>index = hash(key)</code> 这个索引了，结果过去查出来的是个链表，你还得遍历一下这个链表，才能在里面找到你要的 value。这个过程的时间复杂度是 O(n)</p>
-</li>
-<li>
-<p>线性探查法也是类似的，你算出来 <code>index = hash(key)</code> 这个索引了，你去这个索引位置查看，发现存储的不是要找的 <code>key</code>，但由于线性探查法解决哈希冲突的方式，你并不能确定这个 <code>key</code> 真的不存在，你必须顺着这个索引往后找，直到找到一个空的位置或者找到这个 <code>key</code> 为止，这个过程的时间复杂度也是 O(n)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>为了避免哈希冲突（也就是哈希表被塞太满），就有了<strong>负载因子</strong></p>
-</li>
-</ul>
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -2689,36 +3354,35 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
     <updated>2025-10-23T00:00:00.000Z</updated>
     <summary>中南自瞄的代码框架解读</summary>
     <content type="html"><![CDATA[<h2>装甲板检测</h2>
-<h3><strong>检测类</strong></h3>
 <ul>
-<li>Detector
+<li><code>Detector</code>
 <ul>
-<li>成员
+<li><strong>成员</strong>
 <ul>
 <li><code>LightParams</code> 灯条参数
 <ul>
-<li><code>min_ratio</code>，<code>max_ratio</code> 宽高比</li>
+<li><code>min_ratio</code>，<code>max_ratio</code> 灯条宽高比</li>
 <li><code>max_angle</code> 最大倾斜角</li>
 <li><code>color_diff_thresh</code> 颜色阈值，用来判断颜色（通道相减）</li>
 </ul>
 </li>
 <li><code>ArmorParams</code> 装甲板参数
 <ul>
-<li><code>min_light_ratio</code> 最小灯条宽高比（那上面的是什么）</li>
+<li><code>min_light_ratio</code> 最小灯条宽高比</li>
 <li><code>center_distance</code> 装甲板距离</li>
-<li><code>max_angle</code> 最大倾斜角（那上面的是什么）</li>
+<li><code>max_angle</code> 最大倾斜角</li>
 </ul>
 </li>
 <li><code>binary_thres</code> 二值化阈值</li>
 <li><code>detect_color</code> 颜色</li>
-<li><code>classifier</code> 识别数字 <code>corner_corrector</code> 角点修正（智能指针？不会用）</li>
+<li><code>classifier</code> 识别数字 <code>corner_corrector</code> 角点修正</li>
 <li><code>binary_img</code> 二值化图像</li>
 <li><code>rm_interfaces::msg::DebugLights debug_lights</code> <code>rm_interfaces::msg::DebugArmors debug_armors</code> 发布消息</li>
 <li><code>gray_img_</code> 灰度图</li>
 <li><code>lights_</code> <code>armors_</code> 检测的所有灯条和装甲板</li>
 </ul>
 </li>
-<li>函数（noexcept性能优化？）
+<li><strong>函数</strong>
 <ul>
 <li><code>detect</code> 检测入口
 <ul>
@@ -2740,18 +3404,295 @@ float angle = std::atan2(edge.y, edge.x) * 180 / CV_PI;
 <li>按横坐标排序，返回</li>
 </ul>
 </li>
-<li><code>matchLights</code> 匹配装甲板</li>
+<li><code>matchLights</code> 匹配装甲板
+<ul>
+<li>判断颜色，距离初步筛选</li>
+<li>左右灯条配对</li>
+<li><code>containLight</code> 判断灯条中间是否还有别的
+<ul>
+<li>最小旋转矩形，计算尺寸</li>
+<li>太宽太窄都跳过</li>
+<li>判断是否有点在矩形里</li>
 </ul>
 </li>
-<li><code>getAllNumbersImage</code> 调试函数</li>
-<li><code>drawResults</code> 绘制结果</li>
-<li><code>isLight</code> 判断灯条 <code>isArmor</code> 判断装甲板（为啥一个公有一个私有，对于什么公有什么私有有点晕其实）</li>
-<li><code>containLight</code> 判断是否已配对</li>
+<li><code>isArmor</code> 判断装甲板
+<ul>
+<li>灯条长度比，灯条距离，倾斜角</li>
+<li>判断大小装甲板</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+</li>
+<li><code>getAllNumbersImage</code> 调试函数
+<ul>
+<li>将收集的装甲板数字拼起来输出图像用于调试？</li>
+</ul>
+</li>
+<li><code>drawResults</code> 绘制结果
+<ul>
+<li>画出装甲板，画出大小，数字</li>
+</ul>
+</li>
+<li><code>isLight</code> 判断灯条
+<ul>
+<li>宽高比，倾斜角</li>
+<li>保存调试信息</li>
+</ul>
+</li>
+<li><code>isArmor</code> 判断装甲板</li>
+<li><code>containLight</code> 判断灯条中间是否还有别的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>装甲板检测节点</h2>
+<ul>
+<li><code>ArmorDetectorNode</code>
+<ul>
+<li><strong>流程</strong>
+<ul>
+<li><code>构造函数</code>
+<ul>
+<li><code>initDetector</code>
+<ul>
+<li>初始化二值化，装甲板参数，灯条参数等信息</li>
+<li>初始化数字识别和角点修正</li>
+<li>设置动态参数回调</li>
+</ul>
+</li>
+<li>设置参数</li>
+<li>启动发布者，订阅者，服务端</li>
+</ul>
+</li>
+<li><code>imageCallback</code> 图像回调函数
+<ul>
+<li>读取tf2中的消息</li>
+<li>获取装甲板检测结果</li>
+<li>求解位姿</li>
+<li>debug调试</li>
+<li>发布装甲板消息</li>
+</ul>
+</li>
+<li><code>detectArmors</code>
+<ul>
+<li>读取图像</li>
+<li>装甲板检测</li>
+<li>调试模式
+<ul>
+<li>发布二值化图像</li>
+<li>按照x坐标排序</li>
+<li>发布灯条和装甲板结果</li>
+</ul>
+</li>
+<li>返回装甲板</li>
+</ul>
+</li>
+<li><code>onSetParameters</code>
+<ul>
+<li>更新参数</li>
+</ul>
+</li>
+<li><code>createDebugPublishers</code>，<code>destroyDebugPublishers</code> 开启和关闭调试</li>
+<li><code>publishMarkers</code> 发布markers信息</li>
+<li><code>setModeCallback</code> 模式切换</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>解算</h2>
+<ul>
+<li><code>Solver</code>
+<ul>
+<li><code>构造函数</code>
+<ul>
+<li>读取参数</li>
+<li>初始化各种信息</li>
+</ul>
+</li>
+<li><code>solve</code>
+<ul>
+<li>从节点获取参数（最大跟踪 yaw 速度、延时、侧角、最小切换速度等） 异常记录日志</li>
+<li>读取rpy</li>
+<li>读取位置，朝向，速度</li>
+<li>计算弹丸飞行视角</li>
+<li>生成装甲板的三维点</li>
+<li>选择最优的装甲板</li>
+<li>给出开火建议</li>
+</ul>
+</li>
+<li><code>isOnTarget</code>
+<ul>
+<li>判断是否瞄准成功，能否开火</li>
+</ul>
+</li>
+<li><code>getArmorPositions</code>
+<ul>
+<li>计算装甲板的三维坐标</li>
+</ul>
+</li>
+<li><code>selectBestArmor</code>
+<ul>
+<li>计算位置，旋转角速度</li>
+<li>选择要击打的装甲板</li>
+</ul>
+</li>
+<li><code>trajectory_compensator_</code>
+<ul>
+<li>修正弹道</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>解算节点</h2>
+<ul>
+<li><code>ArmorSolverNode</code>
+<ul>
+<li>构造函数
+<ul>
+<li>节点初始化</li>
+<li>输出启动信息</li>
+<li>追踪器，卡尔曼滤波初始化</li>
+<li>订阅和发布</li>
+<li>定时器</li>
+</ul>
+</li>
+<li><code>timerCallback</code>
+<ul>
+<li>检查是否启动</li>
+<li>初始化</li>
+<li>检测是否有目标</li>
+<li>解算</li>
+<li>发布消息</li>
+</ul>
+</li>
+<li><code>initMarkers</code>
+<ul>
+<li>marker调试</li>
+</ul>
+</li>
+<li><code>armorsCallback</code>
+<ul>
+<li>坐标变换</li>
+<li>排除异常装甲板</li>
+<li>发布消息</li>
+<li>更新状态</li>
+</ul>
+</li>
+<li><code>publishMarker</code>
+<ul>
+<li>绘制信息</li>
+</ul>
+</li>
+<li><code>setModeCallback</code>
+<ul>
+<li>设置模式</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>追踪</h2>
+<ul>
+<li><code>Tracker</code>
+<ul>
+<li><code>构造函数</code>
+<ul>
+<li>初始化参数</li>
+</ul>
+</li>
+<li><code>init</code>
+<ul>
+<li>选择最近的装甲板</li>
+<li>初始化卡尔曼滤波</li>
+<li>设置装甲板信息</li>
+</ul>
+</li>
+<li><code>update</code>
+<ul>
+<li>更新卡尔曼滤波的状态</li>
+<li>选择最合适的装甲板</li>
+<li>更新装甲板</li>
+</ul>
+</li>
+<li><code>initEKF</code>
+<ul>
+<li>初始化卡尔曼滤波</li>
+</ul>
+</li>
+<li><code>handleArmorJump</code>
+<ul>
+<li>处理快速旋转的装甲板
+<ul>
+<li>判断角度</li>
+<li>修正卡尔曼</li>
+<li>计算距离</li>
+<li>重置卡尔曼</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>orientationToYaw</code>
+<ul>
+<li>修正yaw角</li>
+</ul>
+</li>
+<li><code>getArmorPositionFromState</code>
+<ul>
+<li>推算位置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>位姿估计</h2>
+<ul>
+<li><code>ArmorPoseEstimator</code>
+<ul>
+<li><code>构造函数</code>
+<ul>
+<li>初始化pnp，ba</li>
+</ul>
+</li>
+<li><code>extractArmorPoses</code>
+<ul>
+<li>提取位姿</li>
+</ul>
+</li>
+<li><code>rotationMatrixToRPY</code>
+<ul>
+<li>提取欧拉角</li>
+</ul>
+</li>
+<li><code>sortPnPResult</code>
+<ul>
+<li>选择正确的pnp</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>问题</h2>
+<ul>
+<li>只能看懂大概在干什么，里面有很多处理细节没咋细看，具体的可能需要自己动手调车才能更深理解</li>
+<li>智能指针没学太多，很多地方都看不懂</li>
+<li>预处理为什么没有形态学操作</li>
+<li>是不是需要增加一些亮度判断</li>
+<li>调试那部分似懂非懂</li>
+<li>数字识别那里神经网络没学</li>
+<li>感觉要学的还是太多了，下一步我该学啥</li>
+</ul>
+<hr />
 ]]></content>
     <author>
       <name>南叶酱</name>
@@ -3107,6 +4048,24 @@ int main() {
 <ul>
 <li>装甲板识别基本更完</li>
 <li>双指针更完</li>
+</ul>
+<h2>2025-11-3</h2>
+<ul>
+<li>开始更新哈希表</li>
+</ul>
+<h2>2025-11-4</h2>
+<ul>
+<li>开始更新前缀和</li>
+</ul>
+<h2>2025-11-5</h2>
+<ul>
+<li>更新中南自瞄框架</li>
+<li>更新递归，分治</li>
+</ul>
+<h2>2025-11-9</h2>
+<ul>
+<li>更新中南自瞄</li>
+<li>更新一些数据结构</li>
 </ul>
 ]]></content>
     <author>
