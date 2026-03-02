@@ -325,6 +325,113 @@ for (auto &amp;amp;pair : mp)
 ，此时&lt;code&gt;0 &amp;lt;= k * v[i] &amp;lt;= j&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;但是这样的时间复杂度又太高了，那我们不妨换个思路，还是用01背包的处理方式，但是可以这么写&lt;code&gt;f[i][j] = max{f[i - 1][j] , f[i][j - v[i]] + w[i]}&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;并查集&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;并查集是一个树状的数据结构，&lt;code&gt;a[i]&lt;/code&gt;表示&lt;code&gt;i&lt;/code&gt;的根节点，初始化时&lt;code&gt;a[i] = i&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;并查集的查找&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;int find(int x)
+{
+    if(fa[x] == x) return x;
+    return fa[x] = find(fa[x]);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;并查集的合并&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;如果两个节点根节点不同，让x接到y上（反过来也行）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;fx = find(x);
+fy = find(y);
+if(x != y) fa[x] = y;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;判断是否在一个并查集上&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;判断就很简单了，直接判断根节点是否一致即可&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;线段树&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;线段树是基于分治的二叉树，维护区间信息（区间和，最值，区间gcd），log（n）的时间修改区间信息和查询&lt;/li&gt;
+&lt;li&gt;叶子存储元素本身，非叶子存储统计值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;建树&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;#define lc p&amp;lt;&amp;lt;1
+#define rc p&amp;lt;&amp;lt;1|1
+struct node
+{
+    int l, r, sum;
+}tr[4 * N];
+void build(int p, int l, int r)
+{
+tr[p] = {l, r, w[l]}
+if(l == r) return;
+int m =l + r &amp;gt;&amp;gt; 1;
+build(lc, l ,m);
+build(rc, m + 1, r);
+tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;p&lt;/code&gt;为当前节点的编号，&lt;code&gt;l&lt;/code&gt;,&lt;code&gt;r&lt;/code&gt;代表区间&lt;/li&gt;
+&lt;li&gt;如果没到底就裂开，回溯的时候算&lt;code&gt;sum&lt;/code&gt;(后序遍历)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;更新点&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;void update(int p, int x, int k){
+    if(tr[p].l == x &amp;amp;&amp;amp; tr[p].r == x){
+        tr[p].sum += k;
+        return;
+    }
+    int m = tr[p].l + tr[p].r &amp;gt;&amp;gt; 1;
+    if(x &amp;lt; m) update(lc, x, k);
+    if(x &amp;gt; m) update(rc, x, k);
+    tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;区间查询&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;如果查询区间完全覆盖当前节点，直接返回&lt;code&gt;sum&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;左节点与区间重叠，访问左子树&lt;/li&gt;
+&lt;li&gt;右节点与区间重叠，访问右子树&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;int query(int p, int x, int y){
+    if(x &amp;lt;= tr[p].l &amp;amp;&amp;amp; tr[p].r &amp;lt;= y)
+    return tr[p].sum;
+    int m = tr[p].l + tr[p].r &amp;gt;&amp;gt; 1;
+    int sum = 0;
+    if(x &amp;lt;= m) sum += query(lc, x, y);
+    if(y &amp;gt; m) sum += query(rc, x, y);
+    return sum;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;区间修改&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;如果完全覆盖，则直接修改&lt;code&gt;sum&lt;/code&gt;，再标记，等下次需要的时候，再下传（结构体增加一个add）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;void pushup(int p){
+    tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+void pushdown(int p){
+    if(tr[p].add){
+        tr[lc].sum += tr[p].add * (tr[lc].r - tr[lc].l + 1),
+        tr[rc].sum += tr[p].add * (tr[rc].r - tr[rc].l + 1),
+        tr[lc].add += tr[p].add,
+        tr[rc].add += tr[p].add,
+        tr[p].add = 0;
+    }
+}
+void update(int p, int x, int y, int k){
+    if(x &amp;lt;= tr[p].l &amp;amp;&amp;amp; tr[p].r &amp;lt;= y){
+        tr[p].sum += (tr[p].r - tr[p].l + 1) * k;
+        tr[p].add += k;
+        return;
+    }
+    int m = tr[p].r + tr[p].l &amp;gt;&amp;gt; 1;
+    pushdown(p);
+    if(x &amp;lt;= m) update(lc, x, y, k);
+    if(y &amp;gt; m) update(lc, x, y, k);
+    pushup(p);
+}
+&lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>栈与队列</title><link>https://www.nanye404.top/posts/stack/</link><guid isPermaLink="true">https://www.nanye404.top/posts/stack/</guid><description>栈与队列</description><pubDate>Sat, 08 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;栈&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;栈的特点就是&lt;strong&gt;先入后出&lt;/strong&gt;&lt;/li&gt;

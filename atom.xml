@@ -5,7 +5,7 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2025-12-15T11:25:58.078Z</updated>
+  <updated>2026-03-02T13:05:32.346Z</updated>
   <language>zh_CN</language>
   <entry>
     <title>算法竞赛入门</title>
@@ -341,6 +341,113 @@ for (auto &amp;pair : mp)
 ，此时<code>0 &lt;= k * v[i] &lt;= j</code></li>
 <li>但是这样的时间复杂度又太高了，那我们不妨换个思路，还是用01背包的处理方式，但是可以这么写<code>f[i][j] = max{f[i - 1][j] , f[i][j - v[i]] + w[i]}</code></li>
 </ul>
+<hr />
+<h2>并查集</h2>
+<ul>
+<li>并查集是一个树状的数据结构，<code>a[i]</code>表示<code>i</code>的根节点，初始化时<code>a[i] = i</code></li>
+</ul>
+<h3>并查集的查找</h3>
+<pre><code>int find(int x)
+{
+    if(fa[x] == x) return x;
+    return fa[x] = find(fa[x]);
+}
+</code></pre>
+<h3>并查集的合并</h3>
+<ul>
+<li>如果两个节点根节点不同，让x接到y上（反过来也行）</li>
+</ul>
+<pre><code>fx = find(x);
+fy = find(y);
+if(x != y) fa[x] = y;
+</code></pre>
+<h3>判断是否在一个并查集上</h3>
+<ul>
+<li>判断就很简单了，直接判断根节点是否一致即可</li>
+</ul>
+<h2>线段树</h2>
+<ul>
+<li>线段树是基于分治的二叉树，维护区间信息（区间和，最值，区间gcd），log（n）的时间修改区间信息和查询</li>
+<li>叶子存储元素本身，非叶子存储统计值</li>
+</ul>
+<h3>建树</h3>
+<pre><code>#define lc p&lt;&lt;1
+#define rc p&lt;&lt;1|1
+struct node
+{
+    int l, r, sum;
+}tr[4 * N];
+void build(int p, int l, int r)
+{
+tr[p] = {l, r, w[l]}
+if(l == r) return;
+int m =l + r &gt;&gt; 1;
+build(lc, l ,m);
+build(rc, m + 1, r);
+tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+</code></pre>
+<ul>
+<li><code>p</code>为当前节点的编号，<code>l</code>,<code>r</code>代表区间</li>
+<li>如果没到底就裂开，回溯的时候算<code>sum</code>(后序遍历)</li>
+</ul>
+<h3>更新点</h3>
+<pre><code>void update(int p, int x, int k){
+    if(tr[p].l == x &amp;&amp; tr[p].r == x){
+        tr[p].sum += k;
+        return;
+    }
+    int m = tr[p].l + tr[p].r &gt;&gt; 1;
+    if(x &lt; m) update(lc, x, k);
+    if(x &gt; m) update(rc, x, k);
+    tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+</code></pre>
+<h3>区间查询</h3>
+<ul>
+<li>如果查询区间完全覆盖当前节点，直接返回<code>sum</code></li>
+<li>左节点与区间重叠，访问左子树</li>
+<li>右节点与区间重叠，访问右子树</li>
+</ul>
+<pre><code>int query(int p, int x, int y){
+    if(x &lt;= tr[p].l &amp;&amp; tr[p].r &lt;= y)
+    return tr[p].sum;
+    int m = tr[p].l + tr[p].r &gt;&gt; 1;
+    int sum = 0;
+    if(x &lt;= m) sum += query(lc, x, y);
+    if(y &gt; m) sum += query(rc, x, y);
+    return sum;
+}
+</code></pre>
+<h3>区间修改</h3>
+<ul>
+<li>如果完全覆盖，则直接修改<code>sum</code>，再标记，等下次需要的时候，再下传（结构体增加一个add）</li>
+</ul>
+<pre><code>void pushup(int p){
+    tr[p].sum = tr[lc].sum + tr[rc].sum;
+}
+void pushdown(int p){
+    if(tr[p].add){
+        tr[lc].sum += tr[p].add * (tr[lc].r - tr[lc].l + 1),
+        tr[rc].sum += tr[p].add * (tr[rc].r - tr[rc].l + 1),
+        tr[lc].add += tr[p].add,
+        tr[rc].add += tr[p].add,
+        tr[p].add = 0;
+    }
+}
+void update(int p, int x, int y, int k){
+    if(x &lt;= tr[p].l &amp;&amp; tr[p].r &lt;= y){
+        tr[p].sum += (tr[p].r - tr[p].l + 1) * k;
+        tr[p].add += k;
+        return;
+    }
+    int m = tr[p].r + tr[p].l &gt;&gt; 1;
+    pushdown(p);
+    if(x &lt;= m) update(lc, x, y, k);
+    if(y &gt; m) update(lc, x, y, k);
+    pushup(p);
+}
+</code></pre>
 ]]></content>
     <author>
       <name>南叶酱</name>
