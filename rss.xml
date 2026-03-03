@@ -1,7 +1,115 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>算法竞赛入门</title><link>https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/</guid><description>整合一下最近学过的</description><pubDate>Fri, 12 Dec 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;首先是我的模板&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>南叶の小窝</title><description>欢迎来玩awa</description><link>https://www.nanye404.top/</link><language>zh_CN</language><item><title>动态规划</title><link>https://www.nanye404.top/posts/dp/</link><guid isPermaLink="true">https://www.nanye404.top/posts/dp/</guid><description>简单的dp</description><pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;dp中的概念&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;阶段&lt;/strong&gt; 把原问题分割成若干个子问题&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;状态&lt;/strong&gt; 每个阶段面临的状况&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;决策&lt;/strong&gt; 不同阶段之间转移的选取&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;子问题重叠性&lt;/strong&gt; 子问题会被反复计算多次，因此递推保存在数组中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无后效性&lt;/strong&gt; 现在的子问题不受后面子问题的影响&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最优子结构&lt;/strong&gt; 下一个阶段的最优解能够由前面各阶段子问题的最优解推出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;线性dp&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;一般来说都是和序列相关，是一个一维的状态&lt;/li&gt;
+&lt;li&gt;一般来说&lt;code&gt;f[i]&lt;/code&gt;都表示以&lt;code&gt;i&lt;/code&gt;为结尾的状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;最长上升子序列&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;B3637&lt;/li&gt;
+&lt;li&gt;给出一个由 n(n≤5000) 个不超过10e6的正整数组成的序列。请输出这个序列的最长上升子序列的长度。&lt;/li&gt;
+&lt;li&gt;阶段：以第i个数结尾&lt;/li&gt;
+&lt;li&gt;状态：以i结尾最长的上升子序列为&lt;code&gt;f[i]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;决策：如果前&lt;code&gt;i - 1&lt;/code&gt;个数没有比i小的，&lt;code&gt;f[i] = 1&lt;/code&gt;,否则&lt;code&gt;f[i] = max(f[j]) + 1&lt;/code&gt; (这里的j在i的前面，且满足&lt;code&gt;a[i] &amp;lt; a[j]&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;答案：&lt;code&gt;max(f[i])&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;int&amp;gt; a(n + 1);
+    for(int i = 1; i &amp;lt;= n; i++) cin &amp;gt;&amp;gt; a[i];
+    vector&amp;lt;int&amp;gt; f(n + 1, -inf);
+    for(int i = 1; i &amp;lt;= n; i++) f[i] = 1;
+    for(int i = 1;i &amp;lt;= n; i++)
+    {
+        for(int j =1; j &amp;lt; i; j++)
+        {
+            if(a[j] &amp;lt; a[i])
+            {
+                f[i] = max(f[i], f[j] + 1);
+            }
+        }
+    }
+    cout &amp;lt;&amp;lt; *max_element(f.begin(), f.end()) &amp;lt;&amp;lt; endl;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;合唱队形&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;P1091&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;n &lt;/code&gt;位同学站成一排，音乐老师要请其中的 &lt;code&gt;n−k&lt;/code&gt; 位同学出列，使得剩下的 &lt;code&gt;k&lt;/code&gt; 位同学排成合唱队形。&lt;/li&gt;
+&lt;li&gt;设&lt;code&gt; k&lt;/code&gt; 位同学从左到右依次编号为 &lt;code&gt;1,2, … ,k，&lt;/code&gt;他们的身高分别为 &lt;code&gt;t[1],t[2]...t[k]&lt;/code&gt;,则他们的身高满足&lt;code&gt;t[1] &amp;lt; ... &amp;lt; t[i] &amp;gt; t[i+1] &amp;gt; t[k]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;已知n位同学的身高，计算至少需要多少同学出列可以使剩下的同学排成合唱队形&lt;/li&gt;
+&lt;li&gt;阶段：让&lt;code&gt;i&lt;/code&gt;作为最大的&lt;/li&gt;
+&lt;li&gt;状态：&lt;code&gt;i&lt;/code&gt;左边的最长上升子序列为&lt;code&gt;f[i]&lt;/code&gt;,右边的最长下降子序列为&lt;code&gt;g[i]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;决策：和最长上升子序列一样&lt;/li&gt;
+&lt;li&gt;答案：&lt;code&gt;max(f[i] + g[i] - 1)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;int n;
+    cin &amp;gt;&amp;gt; n;
+    vector&amp;lt;int&amp;gt; a(n + 1);
+    vector&amp;lt;int&amp;gt; f(n + 1, 1);f[0] = -inf;
+    vector&amp;lt;int&amp;gt; g(n + 1, 1);g[0] = -inf;
+    for(int i = 1; i &amp;lt;= n; i++) cin &amp;gt;&amp;gt; a[i];
+    for(int i = 1; i &amp;lt;= n; i++)
+    {
+        for(int j = 1; j &amp;lt; i; j++)
+        {
+            if(a[j] &amp;lt; a[i]) f[i] = max(f[i], f[j] + 1);
+        }
+    }
+    for(int i = n; i &amp;gt;= 1; i--)
+    {
+        for(int j = n; j &amp;gt; i; j--)
+        {
+            if(a[j] &amp;lt; a[i]) g[i] = max(g[i], g[j] + 1);
+        }
+    }
+    int ans = 0;
+    for(int i = 1; i &amp;lt;= n; i++)
+    {
+        ans = max(ans, f[i] + g[i] - 1);
+    }
+    cout &amp;lt;&amp;lt; n - ans &amp;lt;&amp;lt; endl;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;摆花&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;P1077&lt;/li&gt;
+&lt;li&gt;小明的花店新开张，为了吸引顾客，他想在花店的门口摆上一排花，共 &lt;code&gt;m&lt;/code&gt; 盆。通过调查顾客的喜好，小明列出了顾客最喜欢的 &lt;code&gt;n&lt;/code&gt; 种花，从&lt;code&gt;1&lt;/code&gt; 到 &lt;code&gt;n&lt;/code&gt;标号。为了在门口展出更多种花，规定第 &lt;code&gt;i&lt;/code&gt; 种花不能超过&lt;code&gt;a[i]&lt;/code&gt;盆，摆花时同一种花放在一起，且不同种类的花需按标号的从小到大的顺序依次摆列。&lt;/li&gt;
+&lt;li&gt;计算一共有多少种方案&lt;/li&gt;
+&lt;li&gt;阶段：前i种花&lt;/li&gt;
+&lt;li&gt;状态：前&lt;code&gt;i&lt;/code&gt;种花总共摆放了j盆的方案数为 &lt;code&gt;f[i][j]&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;决策：&lt;code&gt;f[i][j] = 求和f[i -1][j - k](0 &amp;lt;= j &amp;lt;= min(a[i],j)) &lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;答案：f[n][m]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;int n, m;
+    cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; m;
+    vector&amp;lt;int&amp;gt; a(n + 1);
+    for(int i = 1; i &amp;lt;= n; i++) cin &amp;gt;&amp;gt; a[i];
+    vector&amp;lt;vector&amp;lt;int&amp;gt;&amp;gt; f(n + 1, vector&amp;lt;int&amp;gt;(m + 1, 0));
+    f[0][0] = 1;
+    for(int i = 1; i &amp;lt;= n; i++){
+        for(int j = 0; j &amp;lt;= m; j++){
+            for(int k = 0; k &amp;lt;= min(a[i], j); k++){
+                f[i][j] = (f[i][j] + f[i - 1][j - k]) % mod;
+            }
+        }
+    }
+    cout &amp;lt;&amp;lt; f[n][m] &amp;lt;&amp;lt; endl;
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>对目前大学生处境的一些思考</title><link>https://www.nanye404.top/posts/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%A4%84%E5%A2%83/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%A4%84%E5%A2%83/</guid><description>有关保研考研绩点等的一些理解</description><pubDate>Tue, 03 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;  随着学业压力不断增大，焦虑感一直挥之不去，遂写下这篇文章，试图找到破局之法。&lt;/p&gt;
+&lt;p&gt;  本以为上了大学能自由支配时间，没想到还要像高中一样被迫学一些不想学的东西。更何况还有保研和考研悬在头顶——对机械专业来说，研究生基本是必读的，因此不得不选一条路走下去。我对现在的院校也不是很满意，也没有在上海长期生活的打算。&lt;/p&gt;
+&lt;p&gt;  如果要保研，势必得花大量时间在绩点上，而我自己真正想学的东西却没多少。这三年基本上没法放松，什么都要顾及。如果打算考研，现在的竞争又很激烈，容错率极低，相当于第二次高考。&lt;/p&gt;
+&lt;p&gt;  我也想过不那么功利，去学自己真正感兴趣的东西，学一些和专业相关但更深的内容。可每次看到周围同学都在卷，又害怕被落下。说实话，卷绩点、卷保研，也不一定比本科就工作的人好到哪去——无非是想去更好的学校，有更好看的成绩，让自己更有面子而已。很多次想放下，但又不能完全摆烂，终究没那个看得开的底气。&lt;/p&gt;
+&lt;p&gt;  现在并没有一个两全的办法，因为我要学的东西实在太多，而我又不想放弃娱乐。至今仍没找到一个很好的解决方式。既然放不下，那就再去争取一些——尽可能在不落下成绩的情况下，学自己感兴趣的东西，比如把线代学得更深入，学习数分，参加高数竞赛。代价就是我要比别人付出更多的时间，成绩也不见得会高多少。&lt;/p&gt;
+</content:encoded></item><item><title>算法竞赛入门</title><link>https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/</guid><description>整合一下最近学过的</description><pubDate>Fri, 12 Dec 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;首先是我的模板&lt;/h1&gt;
 &lt;pre&gt;&lt;code&gt;#include&amp;lt;bits/stdc++.h&amp;gt;
 using namespace std;
-#define int long long
+#define int int
 #define endl &apos;\n&apos;
 #define pb push_back
 #define rz resize
@@ -363,8 +471,11 @@ struct node
 }tr[4 * N];
 void build(int p, int l, int r)
 {
-tr[p] = {l, r, w[l]}
-if(l == r) return;
+tr[p].l = l; tr[p].r = r; 
+    if (l == r) {
+        tr[p].sum = w[l];
+        return;
+    }
 int m =l + r &amp;gt;&amp;gt; 1;
 build(lc, l ,m);
 build(rc, m + 1, r);
@@ -382,7 +493,7 @@ tr[p].sum = tr[lc].sum + tr[rc].sum;
         return;
     }
     int m = tr[p].l + tr[p].r &amp;gt;&amp;gt; 1;
-    if(x &amp;lt; m) update(lc, x, k);
+    if(x &amp;lt;= m) update(lc, x, k);
     if(x &amp;gt; m) update(rc, x, k);
     tr[p].sum = tr[lc].sum + tr[rc].sum;
 }
@@ -419,7 +530,7 @@ void pushdown(int p){
         tr[p].add = 0;
     }
 }
-void update(int p, int x, int y, int k){
+void update(int p, int x, int y, int k){            
     if(x &amp;lt;= tr[p].l &amp;amp;&amp;amp; tr[p].r &amp;lt;= y){
         tr[p].sum += (tr[p].r - tr[p].l + 1) * k;
         tr[p].add += k;
@@ -430,6 +541,37 @@ void update(int p, int x, int y, int k){
     if(x &amp;lt;= m) update(lc, x, y, k);
     if(y &amp;gt; m) update(lc, x, y, k);
     pushup(p);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;这里补充一下，如果只是区间加减还是推荐用树状数组，因为代码量很小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;int lowbit(int x)
+{
+    return x&amp;amp;-x;
+}
+void add(int *b,int p,int v)
+{
+    for(;p&amp;lt;=n;p+=lowbit(p))
+        b[p]+=v;
+}
+int ask(int*b,int p)
+{
+    int a=0;
+    for(;p;p-=lowbit(p))
+        a+=b[p];
+    return a;
+}
+int query(int p)
+{
+    return s[p]+(p+1)*ask(d,p)-ask(id,p);
+}
+void add(int x,int y,int v)
+{
+    add(d,x,v);
+    add(d,y+1,-v);
+    add(id,x,v*x);
+    add(id,y+1,-v*(y+1));
 }
 &lt;/code&gt;&lt;/pre&gt;
 </content:encoded></item><item><title>栈与队列</title><link>https://www.nanye404.top/posts/stack/</link><guid isPermaLink="true">https://www.nanye404.top/posts/stack/</guid><description>栈与队列</description><pubDate>Sat, 08 Nov 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;栈&lt;/h2&gt;
@@ -3990,44 +4132,6 @@ int main() {
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&amp;lt;/details&amp;gt;&lt;/p&gt;
 &lt;hr /&gt;
-</content:encoded></item><item><title>更新日志</title><link>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</guid><description>这里是更新日志</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;2025-10-22&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;更新了个人简介&lt;/li&gt;
-&lt;li&gt;更新了rm笔记&lt;/li&gt;
-&lt;li&gt;更新了双指针的框架&lt;/li&gt;
-&lt;li&gt;评论没挂服务器所以不能用&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-10-23&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;更新了快慢指针&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-10-24&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;更新了两篇opencv入门，ai写的，以后看着能不能精简一下&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-10-26&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;装甲板识别基本更完&lt;/li&gt;
-&lt;li&gt;双指针更完&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-11-3&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;开始更新哈希表&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-11-4&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;开始更新前缀和&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-11-5&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;更新中南自瞄框架&lt;/li&gt;
-&lt;li&gt;更新递归，分治&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;2025-11-9&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;更新中南自瞄&lt;/li&gt;
-&lt;li&gt;更新一些数据结构&lt;/li&gt;
-&lt;/ul&gt;
 </content:encoded></item><item><title>双指针</title><link>https://www.nanye404.top/posts/twop/</link><guid isPermaLink="true">https://www.nanye404.top/posts/twop/</guid><description>双指针常见技巧</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;ul&gt;
 &lt;li&gt;本篇参考labuladong的算法笔记编写&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#%E5%8F%8C%E6%8C%87%E9%92%88%E5%9C%A8%E6%95%B0%E7%BB%84%E7%9A%84%E8%BF%90%E7%94%A8&quot;&gt;双指针在数组的运用&lt;/a&gt;
@@ -4628,6 +4732,53 @@ public:
     }
 };
 &lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>更新日志</title><link>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</link><guid isPermaLink="true">https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</guid><description>这里是更新日志</description><pubDate>Wed, 22 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;2025-10-22&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新了个人简介&lt;/li&gt;
+&lt;li&gt;更新了rm笔记&lt;/li&gt;
+&lt;li&gt;更新了双指针的框架&lt;/li&gt;
+&lt;li&gt;评论没挂服务器所以不能用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-10-23&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新了快慢指针&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-10-24&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新了两篇opencv入门，ai写的，以后看着能不能精简一下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-10-26&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;装甲板识别基本更完&lt;/li&gt;
+&lt;li&gt;双指针更完&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-11-3&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;开始更新哈希表&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-11-4&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;开始更新前缀和&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-11-5&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新中南自瞄框架&lt;/li&gt;
+&lt;li&gt;更新递归，分治&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2025-11-9&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新中南自瞄&lt;/li&gt;
+&lt;li&gt;更新一些数据结构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2026-2-11&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新并查集以及线段树&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;2026-3-3&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;更新dp&lt;/li&gt;
+&lt;li&gt;更新对目前处境的思考&lt;/li&gt;
+&lt;/ul&gt;
 </content:encoded></item><item><title>视频测试</title><link>https://www.nanye404.top/posts/video/</link><guid isPermaLink="true">https://www.nanye404.top/posts/video/</guid><description>视频测试。</description><pubDate>Tue, 21 Oct 2025 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这是视频测试&lt;/p&gt;
 &lt;h2&gt;YouTube&lt;/h2&gt;
 &lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;

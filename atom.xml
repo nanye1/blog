@@ -5,8 +5,142 @@
   <link href="https://www.nanye404.top/" rel="alternate" type="text/html"/>
   <link href="https://www.nanye404.top/atom.xml" rel="self" type="application/atom+xml"/>
   <id>https://www.nanye404.top/</id>
-  <updated>2026-03-02T13:05:32.346Z</updated>
+  <updated>2026-03-03T11:05:22.936Z</updated>
   <language>zh_CN</language>
+  <entry>
+    <title>动态规划</title>
+    <link href="https://www.nanye404.top/posts/dp/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/dp/</id>
+    <published>2026-03-03T00:00:00.000Z</published>
+    <updated>2026-03-03T00:00:00.000Z</updated>
+    <summary>简单的dp</summary>
+    <content type="html"><![CDATA[<h2>dp中的概念</h2>
+<ul>
+<li><strong>阶段</strong> 把原问题分割成若干个子问题</li>
+<li><strong>状态</strong> 每个阶段面临的状况</li>
+<li><strong>决策</strong> 不同阶段之间转移的选取</li>
+<li><strong>子问题重叠性</strong> 子问题会被反复计算多次，因此递推保存在数组中</li>
+<li><strong>无后效性</strong> 现在的子问题不受后面子问题的影响</li>
+<li><strong>最优子结构</strong> 下一个阶段的最优解能够由前面各阶段子问题的最优解推出</li>
+</ul>
+<hr />
+<h2>线性dp</h2>
+<ul>
+<li>一般来说都是和序列相关，是一个一维的状态</li>
+<li>一般来说<code>f[i]</code>都表示以<code>i</code>为结尾的状态</li>
+</ul>
+<h3>最长上升子序列</h3>
+<ul>
+<li>B3637</li>
+<li>给出一个由 n(n≤5000) 个不超过10e6的正整数组成的序列。请输出这个序列的最长上升子序列的长度。</li>
+<li>阶段：以第i个数结尾</li>
+<li>状态：以i结尾最长的上升子序列为<code>f[i]</code></li>
+<li>决策：如果前<code>i - 1</code>个数没有比i小的，<code>f[i] = 1</code>,否则<code>f[i] = max(f[j]) + 1</code> (这里的j在i的前面，且满足<code>a[i] &lt; a[j]</code>)</li>
+<li>答案：<code>max(f[i])</code></li>
+</ul>
+<pre><code>vector&lt;int&gt; a(n + 1);
+    for(int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    vector&lt;int&gt; f(n + 1, -inf);
+    for(int i = 1; i &lt;= n; i++) f[i] = 1;
+    for(int i = 1;i &lt;= n; i++)
+    {
+        for(int j =1; j &lt; i; j++)
+        {
+            if(a[j] &lt; a[i])
+            {
+                f[i] = max(f[i], f[j] + 1);
+            }
+        }
+    }
+    cout &lt;&lt; *max_element(f.begin(), f.end()) &lt;&lt; endl;
+</code></pre>
+<h3>合唱队形</h3>
+<ul>
+<li>P1091</li>
+<li><code>n </code>位同学站成一排，音乐老师要请其中的 <code>n−k</code> 位同学出列，使得剩下的 <code>k</code> 位同学排成合唱队形。</li>
+<li>设<code> k</code> 位同学从左到右依次编号为 <code>1,2, … ,k，</code>他们的身高分别为 <code>t[1],t[2]...t[k]</code>,则他们的身高满足<code>t[1] &lt; ... &lt; t[i] &gt; t[i+1] &gt; t[k]</code></li>
+<li>已知n位同学的身高，计算至少需要多少同学出列可以使剩下的同学排成合唱队形</li>
+<li>阶段：让<code>i</code>作为最大的</li>
+<li>状态：<code>i</code>左边的最长上升子序列为<code>f[i]</code>,右边的最长下降子序列为<code>g[i]</code></li>
+<li>决策：和最长上升子序列一样</li>
+<li>答案：<code>max(f[i] + g[i] - 1)</code></li>
+</ul>
+<pre><code>int n;
+    cin &gt;&gt; n;
+    vector&lt;int&gt; a(n + 1);
+    vector&lt;int&gt; f(n + 1, 1);f[0] = -inf;
+    vector&lt;int&gt; g(n + 1, 1);g[0] = -inf;
+    for(int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    for(int i = 1; i &lt;= n; i++)
+    {
+        for(int j = 1; j &lt; i; j++)
+        {
+            if(a[j] &lt; a[i]) f[i] = max(f[i], f[j] + 1);
+        }
+    }
+    for(int i = n; i &gt;= 1; i--)
+    {
+        for(int j = n; j &gt; i; j--)
+        {
+            if(a[j] &lt; a[i]) g[i] = max(g[i], g[j] + 1);
+        }
+    }
+    int ans = 0;
+    for(int i = 1; i &lt;= n; i++)
+    {
+        ans = max(ans, f[i] + g[i] - 1);
+    }
+    cout &lt;&lt; n - ans &lt;&lt; endl;
+</code></pre>
+<h3>摆花</h3>
+<ul>
+<li>P1077</li>
+<li>小明的花店新开张，为了吸引顾客，他想在花店的门口摆上一排花，共 <code>m</code> 盆。通过调查顾客的喜好，小明列出了顾客最喜欢的 <code>n</code> 种花，从<code>1</code> 到 <code>n</code>标号。为了在门口展出更多种花，规定第 <code>i</code> 种花不能超过<code>a[i]</code>盆，摆花时同一种花放在一起，且不同种类的花需按标号的从小到大的顺序依次摆列。</li>
+<li>计算一共有多少种方案</li>
+<li>阶段：前i种花</li>
+<li>状态：前<code>i</code>种花总共摆放了j盆的方案数为 <code>f[i][j]</code>。</li>
+<li>决策：<code>f[i][j] = 求和f[i -1][j - k](0 &lt;= j &lt;= min(a[i],j)) </code></li>
+<li>答案：f[n][m]</li>
+</ul>
+<pre><code>int n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    vector&lt;int&gt; a(n + 1);
+    for(int i = 1; i &lt;= n; i++) cin &gt;&gt; a[i];
+    vector&lt;vector&lt;int&gt;&gt; f(n + 1, vector&lt;int&gt;(m + 1, 0));
+    f[0][0] = 1;
+    for(int i = 1; i &lt;= n; i++){
+        for(int j = 0; j &lt;= m; j++){
+            for(int k = 0; k &lt;= min(a[i], j); k++){
+                f[i][j] = (f[i][j] + f[i - 1][j - k]) % mod;
+            }
+        }
+    }
+    cout &lt;&lt; f[n][m] &lt;&lt; endl;
+</code></pre>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>对目前大学生处境的一些思考</title>
+    <link href="https://www.nanye404.top/posts/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%A4%84%E5%A2%83/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%A4%84%E5%A2%83/</id>
+    <published>2026-03-03T00:00:00.000Z</published>
+    <updated>2026-03-03T00:00:00.000Z</updated>
+    <summary>有关保研考研绩点等的一些理解</summary>
+    <content type="html"><![CDATA[<p>  随着学业压力不断增大，焦虑感一直挥之不去，遂写下这篇文章，试图找到破局之法。</p>
+<p>  本以为上了大学能自由支配时间，没想到还要像高中一样被迫学一些不想学的东西。更何况还有保研和考研悬在头顶——对机械专业来说，研究生基本是必读的，因此不得不选一条路走下去。我对现在的院校也不是很满意，也没有在上海长期生活的打算。</p>
+<p>  如果要保研，势必得花大量时间在绩点上，而我自己真正想学的东西却没多少。这三年基本上没法放松，什么都要顾及。如果打算考研，现在的竞争又很激烈，容错率极低，相当于第二次高考。</p>
+<p>  我也想过不那么功利，去学自己真正感兴趣的东西，学一些和专业相关但更深的内容。可每次看到周围同学都在卷，又害怕被落下。说实话，卷绩点、卷保研，也不一定比本科就工作的人好到哪去——无非是想去更好的学校，有更好看的成绩，让自己更有面子而已。很多次想放下，但又不能完全摆烂，终究没那个看得开的底气。</p>
+<p>  现在并没有一个两全的办法，因为我要学的东西实在太多，而我又不想放弃娱乐。至今仍没找到一个很好的解决方式。既然放不下，那就再去争取一些——尽可能在不落下成绩的情况下，学自己感兴趣的东西，比如把线代学得更深入，学习数分，参加高数竞赛。代价就是我要比别人付出更多的时间，成绩也不见得会高多少。</p>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="随笔"></category>
+  </entry>
   <entry>
     <title>算法竞赛入门</title>
     <link href="https://www.nanye404.top/posts/%E7%AE%97%E6%B3%95%E6%95%B4%E5%90%88/" rel="alternate" type="text/html"/>
@@ -17,7 +151,7 @@
     <content type="html"><![CDATA[<h1>首先是我的模板</h1>
 <pre><code>#include&lt;bits/stdc++.h&gt;
 using namespace std;
-#define int long long
+#define int int
 #define endl '\n'
 #define pb push_back
 #define rz resize
@@ -379,8 +513,11 @@ struct node
 }tr[4 * N];
 void build(int p, int l, int r)
 {
-tr[p] = {l, r, w[l]}
-if(l == r) return;
+tr[p].l = l; tr[p].r = r; 
+    if (l == r) {
+        tr[p].sum = w[l];
+        return;
+    }
 int m =l + r &gt;&gt; 1;
 build(lc, l ,m);
 build(rc, m + 1, r);
@@ -398,7 +535,7 @@ tr[p].sum = tr[lc].sum + tr[rc].sum;
         return;
     }
     int m = tr[p].l + tr[p].r &gt;&gt; 1;
-    if(x &lt; m) update(lc, x, k);
+    if(x &lt;= m) update(lc, x, k);
     if(x &gt; m) update(rc, x, k);
     tr[p].sum = tr[lc].sum + tr[rc].sum;
 }
@@ -435,7 +572,7 @@ void pushdown(int p){
         tr[p].add = 0;
     }
 }
-void update(int p, int x, int y, int k){
+void update(int p, int x, int y, int k){            
     if(x &lt;= tr[p].l &amp;&amp; tr[p].r &lt;= y){
         tr[p].sum += (tr[p].r - tr[p].l + 1) * k;
         tr[p].add += k;
@@ -446,6 +583,37 @@ void update(int p, int x, int y, int k){
     if(x &lt;= m) update(lc, x, y, k);
     if(y &gt; m) update(lc, x, y, k);
     pushup(p);
+}
+</code></pre>
+<ul>
+<li>这里补充一下，如果只是区间加减还是推荐用树状数组，因为代码量很小</li>
+</ul>
+<pre><code>int lowbit(int x)
+{
+    return x&amp;-x;
+}
+void add(int *b,int p,int v)
+{
+    for(;p&lt;=n;p+=lowbit(p))
+        b[p]+=v;
+}
+int ask(int*b,int p)
+{
+    int a=0;
+    for(;p;p-=lowbit(p))
+        a+=b[p];
+    return a;
+}
+int query(int p)
+{
+    return s[p]+(p+1)*ask(d,p)-ask(id,p);
+}
+void add(int x,int y,int v)
+{
+    add(d,x,v);
+    add(d,y+1,-v);
+    add(id,x,v*x);
+    add(id,y+1,-v*(y+1));
 }
 </code></pre>
 ]]></content>
@@ -4130,57 +4298,6 @@ int main() {
     <category term="RM"></category>
   </entry>
   <entry>
-    <title>更新日志</title>
-    <link href="https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/" rel="alternate" type="text/html"/>
-    <id>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</id>
-    <published>2025-10-22T00:00:00.000Z</published>
-    <updated>2025-10-22T00:00:00.000Z</updated>
-    <summary>这里是更新日志</summary>
-    <content type="html"><![CDATA[<h2>2025-10-22</h2>
-<ul>
-<li>更新了个人简介</li>
-<li>更新了rm笔记</li>
-<li>更新了双指针的框架</li>
-<li>评论没挂服务器所以不能用</li>
-</ul>
-<h2>2025-10-23</h2>
-<ul>
-<li>更新了快慢指针</li>
-</ul>
-<h2>2025-10-24</h2>
-<ul>
-<li>更新了两篇opencv入门，ai写的，以后看着能不能精简一下</li>
-</ul>
-<h2>2025-10-26</h2>
-<ul>
-<li>装甲板识别基本更完</li>
-<li>双指针更完</li>
-</ul>
-<h2>2025-11-3</h2>
-<ul>
-<li>开始更新哈希表</li>
-</ul>
-<h2>2025-11-4</h2>
-<ul>
-<li>开始更新前缀和</li>
-</ul>
-<h2>2025-11-5</h2>
-<ul>
-<li>更新中南自瞄框架</li>
-<li>更新递归，分治</li>
-</ul>
-<h2>2025-11-9</h2>
-<ul>
-<li>更新中南自瞄</li>
-<li>更新一些数据结构</li>
-</ul>
-]]></content>
-    <author>
-      <name>南叶酱</name>
-    </author>
-    <category term="日志"></category>
-  </entry>
-  <entry>
     <title>双指针</title>
     <link href="https://www.nanye404.top/posts/twop/" rel="alternate" type="text/html"/>
     <id>https://www.nanye404.top/posts/twop/</id>
@@ -4792,6 +4909,66 @@ public:
       <name>南叶酱</name>
     </author>
     <category term="算法"></category>
+  </entry>
+  <entry>
+    <title>更新日志</title>
+    <link href="https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/" rel="alternate" type="text/html"/>
+    <id>https://www.nanye404.top/posts/%E6%97%A5%E5%BF%97/</id>
+    <published>2025-10-22T00:00:00.000Z</published>
+    <updated>2025-10-22T00:00:00.000Z</updated>
+    <summary>这里是更新日志</summary>
+    <content type="html"><![CDATA[<h2>2025-10-22</h2>
+<ul>
+<li>更新了个人简介</li>
+<li>更新了rm笔记</li>
+<li>更新了双指针的框架</li>
+<li>评论没挂服务器所以不能用</li>
+</ul>
+<h2>2025-10-23</h2>
+<ul>
+<li>更新了快慢指针</li>
+</ul>
+<h2>2025-10-24</h2>
+<ul>
+<li>更新了两篇opencv入门，ai写的，以后看着能不能精简一下</li>
+</ul>
+<h2>2025-10-26</h2>
+<ul>
+<li>装甲板识别基本更完</li>
+<li>双指针更完</li>
+</ul>
+<h2>2025-11-3</h2>
+<ul>
+<li>开始更新哈希表</li>
+</ul>
+<h2>2025-11-4</h2>
+<ul>
+<li>开始更新前缀和</li>
+</ul>
+<h2>2025-11-5</h2>
+<ul>
+<li>更新中南自瞄框架</li>
+<li>更新递归，分治</li>
+</ul>
+<h2>2025-11-9</h2>
+<ul>
+<li>更新中南自瞄</li>
+<li>更新一些数据结构</li>
+</ul>
+<h2>2026-2-11</h2>
+<ul>
+<li>更新并查集以及线段树</li>
+</ul>
+<h2>2026-3-3</h2>
+<ul>
+<li>更新dp</li>
+<li>更新对目前处境的思考</li>
+</ul>
+]]></content>
+    <author>
+      <name>南叶酱</name>
+    </author>
+    <category term="日志"></category>
   </entry>
   <entry>
     <title>视频测试</title>
